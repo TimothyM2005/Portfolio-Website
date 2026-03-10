@@ -1,48 +1,48 @@
-# Timothy Mitchell — Portfolio
+# Portfolio
 
-A GitHub portfolio site showcasing design, CAD, and programming projects. Content is based on the official portfolio PDF.
+A single-page portfolio site for design, CAD, and programming projects. Built for GitHub Pages.
 
 ## View locally
 
-Open `index.html` in your browser, or run a simple server:
+Open `index.html` in a browser, or run a local server:
 
 ```bash
 # Python
 python -m http.server 8000
 
-# Node (npx)
+# Node
 npx serve
 ```
 
-Then visit `http://localhost:8000`.
+Then open `http://localhost:8000`.
 
-## Publish on GitHub Pages
+## Publishing on GitHub Pages
 
-1. Create a new repository on GitHub (e.g. `timothy-mitchell` or `portfolio`).
-2. Initialize git in this folder (if not already):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial portfolio"
+1. Create a repository and push the project (e.g. branch `main`, root folder).
+2. In the repository go to **Settings → Pages**.
+3. Under **Source** choose **Deploy from a branch**.
+4. Select branch **main** and folder **/ (root)**.
+5. The site will be available at `https://<owner>.github.io/<repo>/` after the deployment finishes.
+
+## Adding project images
+
+Each project can show a cycling image carousel (auto-advance with optional manual prev/next and dots).
+
+1. Create an `images` folder in the project root.
+2. Add one subfolder per project using the project IDs: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`.
+3. Put your image files in the matching subfolder (e.g. `images/fsae-gps/1.jpg`, `images/fsae-gps/2.jpg`).
+4. In `index.html`, find the `PROJECT_IMAGES` object and add the image paths for each project, for example:
+
+   ```javascript
+   const PROJECT_IMAGES = {
+     'fsae-gps': ['images/fsae-gps/1.jpg', 'images/fsae-gps/2.jpg'],
+     // ... other projects
+   };
    ```
-3. Add your repo and push:
-   ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   git branch -M main
-   git push -u origin main
-   ```
-4. In the repo: **Settings → Pages**.
-5. Under **Source**, choose **Deploy from a branch**.
-6. Branch: **main**, folder: **/ (root)**. Save.
-7. Your site will be at `https://YOUR_USERNAME.github.io/YOUR_REPO/` after a minute or two.
 
-## Customize
-
-- **Footer link**: Edit the `GitHub` link in `index.html` to point to your profile or repo.
-- **Projects**: Edit the project cards in `index.html` to add links (e.g. to Onshape docs or images).
-- **PDF**: The original portfolio is at `Portfolio - Timothy Mitchell Official.pdf` (in your Downloads). You can add a “Download PDF” link in the footer if you add the PDF to the repo.
+Supported image formats include JPG, PNG, and WebP. Order in the array is the slide order.
 
 ## Structure
 
-- `index.html` — Single-page portfolio with all projects (FSAE, Rival Robotics, Freshman Design, WCP Cadathon, FRC, Battle Bot, etc.).
-- Dark theme, responsive layout, SolidWorks/Onshape tags, and Goal / Outcome / Technical sections per project.
+- **index.html** — Single-page layout: responsive patchwork grid of project cards, each with an optional image carousel and Goal / Outcome / Technical sections.
+- **README.md** — This file.

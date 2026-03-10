@@ -41,7 +41,7 @@
     }
 
     .container {
-      max-width: 960px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -81,15 +81,23 @@
 
     .projects {
       display: grid;
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
     }
 
     .project {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.25rem 1.5rem;
+      overflow: hidden;
       transition: border-color 0.2s, background 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-body {
+      padding: 1.25rem 1.5rem;
     }
 
     .project:hover {
@@ -97,7 +105,7 @@
       background: var(--surface-hover);
     }
 
-    .project-header {
+    .project-body .project-header {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -168,6 +176,92 @@
       font-style: italic;
     }
 
+    /* Carousel */
+    .project-carousel {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--surface-hover);
+      overflow: hidden;
+    }
+
+    .project-carousel.carousel-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .carousel-viewport {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-track {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      transition: transform 0.35s ease;
+    }
+
+    .carousel-track img {
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 1.25rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 2;
+    }
+
+    .project-carousel:hover .carousel-btn {
+      opacity: 1;
+    }
+
+    .carousel-prev { left: 0.5rem; }
+    .carousel-next { right: 0.5rem; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.35rem;
+      z-index: 2;
+    }
+
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+
+    .carousel-dot.active {
+      background: #fff;
+    }
+
     footer {
       padding: 2rem 0;
       border-top: 1px solid var(--border);
@@ -184,6 +278,8 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    .project-body h3 { margin-top: 0.75rem; }
   </style>
 </head>
 <body>
@@ -197,7 +293,9 @@
       <h2>Projects</h2>
       <div class="projects">
 
-        <article class="project">
+        <article class="project" data-project="fsae-gps">
+          <div class="project-carousel" data-project="fsae-gps" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">FSAE — GPS Antenna Mount</span>
             <div class="project-meta">
@@ -215,9 +313,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="rival-fourbar">
+          <div class="project-carousel" data-project="rival-fourbar" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">Rival Robotics — Double Four-Bar Linkage</span>
             <div class="project-meta">
@@ -234,9 +335,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Fully functional four-bar linkage based on extension limits using a single motor for extension.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="freshman-lego">
+          <div class="project-carousel" data-project="freshman-lego" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">Freshman Design Project — LEGO Set</span>
             <div class="project-meta">
@@ -254,9 +358,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="rival-shuttlecock">
+          <div class="project-carousel" data-project="rival-shuttlecock" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">Rival Robotics — Shuttlecock Extraction System</span>
             <div class="project-meta">
@@ -275,9 +382,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="rival-chassis">
+          <div class="project-carousel" data-project="rival-chassis" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">Rival Robotics — Omnidirectional Chassis</span>
             <div class="project-meta">
@@ -295,9 +405,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Dead axle wheel system for smooth rotation on bearings. Wheels powered via 4 brushless motors with belts. 3D printing for extra parts to reduce machining complexity.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="battlebot">
+          <div class="project-carousel" data-project="battlebot" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">1 lb 3D Printed Battle Bot</span>
             <div class="project-meta">
@@ -316,9 +429,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Fully 3D printed vertical drum spinner. 4-wheel belt drive in rear. Custom wheel molds with draft angles for easy removal. All parts designed from scratch.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="wcp-arm">
+          <div class="project-carousel" data-project="wcp-arm" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">WCP Cadathon — 3 DOF Arm Gearbox</span>
             <div class="project-meta">
@@ -335,9 +451,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Uses a combination of chains and gears to supply the load from the motors to the arm assembly.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="wcp-basketball">
+          <div class="project-carousel" data-project="wcp-basketball" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">WCP Cadathon — Basketball Intake</span>
             <div class="project-meta">
@@ -354,9 +473,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="wcp-launcher">
+          <div class="project-carousel" data-project="wcp-launcher" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">WCP Cadathon — Ball Launcher & Picker</span>
             <div class="project-meta">
@@ -375,9 +497,12 @@
           </ul>
           <h3>Technical</h3>
           <p>2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="rival-arm">
+          <div class="project-carousel" data-project="rival-arm" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">Rival Robotics — Arm System</span>
             <div class="project-meta">
@@ -396,9 +521,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="frc-intake">
+          <div class="project-carousel" data-project="frc-intake" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">FRC — Cone & Cube Intake</span>
             <div class="project-meta">
@@ -417,9 +545,12 @@
           </ul>
           <h3>Technical</h3>
           <p>Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength.</p>
+          </div>
         </article>
 
-        <article class="project">
+        <article class="project" data-project="frc-robot">
+          <div class="project-carousel" data-project="frc-robot" role="region" aria-label="Project images"></div>
+          <div class="project-body">
           <div class="project-header">
             <span class="project-title">FRC Robotics Competition — Full Robot</span>
             <div class="project-meta">
@@ -437,6 +568,7 @@
           </ul>
           <h3>Technical</h3>
           <p>Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults.</p>
+          </div>
         </article>
 
       </div>
@@ -447,5 +579,125 @@
       <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
     </footer>
   </div>
+
+  <script>
+    // Add image paths per project (e.g. 'images/fsae-gps/1.jpg'). Order = slide order.
+    const PROJECT_IMAGES = {
+      'fsae-gps': [],
+      'rival-fourbar': [],
+      'freshman-lego': [],
+      'rival-shuttlecock': [],
+      'rival-chassis': [],
+      'battlebot': [],
+      'wcp-arm': [],
+      'wcp-basketball': [],
+      'wcp-launcher': [],
+      'rival-arm': [],
+      'frc-intake': [],
+      'frc-robot': []
+    };
+
+    const AUTO_ADVANCE_MS = 4500;
+    const PAUSE_AFTER_MANUAL_MS = 8000;
+
+    document.querySelectorAll('.project-carousel').forEach(function (el) {
+      const id = el.getAttribute('data-project');
+      const images = PROJECT_IMAGES[id] || [];
+
+      if (images.length === 0) {
+        el.classList.add('carousel-empty');
+        el.textContent = 'Add images in images/' + id + '/ and list paths in PROJECT_IMAGES';
+        return;
+      }
+
+      const viewport = document.createElement('div');
+      viewport.className = 'carousel-viewport';
+      const track = document.createElement('div');
+      track.className = 'carousel-track';
+      const imgWidthPct = 100 / images.length;
+      track.style.width = (100 * images.length) + '%';
+
+      images.forEach(function (src) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Project image';
+        img.loading = 'lazy';
+        img.style.width = imgWidthPct + '%';
+        track.appendChild(img);
+      });
+
+      const prevBtn = document.createElement('button');
+      prevBtn.type = 'button';
+      prevBtn.className = 'carousel-btn carousel-prev';
+      prevBtn.setAttribute('aria-label', 'Previous image');
+      prevBtn.innerHTML = '&#8249;';
+
+      const nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'carousel-btn carousel-next';
+      nextBtn.setAttribute('aria-label', 'Next image');
+      nextBtn.innerHTML = '&#8250;';
+
+      const dotsWrap = document.createElement('div');
+      dotsWrap.className = 'carousel-dots';
+      images.forEach(function (_, i) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
+        dotsWrap.appendChild(dot);
+      });
+
+      viewport.appendChild(track);
+      viewport.appendChild(prevBtn);
+      viewport.appendChild(nextBtn);
+      el.appendChild(viewport);
+      el.appendChild(dotsWrap);
+
+      let index = 0;
+      let autoTimer = null;
+      let pauseTimer = null;
+
+      function goTo(i) {
+        index = (i + images.length) % images.length;
+        track.style.transform = 'translateX(-' + (index * (100 / images.length)) + '%)';
+        dotsWrap.querySelectorAll('.carousel-dot').forEach(function (d, j) {
+          d.classList.toggle('active', j === index);
+        });
+      }
+
+      function next() {
+        goTo(index + 1);
+      }
+
+      function prev() {
+        goTo(index - 1);
+      }
+
+      function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(next, AUTO_ADVANCE_MS);
+      }
+
+      function stopAuto() {
+        if (autoTimer) clearInterval(autoTimer);
+        autoTimer = null;
+      }
+
+      function pauseThenResume() {
+        stopAuto();
+        if (pauseTimer) clearTimeout(pauseTimer);
+        pauseTimer = setTimeout(startAuto, PAUSE_AFTER_MANUAL_MS);
+      }
+
+      prevBtn.addEventListener('click', function () { prev(); pauseThenResume(); });
+      nextBtn.addEventListener('click', function () { next(); pauseThenResume(); });
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(function (dot, i) {
+        dot.addEventListener('click', function () { goTo(i); pauseThenResume(); });
+      });
+
+      startAuto();
+    });
+  </script>
 </body>
 </html>
