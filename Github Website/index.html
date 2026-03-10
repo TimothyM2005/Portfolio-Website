@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timothy Mitchell — Portfolio of Design, CAD & Programming</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-hover: #21262d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.15);
+      --border: #30363d;
+      --success: #3fb950;
+      --tag-swd: #a371f7;
+      --tag-onshape: #79c0ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Hero */
+    header {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    header .tagline {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Projects grid */
+    section {
+      padding: 2.5rem 0 4rem;
+    }
+
+    section h2 {
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .projects {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .project:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .project-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pill.date {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .pill.solidworks {
+      background: rgba(163, 113, 247, 0.2);
+      color: var(--tag-swd);
+    }
+
+    .pill.onshape {
+      background: rgba(121, 192, 255, 0.2);
+      color: var(--tag-onshape);
+    }
+
+    .project h3 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0.75rem 0 0.25rem;
+    }
+
+    .project p, .project ul {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .project ul {
+      padding-left: 1.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .project li {
+      margin-bottom: 0.2rem;
+    }
+
+    .project .goal {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Timothy Mitchell</h1>
+      <p class="tagline">Portfolio of Design, CAD & Programming</p>
+    </header>
+
+    <section>
+      <h2>Projects</h2>
+      <div class="projects">
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">FSAE — GPS Antenna Mount</span>
+            <div class="project-meta">
+              <span class="pill date">Aug 2025</span>
+              <span class="pill solidworks">SolidWorks</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Construct a GPS antenna, mount it lighter and more stable.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Fully 3D printed</li>
+            <li>30% reduction in weight from the original</li>
+            <li>3 points of contact to the frame rather than 2 on the original</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">Rival Robotics — Double Four-Bar Linkage</span>
+            <div class="project-meta">
+              <span class="pill date">Aug 2024</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Design a low-cost double four-bar linkage.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Low cost using only Polycard and 3D printed parts</li>
+            <li>Weight-reduced plates for less moving mass</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Fully functional four-bar linkage based on extension limits using a single motor for extension.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">Freshman Design Project — LEGO Set</span>
+            <div class="project-meta">
+              <span class="pill date">Apr 2024</span>
+              <span class="pill solidworks">SolidWorks</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Construct a full LEGO set in SolidWorks using Excel for different part configurations.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>A 240-piece LEGO Technic set</li>
+            <li>60+% of the parts are configurable</li>
+            <li>Advanced understanding of SolidWorks Part Studio</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">Rival Robotics — Shuttlecock Extraction System</span>
+            <div class="project-meta">
+              <span class="pill date">Aug 2025</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Make a system to extract shuttlecocks from a tube.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>3 DOF system able to extract at any angle</li>
+            <li>Easy implementation with the rest of the robot</li>
+            <li>Fully 3D printed and easily assembleable</li>
+            <li>Master Sketch can easily change major values and auto-rebuild</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">Rival Robotics — Omnidirectional Chassis</span>
+            <div class="project-meta">
+              <span class="pill date">Aug 2025</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Make a rigid and sturdy chassis using omnidirectional wheels to control the robot's movement.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Easily machinable aluminum plates</li>
+            <li>Sheet metal parts to reduce complexity and hardware</li>
+            <li>CNC motor mount as both rigid mounting system and heat sink</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Dead axle wheel system for smooth rotation on bearings. Wheels powered via 4 brushless motors with belts. 3D printing for extra parts to reduce machining complexity.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">1 lb 3D Printed Battle Bot</span>
+            <div class="project-meta">
+              <span class="pill date">Mar 2025</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Make a 1 lb 3D printed battle bot.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Modular, easy-swap armor system</li>
+            <li>Custom resin cast wheels</li>
+            <li>Easily assembled using heat-set inserts</li>
+            <li>Custom fully balanced drum with interlocking motor connection for maximum torque output</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Fully 3D printed vertical drum spinner. 4-wheel belt drive in rear. Custom wheel molds with draft angles for easy removal. All parts designed from scratch.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">WCP Cadathon — 3 DOF Arm Gearbox</span>
+            <div class="project-meta">
+              <span class="pill date">Oct 2024</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Make a 3 DOF arm gearbox.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Fully custom gearbox plates</li>
+            <li>55:1 gearbox to supply a surplus of torque</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Uses a combination of chains and gears to supply the load from the motors to the arm assembly.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">WCP Cadathon — Basketball Intake</span>
+            <div class="project-meta">
+              <span class="pill date">Oct 2024</span>
+              <span class="pill solidworks">SolidWorks</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Develop a unique intake for basketballs.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Compact end effector</li>
+            <li>Unique gear stacking for a compact design</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">WCP Cadathon — Ball Launcher & Picker</span>
+            <div class="project-meta">
+              <span class="pill date">Oct 2024</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Create a system to launch small 6" plastic balls and pick them up off the ground.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Turreted shooter with circular rack and pinion for hood angle</li>
+            <li>1 motor to actuate all belts in the hopper up to the feeder</li>
+            <li>Weight-reduced aluminum plates for lower COG and moving mass</li>
+            <li>1 motor to power the entire intake subsystem</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">Rival Robotics — Arm System</span>
+            <div class="project-meta">
+              <span class="pill date">Jul 2025</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Create an arm system with complete freedom of motion to place objects in specific locations easily.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Differential gearbox for X and Z-axis rotation</li>
+            <li>Virtual 4-bar so input stays in place regardless of arm orientation</li>
+            <li>QDD motors with 3 Nm torque</li>
+            <li>Weight-reduced plates to lower CG for vertically extending system</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">FRC — Cone & Cube Intake</span>
+            <div class="project-meta">
+              <span class="pill date">Mar 2023</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Create a system to pick up small cones and 10" inflatable cubes off the ground.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Pneumatic-powered extension to reduce complexity</li>
+            <li>Single high-torque motor for maximum grip</li>
+            <li>Mostly Lexan construction to reduce weight</li>
+            <li>Configurable master sketch for geometry and plate design</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength.</p>
+        </article>
+
+        <article class="project">
+          <div class="project-header">
+            <span class="project-title">FRC Robotics Competition — Full Robot</span>
+            <div class="project-meta">
+              <span class="pill date">Mar 2023</span>
+              <span class="pill onshape">Onshape</span>
+            </div>
+          </div>
+          <h3>Goal</h3>
+          <p class="goal">Create a system to score game pieces and navigate the field effectively. Team project of 4.</p>
+          <h3>Outcome</h3>
+          <ul>
+            <li>Swerve modules: 15 ft/s and omnidirectional movement</li>
+            <li>Robust rigid elevator system</li>
+            <li>Specific electronic placement to maximize CG location</li>
+          </ul>
+          <h3>Technical</h3>
+          <p>Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <footer>
+      <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
+      <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
+    </footer>
+  </div>
+</body>
+</html>
