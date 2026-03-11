@@ -532,34 +532,20 @@
   <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
 
   <script>
-    // Add image paths per project (e.g. 'images/fsae-gps/1.jpg'). Order = slide order.
-    const PROJECT_IMAGES = {
-      'fsae-gps': [],
-      'rival-fourbar': [],
-      'freshman-lego': [],
-      'rival-shuttlecock': [],
-      'rival-chassis': [],
-      'battlebot': [],
-      'wcp-arm': [],
-      'wcp-basketball': [],
-      'wcp-launcher': [],
-      'rival-arm': [],
-      'frc-intake': [],
-      'frc-robot': []
-    };
-
     const AUTO_ADVANCE_MS = 4500;
     const PAUSE_AFTER_MANUAL_MS = 8000;
 
-    document.querySelectorAll('.project-carousel').forEach(function (el) {
-      const id = el.getAttribute('data-project');
-      const images = PROJECT_IMAGES[id] || [];
+    function initCarousels(manifest) {
+      manifest = manifest || {};
+      document.querySelectorAll('.project-carousel').forEach(function (el) {
+        const id = el.getAttribute('data-project');
+        const images = manifest[id] || [];
 
-      if (images.length === 0) {
-        el.classList.add('carousel-empty');
-        el.textContent = 'Add images in images/' + id + '/ and list paths in PROJECT_IMAGES';
-        return;
-      }
+        if (images.length === 0) {
+          el.classList.add('carousel-empty');
+          el.textContent = 'Add images in images/' + id + '/ then run: python scripts/build_image_manifest.py';
+          return;
+        }
 
       const viewport = document.createElement('div');
       viewport.className = 'carousel-viewport';
@@ -649,6 +635,14 @@
 
       startAuto();
     });
+    }
+
+    fetch('images/manifest.json')
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .catch(function () { return {}; })
+      .then(function (manifest) {
+        initCarousels(manifest);
+      });
 
     (function () {
       var btn = document.querySelector('.back-to-top');

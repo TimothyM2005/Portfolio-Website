@@ -37,11 +37,12 @@ body {
   padding: 0 1.5rem;
 }
 
-/* Contact bar */
+/* Contact bar - right-aligned */
 .contact {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: 1rem 1.5rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
