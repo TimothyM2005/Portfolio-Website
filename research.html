@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research — Timothy Mitchell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .papers {
+      list-style: none;
+    }
+    .paper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .paper:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+    .paper-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .paper-title a {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .paper-title a:hover {
+      color: var(--accent);
+    }
+    .paper-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .paper-abstract {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.55;
+      margin-top: 0.5rem;
+    }
+    .paper-links {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+    .paper-links a {
+      color: var(--accent);
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+    .paper-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="top">
+    <nav class="contact" aria-label="Contact">
+      <span><a href="mailto:your.email@example.com">your.email@example.com</a></span>
+      <span><a href="https://linkedin.com/in/yourprofile">LinkedIn</a></span>
+      <span><a href="https://github.com/yourusername">GitHub</a></span>
+    </nav>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Projects</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="resume.html">Resume</a>
+    </nav>
+    <header>
+      <h1>Timothy Mitchell</h1>
+      <p class="tagline">Portfolio of Design, CAD & Programming</p>
+    </header>
+
+    <main>
+      <h2>Research Papers</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Add your publications below. Link to PDFs or journal pages.</p>
+
+      <ul class="papers">
+        <!-- Example entry – duplicate and edit to add papers -->
+        <li class="paper">
+          <div class="paper-title"><a href="#">Title of Your Paper</a></div>
+          <div class="paper-meta">Authors, Journal or Conference, Year</div>
+          <div class="paper-abstract">Optional short abstract or description. Replace this block with your own text or remove it.</div>
+          <div class="paper-links">
+            <a href="#">PDF</a>
+            <a href="#">DOI / Publisher link</a>
+          </div>
+        </li>
+      </ul>
+    </main>
+
+    <footer>
+      <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
+      <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
+    </footer>
+  </div>
+
+  <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
+
+  <script>
+    (function () {
+      var btn = document.querySelector('.back-to-top');
+      if (!btn) return;
+      function update() {
+        if (window.scrollY > 400) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+      }
+      window.addEventListener('scroll', update);
+      update();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — Timothy Mitchell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .resume-download {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      border: 1px solid var(--accent);
+    }
+    .resume-download:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .resume-embed {
+      width: 100%;
+      height: 80vh;
+      min-height: 500px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+    .resume-placeholder {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="top">
+    <nav class="contact" aria-label="Contact">
+      <span><a href="mailto:your.email@example.com">your.email@example.com</a></span>
+      <span><a href="https://linkedin.com/in/yourprofile">LinkedIn</a></span>
+      <span><a href="https://github.com/yourusername">GitHub</a></span>
+    </nav>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Projects</a>
+      <a href="research.html">Research</a>
+      <a href="resume.html" class="active">Resume</a>
+    </nav>
+    <header>
+      <h1>Timothy Mitchell</h1>
+      <p class="tagline">Portfolio of Design, CAD & Programming</p>
+    </header>
+
+    <main>
+      <h2>Resume</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Download or view my resume below.</p>
+
+      <!-- Replace # with the path to your resume PDF (e.g. files/Resume.pdf) -->
+      <a href="#" class="resume-download">Download PDF</a>
+
+      <!-- Option A: Embed PDF (replace src with your PDF path, e.g. files/Resume.pdf) -->
+      <!-- <iframe class="resume-embed" src="files/Resume.pdf" title="Resume PDF"></iframe> -->
+
+      <!-- Option B: Placeholder until you add a PDF -->
+      <div class="resume-placeholder">
+        Add your resume PDF to the repo (e.g. <code>files/Resume.pdf</code>), then set the download link and optional iframe <code>src</code> above to that path.
+      </div>
+    </main>
+
+    <footer>
+      <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
+      <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
+    </footer>
+  </div>
+
+  <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
+
+  <script>
+    (function () {
+      var btn = document.querySelector('.back-to-top');
+      if (!btn) return;
+      function update() {
+        if (window.scrollY > 400) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+      }
+      window.addEventListener('scroll', update);
+      update();
+    })();
+  </script>
+</body>
+</html>
