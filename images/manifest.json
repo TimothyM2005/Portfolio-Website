@@ -10,6 +10,15 @@
     "images/battlebot/Wheel.png",
     "images/battlebot/Wheels.png"
   ],
+  "fsae-gps": [
+    "images/fsae-gps/IMG_1095.jpg",
+    "images/fsae-gps/imageGPS.png"
+  ],
+  "freshman-lego": [
+    "images/freshman-lego/Screenshot 2026-03-10 231324.png",
+    "images/freshman-lego/Screenshot 2026-03-10 231332.png",
+    "images/freshman-lego/Screenshot 2026-03-10 231343.png"
+  ],
   "frc-intake": [
     "images/frc-intake/Intake V4 Neo (1).png",
     "images/frc-intake/Intake V4 Neo (2).png",
