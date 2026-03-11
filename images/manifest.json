@@ -1,2 +1,64 @@
 {
+  "battlebot": [
+    "images/battlebot/Byte (1).png",
+    "images/battlebot/Byte (2).png",
+    "images/battlebot/Byte.png",
+    "images/battlebot/IMG_5632.jpg",
+    "images/battlebot/Spark V4 (1).png",
+    "images/battlebot/Spark V4.png",
+    "images/battlebot/Wheel (1).png",
+    "images/battlebot/Wheel.png",
+    "images/battlebot/Wheels.png"
+  ],
+  "frc-intake": [
+    "images/frc-intake/Intake V4 Neo (1).png",
+    "images/frc-intake/Intake V4 Neo (2).png",
+    "images/frc-intake/Intake V4 Neo.png",
+    "images/frc-intake/Intake V4.2 Neo.png"
+  ],
+  "frc-robot": [
+    "images/frc-robot/Chassis.png",
+    "images/frc-robot/Elevator (1).png",
+    "images/frc-robot/Elevator.png",
+    "images/frc-robot/Robot (1).png",
+    "images/frc-robot/Robot.png"
+  ],
+  "rival-arm": [
+    "images/rival-arm/Arm (1).png",
+    "images/rival-arm/Arm (2).png",
+    "images/rival-arm/Arm.png",
+    "images/rival-arm/Playtime.png"
+  ],
+  "rival-chassis": [
+    "images/rival-chassis/Belly Pan.png",
+    "images/rival-chassis/Chasis Assembly (1).png",
+    "images/rival-chassis/Chasis Assembly (2).png",
+    "images/rival-chassis/Chasis Assembly (3).png",
+    "images/rival-chassis/Chasis Assembly.png",
+    "images/rival-chassis/Main_Robot.png"
+  ],
+  "rival-fourbar": [
+    "images/rival-fourbar/Flip Down.png"
+  ],
+  "rival-shuttlecock": [
+    "images/rival-shuttlecock/Intake (1).png",
+    "images/rival-shuttlecock/Intake (2).png",
+    "images/rival-shuttlecock/Intake.png",
+    "images/rival-shuttlecock/Main Robot.png"
+  ],
+  "wcp-arm": [
+    "images/wcp-arm/Arm Assembly (1).png",
+    "images/wcp-arm/Arm Assembly.png",
+    "images/wcp-arm/Robot (2).png"
+  ],
+  "wcp-basketball": [
+    "images/wcp-basketball/Arm Assembly (2).png"
+  ],
+  "wcp-launcher": [
+    "images/wcp-launcher/Fuel Intake v1.png",
+    "images/wcp-launcher/Hopper Assembly.png",
+    "images/wcp-launcher/Shooter Assembly (1).png",
+    "images/wcp-launcher/Shooter Assembly (2).png",
+    "images/wcp-launcher/Shooter Assembly.png"
+  ]
 }
