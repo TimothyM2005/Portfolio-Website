@@ -219,6 +219,32 @@
     }
 
     .project-body h3 { margin-top: 0.75rem; }
+
+    .project-model-viewer {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .model-viewer-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+
+    .model-viewer-canvas:active {
+      cursor: grabbing;
+    }
   </style>
 </head>
 <body>
@@ -642,6 +668,20 @@
       .catch(function () { return {}; })
       .then(function (manifest) {
         initCarousels(manifest);
+      });
+
+    fetch('models/manifest.json')
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .catch(function () { return {}; })
+      .then(function (manifest) {
+        if (!manifest || Object.keys(manifest).length === 0) return;
+        return import('./scripts/model-viewer.js')
+          .then(function (module) {
+            module.initModelViewers(manifest);
+          })
+          .catch(function () {
+            // Keep page functional even if 3D module fails to load.
+          });
       });
 
     (function () {

@@ -34,9 +34,30 @@ Each project can show a cycling image carousel (auto-advance with optional manua
 
 Supported formats: JPG, PNG, GIF, WebP. Image order in the carousel follows alphabetical order by filename.
 
+## Adding 3D models (.glb/.gltf)
+
+Projects can optionally render interactive 3D viewers on the `index.html` cards.
+
+1. Put your model files in `models/` (you can organize in subfolders, e.g. `models/fsae-gps/mount.glb`).
+2. Open `models/manifest.json` and map project IDs to model file paths.
+3. The viewer appears automatically for each mapped project.
+
+Example:
+
+```json
+{
+  "fsae-gps": "models/fsae-gps/mount.glb",
+  "rival-fourbar": "models/rival-fourbar/linkage.gltf"
+}
+```
+
+Project IDs available on the page: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`.
+
 ## Structure
 
 - **index.html** — Projects: responsive masonry grid of project cards with optional image carousels.
+- **models/manifest.json** — Optional 3D model mappings by project ID.
+- **scripts/model-viewer.js** — Three.js-based `.glb/.gltf` viewer module used by project cards.
 - **research.html** — Research papers: list entries with title, authors, link to PDF, optional abstract.
 - **resume.html** — Resume: download link for PDF and optional embedded PDF viewer.
 - **style.css** — Shared layout, header, footer, contact bar, and site navigation. Edit this file to change the look of all three pages at once.
