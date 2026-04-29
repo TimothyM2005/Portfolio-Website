@@ -245,6 +245,43 @@
     .model-viewer-canvas:active {
       cursor: grabbing;
     }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .hero-profile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .hero-profile h2 {
+      font-size: 0.75rem;
+      margin: 0.7rem 0 0.2rem;
+      color: var(--text-muted);
+    }
+
+    .hero-profile h2:first-child {
+      margin-top: 0;
+    }
+
+    .hero-profile p {
+      margin: 0;
+      color: var(--text);
+    }
+
+    @media (min-width: 980px) {
+      .hero-grid {
+        grid-template-columns: minmax(280px, 1fr) minmax(420px, 540px);
+        align-items: start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -260,8 +297,23 @@
       <a href="resume.html">Resume</a>
     </nav>
     <header>
-      <h1>Timothy Mitchell</h1>
-      <p class="tagline">Portfolio of Design, CAD & Programming</p>
+      <div class="hero-grid">
+        <div>
+          <h1>Timothy Mitchell</h1>
+          <p class="tagline">Portfolio of Design, CAD & Programming</p>
+        </div>
+        <aside class="hero-profile" aria-label="Quick profile">
+          <h2>Education</h2>
+          <p><strong>University of North Carolina at Charlotte</strong> — B.S. Mechanical Engineering (Expected Dec 2027)</p>
+          <p><strong>Durham Tech Community College</strong> — Associate in Engineering (May 2025)</p>
+
+          <h2>Related Coursework</h2>
+          <p>Statics, Solids, Mechatronics 1 &amp; 2, Manufacturing Systems, Machine Shop, Dynamics, Thermodynamics, Linear Algebra</p>
+
+          <h2>Skills</h2>
+          <p>SolidWorks, Onshape, Python, Java, React, C, C++, Visual Studio Code, Excel, Microsoft Tools, Computer Hardware, 3D Modeling, 3D Design, Manufacturing, 3D Printing, Electronics, KiCAD</p>
+        </aside>
+      </div>
     </header>
 
     <section>
