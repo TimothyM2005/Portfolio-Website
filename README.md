@@ -28,7 +28,7 @@ Then open `http://localhost:8000`.
 
 Each project can show a cycling image carousel (auto-advance with optional manual prev/next and dots). You only need to follow the **folder** structure; any image filenames are fine.
 
-1. Put images in the project’s folder under `images/` using these folder names: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`.
+1. Put images in the project’s folder under `images/` using these folder names: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`, `gearbox-design`, `tensile-testing-rig`, `junior-design-robot`, `bell-crank-fea`, `bracket-fea`, `brake-rotor-manufacturing`, `bladed-arb`, `motech-workbook`.
 2. From the repo root, run: **`python scripts/build_image_manifest.py`** (or `node scripts/build-image-manifest.js` if you use Node). This scans the folders and updates `images/manifest.json`.
 3. Commit and push; the site will load images from the manifest. No need to edit `index.html` or use a specific naming format—only the folder matters.
 
@@ -51,7 +51,7 @@ Example:
 }
 ```
 
-Project IDs available on the page: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`.
+Project IDs available on the page: `fsae-gps`, `rival-fourbar`, `freshman-lego`, `rival-shuttlecock`, `rival-chassis`, `battlebot`, `wcp-arm`, `wcp-basketball`, `wcp-launcher`, `rival-arm`, `frc-intake`, `frc-robot`, `gearbox-design`, `tensile-testing-rig`, `junior-design-robot`, `bell-crank-fea`, `bracket-fea`, `brake-rotor-manufacturing`, `bladed-arb`, `motech-workbook`.
 
 ## Structure
 
