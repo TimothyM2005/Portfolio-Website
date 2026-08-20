@@ -142,6 +142,39 @@
       font-size: 0.85rem;
     }
 
+    .asset-list {
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 0.65rem;
+    }
+
+    .asset-list li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      background: var(--bg);
+    }
+
+    .asset-list img {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .asset-note {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -213,7 +246,7 @@
 
         <div class="admin-panel">
           <h2 id="form-title">Add project</h2>
-          <p class="muted">Project ID maps to <code>images/&lt;id&gt;/</code> and optional 3D model entries.</p>
+          <p class="muted">Upload images and CAD files here after setting a Project ID. Files are stored in Firebase Storage.</p>
           <form id="project-form" class="form-grid">
             <div class="form-row two">
               <div>
@@ -244,6 +277,10 @@
               <textarea id="project-goal" required></textarea>
             </div>
             <div class="form-row">
+              <label for="project-details">Details (shown in popup)</label>
+              <textarea id="project-details" placeholder="Longer write-up for the project detail modal"></textarea>
+            </div>
+            <div class="form-row">
               <label for="project-outcome">Outcome (one bullet per line)</label>
               <textarea id="project-outcome" required></textarea>
             </div>
@@ -251,6 +288,26 @@
               <label for="project-technical">Technical</label>
               <textarea id="project-technical" required></textarea>
             </div>
+
+            <div class="form-row">
+              <label for="project-images">Project images</label>
+              <input id="project-images" type="file" accept="image/*" multiple />
+              <div class="actions" style="margin-top: 0.35rem;">
+                <button class="btn" type="button" id="upload-images-btn">Upload selected images</button>
+              </div>
+              <ul id="image-preview-list" class="asset-list"></ul>
+            </div>
+
+            <div class="form-row">
+              <label for="project-cad">CAD model (.step / .stp / .glb / .gltf)</label>
+              <input id="project-cad" type="file" accept=".step,.stp,.glb,.gltf,model/gltf-binary,model/gltf+json" />
+              <div class="actions" style="margin-top: 0.35rem;">
+                <button class="btn" type="button" id="upload-cad-btn">Upload CAD file</button>
+                <button class="btn danger" type="button" id="clear-cad-btn">Remove CAD</button>
+              </div>
+              <p id="cad-preview" class="asset-note">No CAD file linked.</p>
+            </div>
+
             <div class="actions">
               <button class="btn primary" type="submit" id="save-btn">Save project</button>
               <button class="btn" type="button" id="reset-btn">Clear form</button>
@@ -282,7 +339,9 @@
       loadProjects,
       saveProject,
       deleteProject,
-      seedProjectsFromLocal
+      seedProjectsFromLocal,
+      uploadProjectFile,
+      deleteStorageUrl
     } from "./scripts/projects-store.js";
     import { escapeHtml } from "./scripts/projects.js";
 
@@ -296,9 +355,13 @@
     const projectList = document.getElementById("project-list");
     const signedInAs = document.getElementById("signed-in-as");
     const formTitle = document.getElementById("form-title");
+    const imagePreviewList = document.getElementById("image-preview-list");
+    const cadPreview = document.getElementById("cad-preview");
 
     let editingId = null;
     let currentProjects = [];
+    let draftImages = [];
+    let draftModelUrl = "";
 
     function setStatus(el, message, isError) {
       if (!el) return;
@@ -311,6 +374,10 @@
       el.hidden = false;
       el.textContent = message;
       el.classList.toggle("error", !!isError);
+    }
+
+    function currentProjectId() {
+      return (editingId || document.getElementById("project-id").value || "").trim();
     }
 
     function tagTypeForLabel(label) {
@@ -335,16 +402,48 @@
       return (tags || []).map(function (tag) { return tag.label; }).join(", ");
     }
 
+    function renderAssetPreviews() {
+      if (!draftImages.length) {
+        imagePreviewList.innerHTML = '<li><span class="meta">No images uploaded yet.</span></li>';
+      } else {
+        imagePreviewList.innerHTML = draftImages
+          .map(function (url, index) {
+            return (
+              "<li>" +
+                '<div style="display:flex;gap:0.65rem;align-items:center;min-width:0;">' +
+                  '<img src="' + escapeHtml(url) + '" alt="Uploaded project image" />' +
+                  '<span class="meta" style="overflow:hidden;text-overflow:ellipsis;">Image ' + (index + 1) + "</span>" +
+                "</div>" +
+                '<button class="btn danger" type="button" data-remove-image="' + index + '">Remove</button>' +
+              "</li>"
+            );
+          })
+          .join("");
+      }
+
+      if (draftModelUrl) {
+        cadPreview.innerHTML =
+          'CAD linked: <a href="' + escapeHtml(draftModelUrl) + '" target="_blank" rel="noopener">open file</a>';
+      } else {
+        cadPreview.textContent = "No CAD file linked.";
+      }
+    }
+
     function clearForm() {
       editingId = null;
+      draftImages = [];
+      draftModelUrl = "";
       formTitle.textContent = "Add project";
       projectForm.reset();
       document.getElementById("project-id").disabled = false;
+      renderAssetPreviews();
       setStatus(formStatus, "");
     }
 
     function fillForm(project) {
       editingId = project.id;
+      draftImages = Array.isArray(project.images) ? project.images.slice() : [];
+      draftModelUrl = project.modelUrl || "";
       formTitle.textContent = "Edit project";
       document.getElementById("project-id").value = project.id;
       document.getElementById("project-id").disabled = true;
@@ -353,8 +452,10 @@
       document.getElementById("project-tags").value = tagsToInput(project.tags);
       document.getElementById("project-order").value = project.order != null ? project.order : "";
       document.getElementById("project-goal").value = project.goal || "";
+      document.getElementById("project-details").value = project.details || "";
       document.getElementById("project-outcome").value = (project.outcome || []).join("\n");
       document.getElementById("project-technical").value = project.technical || "";
+      renderAssetPreviews();
       setStatus(formStatus, "");
     }
 
@@ -367,11 +468,18 @@
 
       projectList.innerHTML = currentProjects
         .map(function (project) {
+          const assetBits = [];
+          if (project.images && project.images.length) assetBits.push(project.images.length + " image(s)");
+          if (project.modelUrl) assetBits.push("CAD");
           return (
             "<li>" +
               "<div>" +
                 "<strong>" + escapeHtml(project.title) + "</strong>" +
-                '<div class="meta">' + escapeHtml(project.id) + (project.date ? " · " + escapeHtml(project.date) : "") + "</div>" +
+                '<div class="meta">' +
+                  escapeHtml(project.id) +
+                  (project.date ? " · " + escapeHtml(project.date) : "") +
+                  (assetBits.length ? " · " + escapeHtml(assetBits.join(", ")) : "") +
+                "</div>" +
               "</div>" +
               '<div class="actions">' +
                 '<button class="btn" type="button" data-edit="' + escapeHtml(project.id) + '">Edit</button>' +
@@ -446,6 +554,93 @@
       }
     });
 
+    document.getElementById("upload-images-btn").addEventListener("click", async function () {
+      const projectId = currentProjectId();
+      const input = document.getElementById("project-images");
+      const files = Array.from(input.files || []);
+      if (!projectId) {
+        setStatus(formStatus, "Enter a Project ID before uploading.", true);
+        return;
+      }
+      if (!files.length) {
+        setStatus(formStatus, "Choose one or more image files first.", true);
+        return;
+      }
+
+      setStatus(formStatus, "Uploading images…");
+      try {
+        for (let i = 0; i < files.length; i += 1) {
+          const uploaded = await uploadProjectFile(projectId, files[i], "images");
+          draftImages.push(uploaded.url);
+        }
+        input.value = "";
+        renderAssetPreviews();
+        setStatus(formStatus, "Uploaded " + files.length + " image(s). Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Image upload failed.", true);
+      }
+    });
+
+    document.getElementById("upload-cad-btn").addEventListener("click", async function () {
+      const projectId = currentProjectId();
+      const input = document.getElementById("project-cad");
+      const file = input.files && input.files[0];
+      if (!projectId) {
+        setStatus(formStatus, "Enter a Project ID before uploading.", true);
+        return;
+      }
+      if (!file) {
+        setStatus(formStatus, "Choose a STEP/GLB/GLTF file first.", true);
+        return;
+      }
+
+      setStatus(formStatus, "Uploading CAD file…");
+      try {
+        if (draftModelUrl) {
+          await deleteStorageUrl(draftModelUrl);
+        }
+        const uploaded = await uploadProjectFile(projectId, file, "cad");
+        draftModelUrl = uploaded.url;
+        input.value = "";
+        renderAssetPreviews();
+        setStatus(formStatus, "CAD file uploaded. Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "CAD upload failed.", true);
+      }
+    });
+
+    document.getElementById("clear-cad-btn").addEventListener("click", async function () {
+      if (!draftModelUrl) return;
+      setStatus(formStatus, "Removing CAD file…");
+      try {
+        await deleteStorageUrl(draftModelUrl);
+        draftModelUrl = "";
+        renderAssetPreviews();
+        setStatus(formStatus, "CAD file removed. Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Unable to remove CAD file.", true);
+      }
+    });
+
+    imagePreviewList.addEventListener("click", async function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const indexRaw = target.getAttribute("data-remove-image");
+      if (indexRaw == null) return;
+      const index = Number(indexRaw);
+      const url = draftImages[index];
+      if (!url) return;
+      setStatus(formStatus, "Removing image…");
+      try {
+        await deleteStorageUrl(url);
+        draftImages.splice(index, 1);
+        renderAssetPreviews();
+        setStatus(formStatus, "Image removed. Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Unable to remove image.", true);
+      }
+    });
+
     projectForm.addEventListener("submit", async function (event) {
       event.preventDefault();
       const id = document.getElementById("project-id").value.trim();
@@ -456,8 +651,11 @@
         date: document.getElementById("project-date").value.trim(),
         tags: parseTags(document.getElementById("project-tags").value),
         goal: document.getElementById("project-goal").value.trim(),
+        details: document.getElementById("project-details").value.trim(),
         outcome: document.getElementById("project-outcome").value,
         technical: document.getElementById("project-technical").value.trim(),
+        images: draftImages.slice(),
+        modelUrl: draftModelUrl || "",
         order: orderRaw === "" ? null : Number(orderRaw)
       };
 
@@ -488,6 +686,13 @@
         if (!confirm("Delete project \"" + deleteId + "\"?")) return;
         setStatus(formStatus, "Deleting…");
         try {
+          const project = currentProjects.find(function (item) { return item.id === deleteId; });
+          if (project) {
+            for (let i = 0; i < (project.images || []).length; i += 1) {
+              await deleteStorageUrl(project.images[i]);
+            }
+            if (project.modelUrl) await deleteStorageUrl(project.modelUrl);
+          }
           await deleteProject(deleteId);
           if (editingId === deleteId) clearForm();
           await refreshProjects();
@@ -497,6 +702,8 @@
         }
       }
     });
+
+    renderAssetPreviews();
   </script>
 </body>
 </html>

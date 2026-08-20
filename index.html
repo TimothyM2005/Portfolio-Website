@@ -256,6 +256,151 @@
       cursor: grabbing;
     }
 
+    .pill.cad {
+      background: rgba(88, 166, 255, 0.18);
+      color: var(--accent);
+    }
+
+    .project {
+      cursor: pointer;
+    }
+
+    .project-open-hint {
+      margin-top: 0.85rem !important;
+      margin-bottom: 0 !important;
+      font-size: 0.8rem !important;
+      color: var(--accent) !important;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .project-modal[hidden] {
+      display: none !important;
+    }
+
+    .project-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .project-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(1, 4, 9, 0.72);
+    }
+
+    .project-modal-dialog {
+      position: relative;
+      width: min(1100px, 100%);
+      max-height: min(90vh, 900px);
+      overflow: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      z-index: 1;
+    }
+
+    .project-modal-close {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.75rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .project-modal-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .project-modal-viewer {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      min-height: 320px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .project-modal-hint {
+      margin-top: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .project-modal-content h2 {
+      font-size: 1.35rem;
+      margin: 0 2rem 0.65rem 0;
+    }
+
+    .project-modal-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-modal-body h3 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0.85rem 0 0.3rem;
+    }
+
+    .project-modal-body p,
+    .project-modal-body ul {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .project-modal-body ul {
+      padding-left: 1.2rem;
+    }
+
+    .project-modal-body .goal {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    @media (max-width: 860px) {
+      .project-modal-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .project-modal-viewer {
+        aspect-ratio: 16 / 10;
+        min-height: 240px;
+      }
+    }
+
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -342,8 +487,10 @@
   <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
 
   <script type="module">
-    import { renderProjects } from "./scripts/projects.js";
+    import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js";
     import { loadProjects } from "./scripts/projects-store.js";
+    import { initProjectModal } from "./scripts/project-modal.js";
+    import { initModelViewers } from "./scripts/model-viewer.js";
 
     const AUTO_ADVANCE_MS = 4500;
     const PAUSE_AFTER_MANUAL_MS = 8000;
@@ -440,16 +587,19 @@
           pauseTimer = setTimeout(startAuto, PAUSE_AFTER_MANUAL_MS);
         }
 
-        prevBtn.addEventListener("click", function () {
+        prevBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
           prev();
           pauseThenResume();
         });
-        nextBtn.addEventListener("click", function () {
+        nextBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
           next();
           pauseThenResume();
         });
         dotsWrap.querySelectorAll(".carousel-dot").forEach(function (dot, i) {
-          dot.addEventListener("click", function () {
+          dot.addEventListener("click", function (event) {
+            event.stopPropagation();
             goTo(i);
             pauseThenResume();
           });
@@ -459,42 +609,39 @@
       });
     }
 
-    function initMedia() {
-      fetch("images/manifest.json")
+    function initMedia(projects) {
+      const imagesPromise = fetch("images/manifest.json")
         .then(function (r) {
           return r.ok ? r.json() : {};
         })
         .catch(function () {
           return {};
-        })
-        .then(function (manifest) {
-          initCarousels(manifest);
         });
 
-      fetch("models/manifest.json")
+      const modelsPromise = fetch("models/manifest.json")
         .then(function (r) {
           return r.ok ? r.json() : {};
         })
         .catch(function () {
           return {};
-        })
-        .then(function (manifest) {
-          if (!manifest || Object.keys(manifest).length === 0) return;
-          return import("./scripts/model-viewer.js")
-            .then(function (module) {
-              module.initModelViewers(manifest);
-            })
-            .catch(function () {
-              // Keep page functional even if 3D module fails to load.
-            });
         });
+
+      return Promise.all([imagesPromise, modelsPromise]).then(function (results) {
+        const folderImageManifest = results[0] || {};
+        const fileModelManifest = results[1] || {};
+        const imageManifest = buildImageManifest(projects, folderImageManifest);
+        const modelManifest = buildModelManifest(projects, fileModelManifest);
+        initCarousels(imageManifest);
+        initModelViewers(modelManifest);
+        initProjectModal(projects, modelManifest);
+      });
     }
 
     const grid = document.getElementById("projects-grid");
     loadProjects()
       .then(function (result) {
-        renderProjects(result.projects, grid);
-        initMedia();
+        const projects = renderProjects(result.projects, grid);
+        return initMedia(projects);
       })
       .catch(function (err) {
         console.error(err);

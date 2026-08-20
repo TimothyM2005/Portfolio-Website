@@ -15,6 +15,13 @@ import {
   query,
   orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 import { firebaseConfig, isFirebaseConfigured } from "./firebase-config.js";
 import { normalizeProject, sortProjects } from "./projects.js";
 
@@ -22,6 +29,7 @@ const PROJECTS_COLLECTION = "projects";
 let app = null;
 let auth = null;
 let db = null;
+let storage = null;
 
 function ensureFirebase() {
   if (!isFirebaseConfigured()) {
@@ -31,8 +39,17 @@ function ensureFirebase() {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+    storage = getStorage(app);
   }
-  return { app: app, auth: auth, db: db };
+  return { app: app, auth: auth, db: db, storage: storage };
+}
+
+function sanitizeFileName(name) {
+  return String(name || "file")
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase() || "file";
 }
 
 async function loadLocalProjects() {
@@ -50,7 +67,6 @@ async function loadFirestoreProjects() {
   try {
     snapshot = await getDocs(query(collection(firestore, PROJECTS_COLLECTION), orderBy("order")));
   } catch (err) {
-    // Fallback if order field/index is missing.
     snapshot = await getDocs(collection(firestore, PROJECTS_COLLECTION));
   }
 
@@ -108,6 +124,36 @@ export async function deleteProject(projectId) {
   const id = String(projectId || "").trim();
   if (!id) throw new Error("Project id is required.");
   await deleteDoc(doc(firestore, PROJECTS_COLLECTION, id));
+}
+
+export async function uploadProjectFile(projectId, file, folder) {
+  const { storage: firebaseStorage } = ensureFirebase();
+  const id = String(projectId || "").trim();
+  if (!id) throw new Error("Save/set a Project ID before uploading files.");
+  if (!file) throw new Error("No file selected.");
+
+  const safeFolder = folder === "cad" ? "cad" : "images";
+  const safeName = Date.now() + "-" + sanitizeFileName(file.name);
+  const path = "projects/" + id + "/" + safeFolder + "/" + safeName;
+  const storageRef = ref(firebaseStorage, path);
+  await uploadBytes(storageRef, file, {
+    contentType: file.type || "application/octet-stream"
+  });
+  const url = await getDownloadURL(storageRef);
+  return { url: url, path: path, name: file.name };
+}
+
+export async function deleteStorageUrl(url) {
+  if (!url || String(url).indexOf("firebasestorage.googleapis.com") === -1) {
+    return;
+  }
+  try {
+    const { storage: firebaseStorage } = ensureFirebase();
+    const encodedPath = decodeURIComponent(String(url).split("/o/")[1].split("?")[0]);
+    await deleteObject(ref(firebaseStorage, encodedPath));
+  } catch (err) {
+    console.warn("Unable to delete storage object:", err);
+  }
 }
 
 export async function seedProjectsFromLocal() {

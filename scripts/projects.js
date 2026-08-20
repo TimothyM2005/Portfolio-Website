@@ -34,16 +34,45 @@ function normalizeProject(project) {
         .map(function (line) { return line.trim(); })
         .filter(Boolean);
 
+  const images = Array.isArray(project.images)
+    ? project.images.map(function (url) { return String(url || "").trim(); }).filter(Boolean)
+    : [];
+
+  const modelUrl = String(project.modelUrl || project.cadUrl || "").trim();
+
   return {
     id: id,
     title: String(project.title || id).trim(),
     date: String(project.date || "").trim(),
     tags: tags,
     goal: String(project.goal || "").trim(),
+    details: String(project.details || "").trim(),
     outcome: outcome,
     technical: String(project.technical || "").trim(),
+    images: images,
+    modelUrl: modelUrl,
     order: typeof project.order === "number" ? project.order : null
   };
+}
+
+export function buildImageManifest(projects, folderManifest) {
+  const merged = Object.assign({}, folderManifest || {});
+  (projects || []).forEach(function (project) {
+    if (project && project.id && Array.isArray(project.images) && project.images.length) {
+      merged[project.id] = project.images.slice();
+    }
+  });
+  return merged;
+}
+
+export function buildModelManifest(projects, fileManifest) {
+  const merged = Object.assign({}, fileManifest || {});
+  (projects || []).forEach(function (project) {
+    if (project && project.id && project.modelUrl) {
+      merged[project.id] = project.modelUrl;
+    }
+  });
+  return merged;
 }
 
 function sortProjects(projects) {
@@ -74,7 +103,7 @@ function renderProjectCard(project) {
     .join("");
 
   return (
-    '<article class="project" data-project="' + escapeHtml(project.id) + '">' +
+    '<article class="project" data-project="' + escapeHtml(project.id) + '" tabindex="0" role="button" aria-label="Open details for ' + escapeHtml(project.title) + '">' +
       '<div class="project-carousel" data-project="' + escapeHtml(project.id) + '" role="region" aria-label="Project images"></div>' +
       '<div class="project-body">' +
         '<div class="project-header">' +
@@ -90,6 +119,7 @@ function renderProjectCard(project) {
         "<ul>" + outcomeHtml + "</ul>" +
         "<h3>Technical</h3>" +
         "<p>" + escapeHtml(project.technical) + "</p>" +
+        '<p class="project-open-hint">Click for details &amp; CAD viewer</p>' +
       "</div>" +
     "</article>"
   );

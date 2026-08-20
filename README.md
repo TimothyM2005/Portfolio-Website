@@ -35,7 +35,7 @@ Projects are rendered from data (not hardcoded HTML). Without Firebase, the site
 3. Paste the values into [`scripts/firebase-config.js`](scripts/firebase-config.js) (replace the `YOUR_*` placeholders).
 4. Commit and push that file so GitHub Pages can use it.
 
-### 2. Enable Auth + Firestore
+### 2. Enable Auth + Firestore + Storage
 
 1. **Authentication → Sign-in method → Email/Password** → enable.
 2. **Authentication → Users → Add user** → create your admin email/password.
@@ -54,18 +54,38 @@ service cloud.firestore {
 }
 ```
 
+5. **Storage → Get started** and set these rules (**Storage → Rules**):
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /projects/{projectId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 50 * 1024 * 1024;
+    }
+  }
+}
+```
+
 ### 3. Use the admin page
 
 1. Open `https://<your-site>/admin.html` (or `http://localhost:8000/admin.html`).
 2. Sign in with the Firebase user you created.
 3. Optionally click **Seed from local JSON** once to copy existing projects into Firestore.
-4. Use **Add project** / **Edit** / **Delete** as needed.
-5. Refresh the Projects page to see updates.
+4. Add/edit a project, then:
+   - Set/confirm the **Project ID**
+   - Choose images → **Upload selected images**
+   - Choose a STEP/GLB/GLTF file → **Upload CAD file**
+   - Click **Save project**
+5. Refresh the Projects page — carousels and the CAD popup use the uploaded files automatically.
 
 **Notes**
 
-- Project **ID** should be URL-safe (e.g. `gearbox-design`). It maps to `images/<id>/` for photos and `models/manifest.json` for 3D models.
-- Image upload from admin is not included yet — add images via the folder + manifest workflow below.
+- Uploaded files live in Firebase Storage under `projects/<id>/...` and their URLs are saved on the project document.
+- Local folder images (`images/<id>/`) and `models/manifest.json` still work as fallbacks when a project has no uploaded assets.
+- Image upload from admin is supported; you no longer need to edit manifests by hand for portal-managed projects.
 - Until Firebase is configured, the public site still works from `data/projects.json`.
 
 ## Adding project images
@@ -77,6 +97,30 @@ Each project can show a cycling image carousel (auto-advance with optional manua
 3. Commit and push; the site will load images from the manifest.
 
 Supported formats: JPG, PNG, GIF, WebP. Image order in the carousel follows alphabetical order by filename.
+
+## Project detail popup + CAD viewer
+
+Click any project card to open a detail modal with:
+
+- Full goal / details / outcome / technical text
+- Interactive CAD viewer (orbit + zoom)
+
+### Linking CAD models
+
+1. Export from SolidWorks/Onshape as **`.glb` or `.gltf`** (recommended), or use **`.step` / `.stp`**.
+2. Put the file (and any companion `.bin` for glTF) in `models/`.
+3. Map it in `models/manifest.json`:
+
+```json
+{
+  "fsae-gps": "models/gps_case.gltf",
+  "bell-crank-fea": "models/bell_crank.step"
+}
+```
+
+Cards with a linked model show a **3D CAD** pill. Opening that card loads the model in the popup viewer.
+
+**Note:** `.glb/.gltf` is the most reliable path for web viewing. STEP support uses an in-browser OCCT importer and may be slower on large assemblies; if a STEP fails to load, convert it to glTF and update the manifest.
 
 ## Adding 3D models (.glb/.gltf)
 
@@ -102,8 +146,9 @@ Example:
 - **scripts/firebase-config.js** — Your Firebase web config.
 - **scripts/projects-store.js** — Firebase Auth/Firestore helpers.
 - **scripts/projects.js** — Project card rendering helpers.
-- **models/manifest.json** — Optional 3D model mappings by project ID.
-- **scripts/model-viewer.js** — Three.js-based `.glb/.gltf` viewer.
+- **scripts/project-modal.js** — Project detail popup + CAD viewer host.
+- **scripts/model-viewer.js** — Three.js viewer for `.glb/.gltf` and `.step/.stp`.
+- **models/manifest.json** — Optional CAD model mappings by project ID.
 - **research.html** — Research papers.
 - **resume.html** — Resume PDF download/embed.
 - **style.css** — Shared layout and theme.

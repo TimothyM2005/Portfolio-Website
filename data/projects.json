@@ -7,6 +7,7 @@
       { "type": "solidworks", "label": "SolidWorks" }
     ],
     "goal": "Construct a GPS antenna, mount it lighter and more stable.",
+    "details": "Designed a lightweight GPS antenna mount for Formula SAE packaging constraints. The part was FEA-validated in SolidWorks, then 3D printed and mounted with three frame contact points for improved stiffness versus the previous two-point design.",
     "outcome": [
       "Fully 3D printed",
       "30% reduction in weight from the original",
