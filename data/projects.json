@@ -1,0 +1,311 @@
+[
+  {
+    "id": "fsae-gps",
+    "title": "FSAE — GPS Antenna Mount",
+    "date": "Aug 2025",
+    "tags": [
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Construct a GPS antenna, mount it lighter and more stable.",
+    "outcome": [
+      "Fully 3D printed",
+      "30% reduction in weight from the original",
+      "3 points of contact to the frame rather than 2 on the original"
+    ],
+    "technical": "Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material."
+  },
+  {
+    "id": "rival-fourbar",
+    "title": "Rival Robotics — Double Four-Bar Linkage",
+    "date": "Aug 2024",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Design a low-cost double four-bar linkage.",
+    "outcome": [
+      "Low cost using only Polycard and 3D printed parts",
+      "Weight-reduced plates for less moving mass"
+    ],
+    "technical": "Fully functional four-bar linkage based on extension limits using a single motor for extension."
+  },
+  {
+    "id": "freshman-lego",
+    "title": "Freshman Design Project — LEGO Set",
+    "date": "Apr 2024",
+    "tags": [
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Construct a full LEGO set in SolidWorks using Excel for different part configurations.",
+    "outcome": [
+      "A 240-piece LEGO Technic set",
+      "60+% of the parts are configurable",
+      "Advanced understanding of SolidWorks Part Studio"
+    ],
+    "technical": "Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually."
+  },
+  {
+    "id": "rival-shuttlecock",
+    "title": "Rival Robotics — Shuttlecock Extraction System",
+    "date": "Aug 2025",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Make a system to extract shuttlecocks from a tube.",
+    "outcome": [
+      "3 DOF system able to extract at any angle",
+      "Easy implementation with the rest of the robot",
+      "Fully 3D printed and easily assembleable",
+      "Master Sketch can easily change major values and auto-rebuild"
+    ],
+    "technical": "Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems."
+  },
+  {
+    "id": "rival-chassis",
+    "title": "Rival Robotics — Omnidirectional Chassis",
+    "date": "Aug 2025",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Make a rigid and sturdy chassis using omnidirectional wheels to control the robot's movement.",
+    "outcome": [
+      "Easily machinable aluminum plates",
+      "Sheet metal parts to reduce complexity and hardware",
+      "CNC motor mount as both rigid mounting system and heat sink"
+    ],
+    "technical": "Dead axle wheel system for smooth rotation on bearings. Wheels powered via 4 brushless motors with belts. 3D printing for extra parts to reduce machining complexity."
+  },
+  {
+    "id": "battlebot",
+    "title": "1 lb 3D Printed Battle Bot",
+    "date": "Mar 2025",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Make a 1 lb 3D printed battle bot.",
+    "outcome": [
+      "Modular, easy-swap armor system",
+      "Custom resin cast wheels",
+      "Easily assembled using heat-set inserts",
+      "Custom fully balanced drum with interlocking motor connection for maximum torque output"
+    ],
+    "technical": "Fully 3D printed vertical drum spinner. 4-wheel belt drive in rear. Custom wheel molds with draft angles for easy removal. All parts designed from scratch."
+  },
+  {
+    "id": "wcp-arm",
+    "title": "WCP Cadathon — 3 DOF Arm Gearbox",
+    "date": "Oct 2024",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Make a 3 DOF arm gearbox.",
+    "outcome": [
+      "Fully custom gearbox plates",
+      "55:1 gearbox to supply a surplus of torque"
+    ],
+    "technical": "Uses a combination of chains and gears to supply the load from the motors to the arm assembly."
+  },
+  {
+    "id": "wcp-basketball",
+    "title": "WCP Cadathon — Basketball Intake",
+    "date": "Oct 2024",
+    "tags": [
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Develop a unique intake for basketballs.",
+    "outcome": [
+      "Compact end effector",
+      "Unique gear stacking for a compact design"
+    ],
+    "technical": "Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity."
+  },
+  {
+    "id": "wcp-launcher",
+    "title": "WCP Cadathon — Ball Launcher & Picker",
+    "date": "Oct 2024",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Create a system to launch small 6\" plastic balls and pick them up off the ground.",
+    "outcome": [
+      "Turreted shooter with circular rack and pinion for hood angle",
+      "1 motor to actuate all belts in the hopper up to the feeder",
+      "Weight-reduced aluminum plates for lower COG and moving mass",
+      "1 motor to power the entire intake subsystem"
+    ],
+    "technical": "2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake."
+  },
+  {
+    "id": "rival-arm",
+    "title": "Rival Robotics — Arm System",
+    "date": "Jul 2025",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Create an arm system with complete freedom of motion to place objects in specific locations easily.",
+    "outcome": [
+      "Differential gearbox for X and Z-axis rotation",
+      "Virtual 4-bar so input stays in place regardless of arm orientation",
+      "QDD motors with 3 Nm torque",
+      "Weight-reduced plates to lower CG for vertically extending system"
+    ],
+    "technical": "Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation."
+  },
+  {
+    "id": "frc-intake",
+    "title": "FRC — Cone & Cube Intake",
+    "date": "Mar 2023",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Create a system to pick up small cones and 10\" inflatable cubes off the ground.",
+    "outcome": [
+      "Pneumatic-powered extension to reduce complexity",
+      "Single high-torque motor for maximum grip",
+      "Mostly Lexan construction to reduce weight",
+      "Configurable master sketch for geometry and plate design"
+    ],
+    "technical": "Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength."
+  },
+  {
+    "id": "frc-robot",
+    "title": "FRC Robotics Competition — Full Robot",
+    "date": "Mar 2023",
+    "tags": [
+      { "type": "onshape", "label": "Onshape" }
+    ],
+    "goal": "Create a system to score game pieces and navigate the field effectively. Team project of 4.",
+    "outcome": [
+      "Swerve modules: 15 ft/s and omnidirectional movement",
+      "Robust rigid elevator system",
+      "Specific electronic placement to maximize CG location"
+    ],
+    "technical": "Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults."
+  },
+  {
+    "id": "gearbox-design",
+    "title": "Sophomore Design — Gearbox Design",
+    "date": "2025",
+    "tags": [
+      { "type": "course", "label": "Sophomore Design" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Design a functional gearbox to meet course load, packaging, and manufacturability requirements.",
+    "outcome": [
+      "Complete CAD gearbox assembly with defined gear ratios",
+      "Packaging optimized for mounting and serviceability",
+      "Design prepared for fabrication and validation"
+    ],
+    "technical": "Used SolidWorks for part modeling, assembly mates, and detail drawings; iterated gear selection and shaft support layout for torque transmission and durability."
+  },
+  {
+    "id": "tensile-testing-rig",
+    "title": "Sophomore Design — Tensile Testing Rig",
+    "date": "2025",
+    "tags": [
+      { "type": "course", "label": "Sophomore Design" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Design a tensile testing rig capable of applying controlled load and capturing specimen response.",
+    "outcome": [
+      "Structural frame designed for stiffness under tensile load",
+      "Specimen fixturing sized for consistent alignment",
+      "CAD package ready for build and lab use"
+    ],
+    "technical": "Modeled load path, fixture interfaces, and frame members in SolidWorks with attention to alignment, safety factors, and ease of specimen swap."
+  },
+  {
+    "id": "junior-design-robot",
+    "title": "Junior Design — Robot",
+    "date": "2026",
+    "tags": [
+      { "type": "course", "label": "Junior Design" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Design and develop a junior design robot to satisfy competition/course performance requirements.",
+    "outcome": [
+      "Integrated mechanical subsystems for mobility and manipulation",
+      "CAD-driven packaging for electronics and actuators",
+      "Design iterated for reliability and manufacturability"
+    ],
+    "technical": "Developed full-robot CAD with attention to drive layout, structural rigidity, and subsystem interfaces for assembly and testing."
+  },
+  {
+    "id": "bell-crank-fea",
+    "title": "Formula Student — Bell Crank FEA",
+    "date": "2025",
+    "tags": [
+      { "type": "formula", "label": "Formula Student" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Analyze a suspension bell crank under expected race loads to validate strength and stiffness.",
+    "outcome": [
+      "FEA study completed for critical load cases",
+      "High-stress regions identified and redesigned",
+      "Weight reduced while maintaining structural margins"
+    ],
+    "technical": "Applied SolidWorks Simulation to evaluate stress, displacement, and factor of safety; used results to refine geometry and material/section choices."
+  },
+  {
+    "id": "bracket-fea",
+    "title": "Sophomore Design — Bracket FEA Analysis",
+    "date": "2025",
+    "tags": [
+      { "type": "course", "label": "Sophomore Design" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Perform FEA on a structural bracket to verify it meets strength requirements under design loads.",
+    "outcome": [
+      "Mesh and boundary conditions established for representative loading",
+      "Peak stress and deflection quantified",
+      "Design recommendations produced from simulation results"
+    ],
+    "technical": "Used SolidWorks Simulation for static structural analysis, interpreting stress plots and displacement to guide geometry updates."
+  },
+  {
+    "id": "brake-rotor-manufacturing",
+    "title": "Formula Student — Brake Rotor Manufacturing",
+    "date": "2025",
+    "tags": [
+      { "type": "formula", "label": "Formula Student" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Develop and manufacture a brake rotor suited to Formula Student thermal and packaging constraints.",
+    "outcome": [
+      "Rotor geometry designed for cooling and mass targets",
+      "Manufacturing process defined for production of race parts",
+      "Part integrated with existing brake package"
+    ],
+    "technical": "Combined CAD design with manufacturing planning (stock selection, machining, and finishing) to produce a race-ready rotor."
+  },
+  {
+    "id": "bladed-arb",
+    "title": "Formula Student — Bladed ARB Design",
+    "date": "2025",
+    "tags": [
+      { "type": "formula", "label": "Formula Student" },
+      { "type": "solidworks", "label": "SolidWorks" }
+    ],
+    "goal": "Design a bladed anti-roll bar (ARB) to tune roll stiffness for Formula Student handling targets.",
+    "outcome": [
+      "Bladed ARB geometry sized for adjustable roll stiffness",
+      "Mounting and packaging validated in vehicle CAD",
+      "Design balanced stiffness goals with mass and durability"
+    ],
+    "technical": "Modeled blade geometry and attachment interfaces in SolidWorks; iterated stiffness/mass tradeoffs for vehicle dynamics targets."
+  },
+  {
+    "id": "motech-workbook",
+    "title": "Formula Student — MoTeC Workbook",
+    "date": "2025",
+    "tags": [
+      { "type": "formula", "label": "Formula Student" }
+    ],
+    "goal": "Build a MoTeC workbook/data workflow to support Formula Student vehicle setup and event analysis.",
+    "outcome": [
+      "Structured workbook for logging and reviewing key channels",
+      "Faster post-run analysis for setup changes",
+      "Repeatable process for team data review"
+    ],
+    "technical": "Configured channel layout, math channels, and comparison views to turn raw MoTeC data into actionable engineering decisions."
+  }
+]

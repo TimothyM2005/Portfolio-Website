@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Timothy Mitchell Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .admin-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .admin-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .admin-panel h2 {
+      margin-bottom: 0.75rem;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .status {
+      font-size: 0.9rem;
+      margin: 0.75rem 0 0;
+      color: var(--accent);
+    }
+
+    .status.error {
+      color: #f85149;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .form-row.two {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .btn.danger {
+      color: #f85149;
+      background: rgba(248, 81, 73, 0.12);
+      border-color: rgba(248, 81, 73, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .project-list {
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .project-list li {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      background: var(--bg);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .project-list strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .project-list .meta {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .form-row.two {
+        grid-template-columns: 1fr;
+      }
+
+      .project-list li {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="top">
+    <nav class="contact" aria-label="Contact">
+      <span><a href="mailto:timothy.mitchell2022@gmail.com">timothy.mitchell2022@gmail.com</a></span>
+      <span><a href="https://www.linkedin.com/in/timothy-mitchell-">LinkedIn</a></span>
+      <span><a href="https://github.com/TimothyM2005">GitHub</a></span>
+    </nav>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Projects</a>
+      <a href="research.html">Research</a>
+      <a href="resume.html">Resume</a>
+      <a href="admin.html" class="active">Admin</a>
+    </nav>
+    <header>
+      <h1>Project Admin</h1>
+      <p class="tagline">Log in to add or edit portfolio projects</p>
+    </header>
+
+    <main class="admin-wrap">
+      <section id="setup-warning" class="admin-panel hidden">
+        <h2>Firebase setup required</h2>
+        <p class="muted">
+          Update <code>scripts/firebase-config.js</code> with your Firebase web app keys, enable Email/Password Auth,
+          create a Firestore database, and add your admin user. See the README for full steps.
+        </p>
+      </section>
+
+      <section id="login-panel" class="admin-panel">
+        <h2>Login</h2>
+        <p class="muted">Use the Firebase Auth email/password account you created for this site.</p>
+        <form id="login-form" class="form-grid">
+          <div class="form-row">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" autocomplete="username" required />
+          </div>
+          <div class="form-row">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" required />
+          </div>
+          <div class="actions">
+            <button class="btn primary" type="submit">Sign in</button>
+          </div>
+          <p id="login-status" class="status" hidden></p>
+        </form>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="admin-panel">
+          <div class="actions" style="justify-content: space-between; margin-top: 0;">
+            <p class="muted" style="margin: 0;" id="signed-in-as"></p>
+            <button class="btn" type="button" id="logout-btn">Log out</button>
+          </div>
+        </div>
+
+        <div class="admin-panel">
+          <h2 id="form-title">Add project</h2>
+          <p class="muted">Project ID maps to <code>images/&lt;id&gt;/</code> and optional 3D model entries.</p>
+          <form id="project-form" class="form-grid">
+            <div class="form-row two">
+              <div>
+                <label for="project-id">Project ID</label>
+                <input id="project-id" type="text" placeholder="e.g. gearbox-design" required />
+              </div>
+              <div>
+                <label for="project-date">Date</label>
+                <input id="project-date" type="text" placeholder="e.g. Aug 2025" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="project-title">Title</label>
+              <input id="project-title" type="text" required />
+            </div>
+            <div class="form-row two">
+              <div>
+                <label for="project-tags">Tags (comma-separated)</label>
+                <input id="project-tags" type="text" placeholder="SolidWorks, Formula Student" />
+              </div>
+              <div>
+                <label for="project-order">Order (optional number)</label>
+                <input id="project-order" type="number" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="project-goal">Goal</label>
+              <textarea id="project-goal" required></textarea>
+            </div>
+            <div class="form-row">
+              <label for="project-outcome">Outcome (one bullet per line)</label>
+              <textarea id="project-outcome" required></textarea>
+            </div>
+            <div class="form-row">
+              <label for="project-technical">Technical</label>
+              <textarea id="project-technical" required></textarea>
+            </div>
+            <div class="actions">
+              <button class="btn primary" type="submit" id="save-btn">Save project</button>
+              <button class="btn" type="button" id="reset-btn">Clear form</button>
+              <button class="btn" type="button" id="seed-btn">Seed from local JSON</button>
+            </div>
+            <p id="form-status" class="status" hidden></p>
+          </form>
+        </div>
+
+        <div class="admin-panel">
+          <h2>Existing projects</h2>
+          <ul class="project-list" id="project-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
+      <p><a href="index.html">Back to Projects</a> · Built for GitHub Pages</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import {
+      isFirebaseConfigured,
+      watchAuth,
+      login,
+      logout,
+      loadProjects,
+      saveProject,
+      deleteProject,
+      seedProjectsFromLocal
+    } from "./scripts/projects-store.js";
+    import { escapeHtml } from "./scripts/projects.js";
+
+    const setupWarning = document.getElementById("setup-warning");
+    const loginPanel = document.getElementById("login-panel");
+    const dashboard = document.getElementById("dashboard");
+    const loginForm = document.getElementById("login-form");
+    const loginStatus = document.getElementById("login-status");
+    const formStatus = document.getElementById("form-status");
+    const projectForm = document.getElementById("project-form");
+    const projectList = document.getElementById("project-list");
+    const signedInAs = document.getElementById("signed-in-as");
+    const formTitle = document.getElementById("form-title");
+
+    let editingId = null;
+    let currentProjects = [];
+
+    function setStatus(el, message, isError) {
+      if (!el) return;
+      if (!message) {
+        el.hidden = true;
+        el.textContent = "";
+        el.classList.remove("error");
+        return;
+      }
+      el.hidden = false;
+      el.textContent = message;
+      el.classList.toggle("error", !!isError);
+    }
+
+    function tagTypeForLabel(label) {
+      const value = String(label || "").toLowerCase();
+      if (value.includes("solidworks")) return "solidworks";
+      if (value.includes("onshape")) return "onshape";
+      if (value.includes("formula")) return "formula";
+      return "course";
+    }
+
+    function parseTags(raw) {
+      return String(raw || "")
+        .split(",")
+        .map(function (part) { return part.trim(); })
+        .filter(Boolean)
+        .map(function (label) {
+          return { type: tagTypeForLabel(label), label: label };
+        });
+    }
+
+    function tagsToInput(tags) {
+      return (tags || []).map(function (tag) { return tag.label; }).join(", ");
+    }
+
+    function clearForm() {
+      editingId = null;
+      formTitle.textContent = "Add project";
+      projectForm.reset();
+      document.getElementById("project-id").disabled = false;
+      setStatus(formStatus, "");
+    }
+
+    function fillForm(project) {
+      editingId = project.id;
+      formTitle.textContent = "Edit project";
+      document.getElementById("project-id").value = project.id;
+      document.getElementById("project-id").disabled = true;
+      document.getElementById("project-title").value = project.title || "";
+      document.getElementById("project-date").value = project.date || "";
+      document.getElementById("project-tags").value = tagsToInput(project.tags);
+      document.getElementById("project-order").value = project.order != null ? project.order : "";
+      document.getElementById("project-goal").value = project.goal || "";
+      document.getElementById("project-outcome").value = (project.outcome || []).join("\n");
+      document.getElementById("project-technical").value = project.technical || "";
+      setStatus(formStatus, "");
+    }
+
+    function renderList(projects) {
+      currentProjects = projects || [];
+      if (!currentProjects.length) {
+        projectList.innerHTML = '<li><span class="meta">No projects in Firestore yet. Add one above or seed from local JSON.</span></li>';
+        return;
+      }
+
+      projectList.innerHTML = currentProjects
+        .map(function (project) {
+          return (
+            "<li>" +
+              "<div>" +
+                "<strong>" + escapeHtml(project.title) + "</strong>" +
+                '<div class="meta">' + escapeHtml(project.id) + (project.date ? " · " + escapeHtml(project.date) : "") + "</div>" +
+              "</div>" +
+              '<div class="actions">' +
+                '<button class="btn" type="button" data-edit="' + escapeHtml(project.id) + '">Edit</button>' +
+                '<button class="btn danger" type="button" data-delete="' + escapeHtml(project.id) + '">Delete</button>' +
+              "</div>" +
+            "</li>"
+          );
+        })
+        .join("");
+    }
+
+    async function refreshProjects() {
+      const result = await loadProjects({ preferFirestore: true });
+      renderList(result.projects);
+    }
+
+    function showLoggedOut() {
+      loginPanel.classList.remove("hidden");
+      dashboard.classList.add("hidden");
+    }
+
+    function showLoggedIn(user) {
+      loginPanel.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+      signedInAs.textContent = "Signed in as " + (user.email || "admin");
+      refreshProjects().catch(function (err) {
+        setStatus(formStatus, err.message || "Unable to load projects.", true);
+      });
+    }
+
+    if (!isFirebaseConfigured()) {
+      setupWarning.classList.remove("hidden");
+      loginForm.querySelector("button").disabled = true;
+      setStatus(loginStatus, "Firebase config placeholders are still set.", true);
+    }
+
+    watchAuth(function (user) {
+      if (user) showLoggedIn(user);
+      else showLoggedOut();
+    });
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      setStatus(loginStatus, "Signing in…");
+      try {
+        await login(
+          document.getElementById("login-email").value.trim(),
+          document.getElementById("login-password").value
+        );
+        setStatus(loginStatus, "");
+      } catch (err) {
+        setStatus(loginStatus, err.message || "Login failed.", true);
+      }
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", async function () {
+      await logout();
+      clearForm();
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", clearForm);
+
+    document.getElementById("seed-btn").addEventListener("click", async function () {
+      if (!confirm("Copy all projects from data/projects.json into Firestore?")) return;
+      setStatus(formStatus, "Seeding projects…");
+      try {
+        const count = await seedProjectsFromLocal();
+        await refreshProjects();
+        setStatus(formStatus, "Seeded " + count + " projects.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Seed failed.", true);
+      }
+    });
+
+    projectForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const id = document.getElementById("project-id").value.trim();
+      const orderRaw = document.getElementById("project-order").value.trim();
+      const project = {
+        id: editingId || id,
+        title: document.getElementById("project-title").value.trim(),
+        date: document.getElementById("project-date").value.trim(),
+        tags: parseTags(document.getElementById("project-tags").value),
+        goal: document.getElementById("project-goal").value.trim(),
+        outcome: document.getElementById("project-outcome").value,
+        technical: document.getElementById("project-technical").value.trim(),
+        order: orderRaw === "" ? null : Number(orderRaw)
+      };
+
+      setStatus(formStatus, "Saving…");
+      try {
+        await saveProject(project);
+        clearForm();
+        await refreshProjects();
+        setStatus(formStatus, "Project saved. Refresh the Projects page to see it.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Save failed.", true);
+      }
+    });
+
+    projectList.addEventListener("click", async function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const editId = target.getAttribute("data-edit");
+      if (editId) {
+        const project = currentProjects.find(function (item) { return item.id === editId; });
+        if (project) fillForm(project);
+        return;
+      }
+
+      const deleteId = target.getAttribute("data-delete");
+      if (deleteId) {
+        if (!confirm("Delete project \"" + deleteId + "\"?")) return;
+        setStatus(formStatus, "Deleting…");
+        try {
+          await deleteProject(deleteId);
+          if (editingId === deleteId) clearForm();
+          await refreshProjects();
+          setStatus(formStatus, "Project deleted.");
+        } catch (err) {
+          setStatus(formStatus, err.message || "Delete failed.", true);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
