@@ -3,6 +3,38 @@
   "changelog": [
     {
       "date": "2026-08-25",
+      "text": "Updated project \"bell-crank-fea\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Updated project \"wcp-arm\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Updated project \"wcp-launcher\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Updated project \"frc-robot\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Set featured project to \"junior-design-robot\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Set featured project to \"frc-intake\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Updated project \"freshman-lego\""
+    },
+    {
+      "date": "2026-08-25",
+      "text": "Updated project \"junior-design-robot\""
+    },
+    {
+      "date": "2026-08-25",
       "text": "Project detail layout polish, inches in CAD viewer, model keep-alive, dark scrollbars, public Admin nav removed"
     },
     {

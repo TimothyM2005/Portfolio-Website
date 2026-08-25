@@ -16,7 +16,8 @@
       "30% reduction in weight from the original",
       "3 points of contact to the frame rather than 2 on the original"
     ],
-    "technical": "Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material."
+    "technical": "Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material.",
+    "featured": false
   },
   {
     "id": "rival-fourbar",
@@ -33,7 +34,8 @@
       "Low cost using only Polycard and 3D printed parts",
       "Weight-reduced plates for less moving mass"
     ],
-    "technical": "Fully functional four-bar linkage based on extension limits using a single motor for extension."
+    "technical": "Fully functional four-bar linkage based on extension limits using a single motor for extension.",
+    "featured": false
   },
   {
     "id": "freshman-lego",
@@ -46,12 +48,24 @@
       }
     ],
     "goal": "Construct a full LEGO set in SolidWorks using Excel for different part configurations.",
+    "details": "",
+    "story": [],
     "outcome": [
       "A 240-piece LEGO Technic set",
       "60+% of the parts are configurable",
       "Advanced understanding of SolidWorks Part Studio"
     ],
-    "technical": "Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually."
+    "technical": "Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually.",
+    "images": [
+      "images/freshman-lego/Screenshot 2026-03-10 231324.png",
+      "images/freshman-lego/Screenshot 2026-03-10 231332.png",
+      "images/freshman-lego/Screenshot 2026-03-10 231343.png"
+    ],
+    "modelUrl": "models/freshman-lego.glb",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 1787668105944
   },
   {
     "id": "rival-shuttlecock",
@@ -70,7 +84,8 @@
       "Fully 3D printed and easily assembleable",
       "Master Sketch can easily change major values and auto-rebuild"
     ],
-    "technical": "Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems."
+    "technical": "Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems.",
+    "featured": false
   },
   {
     "id": "rival-chassis",
@@ -100,7 +115,8 @@
     ],
     "modelUrl": "models/rival-chassis.glb",
     "documents": [],
-    "order": 1787637050512
+    "order": 1787637050512,
+    "featured": false
   },
   {
     "id": "battlebot",
@@ -134,7 +150,8 @@
     ],
     "modelUrl": "models/battlebot.glb",
     "documents": [],
-    "order": 1787637615241
+    "order": 1787637615241,
+    "featured": false
   },
   {
     "id": "wcp-arm",
@@ -147,11 +164,23 @@
       }
     ],
     "goal": "Make a 3 DOF arm gearbox.",
+    "details": "",
+    "story": [],
     "outcome": [
       "Fully custom gearbox plates",
       "55:1 gearbox to supply a surplus of torque"
     ],
-    "technical": "Uses a combination of chains and gears to supply the load from the motors to the arm assembly."
+    "technical": "Uses a combination of chains and gears to supply the load from the motors to the arm assembly.",
+    "images": [
+      "images/wcp-arm/Arm Assembly (1).png",
+      "images/wcp-arm/Arm Assembly.png",
+      "images/wcp-arm/Robot (2).png"
+    ],
+    "modelUrl": "models/wcp-arm.glb",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 1787669036580
   },
   {
     "id": "wcp-basketball",
@@ -168,7 +197,8 @@
       "Compact end effector",
       "Unique gear stacking for a compact design"
     ],
-    "technical": "Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity."
+    "technical": "Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity.",
+    "featured": false
   },
   {
     "id": "wcp-launcher",
@@ -181,13 +211,27 @@
       }
     ],
     "goal": "Create a system to launch small 6\" plastic balls and pick them up off the ground.",
+    "details": "",
+    "story": [],
     "outcome": [
       "Turreted shooter with circular rack and pinion for hood angle",
       "1 motor to actuate all belts in the hopper up to the feeder",
       "Weight-reduced aluminum plates for lower COG and moving mass",
       "1 motor to power the entire intake subsystem"
     ],
-    "technical": "2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake."
+    "technical": "2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake.",
+    "images": [
+      "images/wcp-launcher/Fuel Intake v1.png",
+      "images/wcp-launcher/Hopper Assembly.png",
+      "images/wcp-launcher/Shooter Assembly (1).png",
+      "images/wcp-launcher/Shooter Assembly (2).png",
+      "images/wcp-launcher/Shooter Assembly.png"
+    ],
+    "modelUrl": "models/wcp-launcher.glb",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 1787668982311
   },
   {
     "id": "rival-arm",
@@ -206,7 +250,8 @@
       "QDD motors with 3 Nm torque",
       "Weight-reduced plates to lower CG for vertically extending system"
     ],
-    "technical": "Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation."
+    "technical": "Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation.",
+    "featured": false
   },
   {
     "id": "frc-intake",
@@ -225,7 +270,8 @@
       "Mostly Lexan construction to reduce weight",
       "Configurable master sketch for geometry and plate design"
     ],
-    "technical": "Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength."
+    "technical": "Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength.",
+    "featured": false
   },
   {
     "id": "frc-robot",
@@ -238,12 +284,26 @@
       }
     ],
     "goal": "Create a system to score game pieces and navigate the field effectively. Team project of 4.",
+    "details": "",
+    "story": [],
     "outcome": [
       "Swerve modules: 15 ft/s and omnidirectional movement",
       "Robust rigid elevator system",
       "Specific electronic placement to maximize CG location"
     ],
-    "technical": "Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults."
+    "technical": "Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults.",
+    "images": [
+      "images/frc-robot/Chassis.png",
+      "images/frc-robot/Elevator (1).png",
+      "images/frc-robot/Elevator.png",
+      "images/frc-robot/Robot (1).png",
+      "images/frc-robot/Robot.png"
+    ],
+    "modelUrl": "",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 1787668563553
   },
   {
     "id": "gearbox-design",
@@ -349,7 +409,7 @@
       "images/junior-design-robot/screenshot_2026-02-22_211826.png",
       "images/junior-design-robot/screenshot_2026-02-22_212053.png"
     ],
-    "modelUrl": "models/junior-design-robot.step",
+    "modelUrl": "models/junior-design-robot.glb",
     "documents": [
       {
         "url": "docs/projects/junior-design-robot/megr-3156-spring-2026-team-7-formal-design-review.pdf",
@@ -376,6 +436,10 @@
     ],
     "goal": "Analyze a suspension bell crank under expected race loads to validate strength and stiffness.",
     "details": "",
+    "story": [
+      "FEA flagged bending hotspots at the arm root; material was removed only where stress margins stayed healthy.",
+      "The redesign traded a little stiffness for a clear weight reduction while keeping race-load factors of safety."
+    ],
     "outcome": [
       "FEA study completed for critical load cases",
       "High-stress regions identified and redesigned",
@@ -392,11 +456,8 @@
         "name": "Bell Crank Project Report"
       }
     ],
-    "order": 1787634085867,
-    "story": [
-      "FEA flagged bending hotspots at the arm root; material was removed only where stress margins stayed healthy.",
-      "The redesign traded a little stiffness for a clear weight reduction while keeping race-load factors of safety."
-    ],
-    "featured": false
+    "featured": false,
+    "viewerPreset": null,
+    "order": 2
   }
 ]

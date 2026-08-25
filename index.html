@@ -1127,6 +1127,42 @@
       text-decoration: underline;
     }
 
+    .project-modal-pdf-mobile {
+      margin-top: 0.55rem;
+      padding: 0.85rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .project-modal-pdf-open {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .project-modal-pdf-open:hover {
+      text-decoration: underline;
+    }
+
+    .project-modal-pdf-mobile-note {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+    }
+
     .project-modal-pdf-fold {
       margin-top: 0.55rem;
       border: 1px solid var(--border);
@@ -1519,7 +1555,7 @@
 
         // Bind detail-modal clicks independently of Three.js so CDN failures
         // cannot disable "Click for details".
-        return import("./scripts/project-modal.js?v=modalui9")
+        return import("./scripts/project-modal.js?v=modalui10")
           .then(function (modalMod) {
             modalMod.initProjectModal(projects, modelManifest);
             return import("./scripts/model-viewer.js?v=cadui10")

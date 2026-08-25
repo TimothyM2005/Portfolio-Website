@@ -78,6 +78,23 @@
       margin-top: 1rem;
       background: var(--surface);
     }
+    .paper-mobile-fallback {
+      margin-top: 1rem;
+      padding: 1.25rem 1.35rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .paper-mobile-fallback a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .paper-mobile-fallback a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -109,7 +126,7 @@
           </div>
         </li>
       </ul>
-      <iframe class="paper-embed" src="docs/research/Introduction%20to%20Tire%20Analysis%20-%20Published.pdf" title="Research paper PDF"></iframe>
+      <iframe class="paper-embed" id="paper-frame" src="docs/research/Introduction%20to%20Tire%20Analysis%20-%20Published.pdf" title="Research paper PDF"></iframe>
     </main>
 
     <footer>
@@ -123,13 +140,29 @@
   <script>
     (function () {
       var btn = document.querySelector('.back-to-top');
-      if (!btn) return;
-      function update() {
-        if (window.scrollY > 400) btn.classList.add('visible');
-        else btn.classList.remove('visible');
+      if (btn) {
+        function update() {
+          if (window.scrollY > 400) btn.classList.add('visible');
+          else btn.classList.remove('visible');
+        }
+        window.addEventListener('scroll', update);
+        update();
       }
-      window.addEventListener('scroll', update);
-      update();
+
+      var ua = navigator.userAgent || "";
+      var touchMac = navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua);
+      var mobile = /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) || touchMac;
+      var frame = document.getElementById("paper-frame");
+      if (mobile && frame) {
+        var url = frame.getAttribute("src") || "";
+        var wrap = document.createElement("div");
+        wrap.className = "paper-mobile-fallback";
+        wrap.innerHTML =
+          "<p><strong>PDF preview isn’t available in mobile browsers.</strong></p>" +
+          '<p><a href="' + url + '" target="_blank" rel="noopener">View research PDF</a></p>' +
+          "<p>Opens in your device’s PDF viewer.</p>";
+        frame.replaceWith(wrap);
+      }
     })();
   </script>
 </body>

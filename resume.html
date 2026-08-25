@@ -116,6 +116,21 @@
       var download = document.getElementById("resume-download");
       var viewer = document.getElementById("resume-viewer");
 
+      function isMobilePdfHost() {
+        var ua = navigator.userAgent || "";
+        var touchMac = navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua);
+        return /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) || touchMac;
+      }
+
+      if (viewer && isMobilePdfHost()) {
+        viewer.innerHTML =
+          '<div class="resume-placeholder">' +
+            '<p><strong>PDF preview isn’t available in mobile browsers.</strong></p>' +
+            '<p><a class="resume-download" href="' + resumeUrl + '" target="_blank" rel="noopener">View resume PDF</a></p>' +
+            "<p>Opens in your device’s PDF viewer.</p>" +
+          "</div>";
+      }
+
       fetch(resumeUrl, { method: "HEAD" })
         .then(function (response) {
           if (response.ok) return;

@@ -153,12 +153,44 @@ function renderDownloads(modelSrc) {
     '">Download CAD</a>';
 }
 
+function supportsInlinePdfPreview() {
+  try {
+    const ua = navigator.userAgent || "";
+    const touchMac = navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua);
+    const mobileUa = /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    if (mobileUa || touchMac) return false;
+    if (typeof navigator.pdfViewerEnabled === "boolean") return !!navigator.pdfViewerEnabled;
+  } catch (err) {
+    return false;
+  }
+  return true;
+}
+
 function documentsSectionHtml(documents) {
   if (!documents.length) return "";
   const first = documents[0];
-  const previewUrl = first && first.url
-    ? escapeHtml(first.url) + "#page=1&zoom=page-width"
-    : "";
+  const firstUrl = first && first.url ? String(first.url) : "";
+  const inlineOk = supportsInlinePdfPreview();
+  const previewBlock = !firstUrl
+    ? ""
+    : inlineOk
+      ? '<details class="project-modal-pdf-fold" open>' +
+          '<summary><span data-pdf-fold-label>Hide PDF preview</span></summary>' +
+          '<div class="project-modal-pdf-frame">' +
+            '<iframe class="project-modal-pdf" src="' +
+            escapeHtml(firstUrl) +
+            '#page=1&zoom=page-width" title="' +
+            escapeHtml(documentLabel(first)) +
+            '"></iframe>' +
+          "</div>" +
+        "</details>"
+      : '<div class="project-modal-pdf-mobile">' +
+          '<a class="project-modal-pdf-open" href="' +
+          escapeHtml(firstUrl) +
+          '" target="_blank" rel="noopener">View PDF</a>' +
+          '<p class="project-modal-pdf-mobile-note">Mobile browsers can’t show PDFs inside the page. Opens in your device’s PDF viewer.</p>' +
+        "</div>";
+
   return (
     '<section class="project-modal-section project-modal-docs-inline">' +
       "<h3>Documents</h3>" +
@@ -180,18 +212,7 @@ function documentsSectionHtml(documents) {
         })
         .join("") +
       "</ul>" +
-      (previewUrl
-        ? '<details class="project-modal-pdf-fold" open>' +
-            '<summary><span data-pdf-fold-label>Hide PDF preview</span></summary>' +
-            '<div class="project-modal-pdf-frame">' +
-              '<iframe class="project-modal-pdf" src="' +
-              previewUrl +
-              '" title="' +
-              escapeHtml(documentLabel(first)) +
-              '"></iframe>' +
-            "</div>" +
-          "</details>"
-        : "") +
+      previewBlock +
     "</section>"
   );
 }
