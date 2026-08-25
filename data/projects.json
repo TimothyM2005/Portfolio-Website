@@ -261,6 +261,11 @@
     ],
     "goal": "Design a functional gearbox to meet course load, packaging, and manufacturability requirements.",
     "details": "",
+    "story": [
+      "Housing packaging drove shaft spacing before gear selection was locked.",
+      "McMaster gears and dry-running sleeve bearings kept cost and lead time down for a course build.",
+      "Service access on the front housing was prioritized so the gear train could be inspected without full disassembly."
+    ],
     "outcome": [
       "Complete CAD gearbox assembly with defined gear ratios",
       "Packaging optimized for mounting and serviceability",
@@ -278,24 +283,43 @@
       "images/gearbox-design/screenshot-2025-11-05-213702.png"
     ],
     "modelUrl": "models/gearbox-design.step",
-    "order": 1787632772615,
+    "documents": [],
     "featured": false,
-    "story": [
-      "Housing packaging drove shaft spacing before gear selection was locked.",
-      "McMaster gears and dry-running sleeve bearings kept cost and lead time down for a course build.",
-      "Service access on the front housing was prioritized so the gear train could be inspected without full disassembly."
-    ],
     "viewerPreset": {
-      "explode": 0.35,
-      "allMaterial": "aluminum",
+      "explode": 0,
       "materials": {
-        "Front Housing": "aluminum",
-        "Back Housing": "aluminum",
+        "57785K81_Food Industry Dry-Running Sleeve Bearing_57785K81": "plastic",
+        "57785K85_Food Industry Dry-Running Sleeve Bearing_57785K85": "plastic",
+        "7880K19_Metal Gear - 20 Degree Pressure Angle_7880K19": "aluminum",
+        "7880K24_Metal Gear - 20 Degree Pressure Angle_7880K24": "aluminum",
         "0.125 Shaft": "steel",
-        "0.25 Shaft": "steel"
+        "0.25 Shaft": "steel",
+        "Back Housing": "acrylic",
+        "Front Housing": "aluminum",
+        "93365A120_Tapered Heat-Set Inserts for Plastic_93365A120": "aluminum",
+        "91864A081_Black-Oxide Alloy Steel Socket Head Screw_91864A081": "aluminum"
       },
-      "autoRotate": true
-    }
+      "autoRotate": true,
+      "camera": {
+        "position": [
+          -27.849,
+          83.441,
+          109.895
+        ],
+        "target": [
+          2.36,
+          15.412,
+          24.175
+        ]
+      },
+      "clip": {
+        "enabled": false,
+        "axis": "x",
+        "amount": 0.5
+      },
+      "allMaterial": "aluminum"
+    },
+    "order": 1787632772615
   },
   {
     "id": "junior-design-robot",
@@ -329,7 +353,7 @@
     "documents": [
       {
         "url": "docs/projects/junior-design-robot/megr-3156-spring-2026-team-7-formal-design-review.pdf",
-        "name": "megr-3156-spring-2026-team-7-formal-design-review.pdf"
+        "name": "Formal Design Review"
       }
     ],
     "featured": true,
@@ -365,7 +389,7 @@
     "documents": [
       {
         "url": "docs/projects/bell-crank-fea/bell-crank-project-2-.pdf",
-        "name": "bell-crank-project-2-.pdf"
+        "name": "Bell Crank Project Report"
       }
     ],
     "order": 1787634085867,

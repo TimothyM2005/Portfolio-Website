@@ -387,41 +387,84 @@
 
     .project-modal-dialog {
       position: relative;
-      width: min(1100px, 100%);
-      max-height: min(90vh, 900px);
-      overflow: auto;
+      width: min(1100px, 96vw);
+      max-height: min(90vh, 860px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 1.25rem;
+      padding: 1.1rem 1.15rem 1.15rem;
       z-index: 1;
     }
 
     .project-modal-close {
       position: absolute;
-      top: 0.65rem;
-      right: 0.75rem;
-      width: 2.25rem;
-      height: 2.25rem;
+      top: 0.55rem;
+      right: 0.65rem;
+      width: 2.1rem;
+      height: 2.1rem;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--bg);
       color: var(--text);
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       line-height: 1;
       cursor: pointer;
+      z-index: 2;
     }
 
     .project-modal-layout {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 1.25rem;
-      align-items: start;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.95fr);
+      gap: 1.15rem;
+      align-items: stretch;
+      min-height: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .project-modal-viewer-wrap {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .project-modal-content {
+      min-width: 0;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+
+    .project-modal-content::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .project-modal-content::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+      border-radius: 8px;
+    }
+
+    .project-modal-content::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 8px;
+      border: 2px solid var(--scrollbar-track);
+    }
+
+    .project-modal-content::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-thumb-hover);
     }
 
     .project-modal-viewer {
       width: 100%;
-      min-height: 420px;
+      flex: 1 1 auto;
+      min-height: 280px;
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
@@ -453,20 +496,27 @@
 
     .model-viewer-toolbar {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem 0.85rem;
-      align-items: center;
-      padding: 0.55rem 0.7rem;
+      flex-direction: column;
+      gap: 0;
+      padding: 0.4rem 0.6rem;
       border-top: 1px solid var(--border);
       background: rgba(13, 17, 23, 0.92);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
+    }
+
+    .model-viewer-toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.7rem;
+      align-items: center;
     }
 
     .model-viewer-field {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.3rem;
+      white-space: nowrap;
     }
 
     .model-viewer-field select,
@@ -479,78 +529,183 @@
     }
 
     .model-viewer-field select {
-      padding: 0.2rem 0.4rem;
+      padding: 0.15rem 0.3rem;
+      max-width: 7.5rem;
     }
 
-    .model-viewer-explode input[type="range"] {
-      width: 7rem;
+    .model-viewer-explode input[type="range"],
+    .model-viewer-clip input[type="range"] {
+      width: 4.75rem;
       vertical-align: middle;
     }
 
     .model-viewer-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.28rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .model-viewer-section-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.55rem;
+      min-width: 0;
+    }
+
+    .model-viewer-section-opts {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.55rem;
+      transition: opacity 0.15s ease;
+    }
+
+    .model-viewer-section-opts.is-disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .model-viewer-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-left: auto;
+    }
+
+    .model-viewer-actions button {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.74rem;
+      border-radius: 6px;
+      padding: 0.22rem 0.5rem;
       cursor: pointer;
     }
 
+    .model-viewer-actions button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     .model-viewer-parts {
-      max-height: 9.5rem;
-      overflow: auto;
+      max-height: 8.5rem;
+      overflow: hidden;
       border-top: 1px solid var(--border);
       background: var(--surface);
       text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .model-viewer-parts.is-collapsed {
+      max-height: none;
+    }
+
+    .model-viewer-parts.is-collapsed .model-viewer-parts-list,
+    .model-viewer-parts.is-collapsed .model-viewer-parts-show-all {
+      display: none;
+    }
+
+    .model-viewer-parts:not(.is-collapsed) {
+      overflow: auto;
     }
 
     .model-viewer-parts-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.45rem 0.7rem;
+      gap: 0.5rem;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      border-bottom: 1px solid transparent;
+    }
+
+    .model-viewer-parts:not(.is-collapsed) .model-viewer-parts-header {
+      border-bottom-color: var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 1;
+    }
+
+    .model-viewer-parts-toggle {
+      appearance: none;
+      border: 0;
+      background: none;
+      color: var(--text-muted);
+      font: inherit;
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      padding: 0.15rem 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
-    .model-viewer-parts-header button {
+    .model-viewer-parts-toggle::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid currentColor;
+      transition: transform 0.15s ease;
+    }
+
+    .model-viewer-parts.is-collapsed .model-viewer-parts-toggle::before {
+      transform: rotate(-90deg);
+    }
+
+    .model-viewer-parts-toggle:hover {
+      color: var(--text);
+    }
+
+    .model-viewer-parts-header button.model-viewer-parts-show-all {
       appearance: none;
       border: 0;
       background: none;
       color: var(--accent);
       font: inherit;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       text-transform: none;
       letter-spacing: 0;
       cursor: pointer;
       padding: 0;
     }
 
-    .model-viewer-parts-header button:hover {
+    .model-viewer-parts-header button.model-viewer-parts-show-all:hover {
       text-decoration: underline;
     }
 
     .model-viewer-parts-list {
       list-style: none;
       margin: 0;
-      padding: 0.35rem 0.55rem 0.55rem;
+      padding: 0.3rem 0.55rem 0.45rem;
       display: grid;
-      gap: 0.35rem;
+      gap: 0.25rem;
     }
 
     .model-viewer-part-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 0.45rem;
+      gap: 0.4rem;
       align-items: center;
     }
 
     .model-viewer-part-toggle {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      font-size: 0.8rem;
+      gap: 0.4rem;
+      font-size: 0.78rem;
       color: var(--text);
       cursor: pointer;
       min-width: 0;
@@ -564,20 +719,20 @@
 
     .model-viewer-part-material {
       font: inherit;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text);
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 0.15rem 0.3rem;
-      max-width: 9.5rem;
+      padding: 0.1rem 0.25rem;
+      max-width: 8.5rem;
     }
 
     .model-viewer-parts-list label {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      font-size: 0.8rem;
+      gap: 0.4rem;
+      font-size: 0.78rem;
       color: var(--text);
       cursor: pointer;
     }
@@ -599,43 +754,77 @@
     .model-viewer-actions {
       display: inline-flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.3rem;
+      margin-left: auto;
     }
 
-    .model-viewer-actions button {
+    .model-viewer-icon-btn {
       appearance: none;
       border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
+      background: transparent;
+      color: var(--text-muted);
       font: inherit;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       border-radius: 6px;
-      padding: 0.25rem 0.5rem;
+      padding: 0.2rem 0.45rem;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      line-height: 1;
     }
 
-    .model-viewer-actions button:hover {
+    .model-viewer-icon-btn:hover {
       border-color: var(--accent);
       color: var(--accent);
+    }
+
+    .model-viewer-icon-btn svg {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 560px) {
+      .model-viewer-toolbar {
+        font-size: 0.74rem;
+        padding: 0.4rem 0.5rem 0.45rem;
+      }
+
+      .model-viewer-field select {
+        max-width: 7.25rem;
+      }
+
+      .model-viewer-explode input[type="range"],
+      .model-viewer-clip input[type="range"] {
+        width: 4.5rem;
+      }
+
+      .model-viewer-icon-btn span {
+        display: none;
+      }
+
+      .model-viewer-icon-btn {
+        padding: 0.3rem;
+      }
     }
 
     .project-modal-downloads {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-top: 0.55rem;
+      gap: 0.4rem;
+      margin-top: 0.45rem;
     }
 
     .project-download-link {
       display: inline-flex;
       align-items: center;
-      padding: 0.35rem 0.65rem;
-      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+      border-radius: 7px;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background: transparent;
       color: var(--accent);
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      white-space: nowrap;
     }
 
     .project-download-link:hover {
@@ -643,18 +832,23 @@
     }
 
     .project-story {
-      margin: 0.35rem 0 0;
-      padding-left: 1.1rem;
+      margin: 0.2rem 0 0;
+      padding-left: 1.05rem;
       color: var(--text);
     }
 
     .project-story li + li {
-      margin-top: 0.35rem;
+      margin-top: 0.25rem;
     }
 
     .pill.featured {
       background: rgba(63, 185, 80, 0.18);
       color: var(--success);
+    }
+
+    .pill.pdf {
+      background: rgba(248, 81, 73, 0.16);
+      color: #ff7b72;
     }
 
     .featured-project {
@@ -806,77 +1000,187 @@
     }
 
     .project-modal-hint {
-      margin-top: 0.45rem;
-      font-size: 0.8rem;
+      margin-top: 0.35rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
     }
 
     .project-modal-content h2 {
-      font-size: 1.35rem;
-      margin: 0 2rem 0.65rem 0;
+      font-size: 1.25rem;
+      line-height: 1.25;
+      margin: 0 2.2rem 0.4rem 0;
     }
 
     .project-modal-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.45rem;
-      margin-bottom: 1rem;
+      gap: 0.35rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .project-modal-section {
+      padding: 0 !important;
+      margin: 0;
+    }
+
+    .project-modal-section + .project-modal-section {
+      margin-top: 0.75rem;
+      padding-top: 0.7rem !important;
+      border-top: 1px solid var(--border);
+    }
+
+    .project-modal-docs-inline .project-modal-doc-list {
+      margin-top: 0.15rem;
     }
 
     .project-modal-body h3 {
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: 0.68rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: var(--text-muted);
-      margin: 0.85rem 0 0.3rem;
+      margin: 0 0 0.4rem;
+      line-height: 1.2;
     }
 
     .project-modal-body p,
     .project-modal-body ul {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
       color: var(--text);
-      margin-bottom: 0.4rem;
+      margin: 0;
     }
 
     .project-modal-body ul {
-      padding-left: 1.2rem;
+      padding-left: 1.05rem;
+    }
+
+    .project-modal-body li + li {
+      margin-top: 0.3rem;
     }
 
     .project-modal-body .goal {
-      color: var(--text-muted);
-      font-style: italic;
+      color: var(--text);
+      font-style: normal;
+      font-size: 0.92rem;
+      line-height: 1.45;
     }
 
-    .project-modal-document {
-      margin: 0.75rem 0 1rem;
+    .project-modal-save-preset {
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
     }
 
-    .project-modal-document-header {
+    .project-modal-save-preset .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--text);
+      color: var(--bg);
+      font: inherit;
+      font-size: 0.82rem;
+      border-radius: 8px;
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+    }
+
+    .project-modal-doc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .project-modal-doc-list li {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem 1rem;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.45rem;
-    }
-
-    .project-modal-document-header a {
-      font-size: 0.85rem;
-    }
-
-    .project-modal-pdf {
-      width: 100%;
-      min-height: 420px;
-      height: 50vh;
+      gap: 0.35rem 0.75rem;
+      padding: 0.55rem 0.7rem;
       border: 1px solid var(--border);
       border-radius: 10px;
       background: var(--bg);
     }
 
+    .project-modal-doc-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 0;
+    }
+
+    .project-modal-doc-actions {
+      display: inline-flex;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .project-modal-doc-actions a {
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .project-modal-doc-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .project-modal-pdf-fold {
+      margin-top: 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .project-modal-pdf-fold summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.82rem;
+      color: var(--accent);
+      user-select: none;
+    }
+
+    .project-modal-pdf-fold summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .project-modal-pdf-fold[open] summary {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project-modal-pdf-frame {
+      background: #0b0e12;
+      min-height: 480px;
+      height: min(58vh, 640px);
+    }
+
+    .project-modal-pdf {
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      border: 0;
+      display: block;
+      background: #0b0e12;
+    }
+
     @media (max-width: 860px) {
+      .project-modal-dialog {
+        overflow: auto;
+        max-height: min(94vh, 900px);
+      }
+
       .project-modal-layout {
         grid-template-columns: 1fr;
+        overflow: visible;
+      }
+
+      .project-modal-content {
+        overflow: visible;
+        padding-right: 0;
       }
 
       .project-modal-viewer {
@@ -884,9 +1188,10 @@
         min-height: 240px;
       }
 
+      .project-modal-pdf-frame,
       .project-modal-pdf {
-        min-height: 320px;
-        height: 45vh;
+        min-height: 360px;
+        height: 50vh;
       }
     }
 
@@ -1007,7 +1312,6 @@
       <a href="index.html" class="active">Projects</a>
       <a href="research.html">Research</a>
       <a href="resume.html">Resume</a>
-      <a href="admin.html">Admin</a>
     </nav>
     <header>
       <div class="hero-grid">
@@ -1215,10 +1519,10 @@
 
         // Bind detail-modal clicks independently of Three.js so CDN failures
         // cannot disable "Click for details".
-        return import("./scripts/project-modal.js?v=cadui6")
+        return import("./scripts/project-modal.js?v=modalui9")
           .then(function (modalMod) {
             modalMod.initProjectModal(projects, modelManifest);
-            return import("./scripts/model-viewer.js?v=cadui6")
+            return import("./scripts/model-viewer.js?v=cadui10")
               .then(function (viewerMod) {
                 viewerMod.initModelViewers(modelManifest);
               })

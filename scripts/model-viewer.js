@@ -605,6 +605,9 @@ function setExplodeAmount(parts, amount, maxSpan) {
   });
 }
 
+/** CAD coordinates are treated as millimeters; display converts to inches. */
+const MM_PER_INCH = 25.4;
+
 function formatSizeLabel(size, unitLabel) {
   const fmt = function (n) {
     if (!Number.isFinite(n)) return "?";
@@ -614,6 +617,28 @@ function formatSizeLabel(size, unitLabel) {
     return n.toFixed(2);
   };
   return "≈ " + fmt(size.x) + " × " + fmt(size.y) + " × " + fmt(size.z) + " " + unitLabel;
+}
+
+function sizeForDisplay(sizeMm) {
+  return {
+    x: sizeMm.x / MM_PER_INCH,
+    y: sizeMm.y / MM_PER_INCH,
+    z: sizeMm.z / MM_PER_INCH
+  };
+}
+
+function setPartsPanelCollapsed(partsPanel, collapsed) {
+  if (!partsPanel) return;
+  partsPanel.classList.toggle("is-collapsed", !!collapsed);
+  const toggle = partsPanel.querySelector('[data-action="toggle-parts"]');
+  if (toggle) toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+}
+
+function setSectionOptsVisible(toolbar, enabled) {
+  if (!toolbar) return;
+  const opts = toolbar.querySelector("[data-section-opts]");
+  // Keep section tools visible; only dim them when section is off via class.
+  if (opts) opts.classList.toggle("is-disabled", !enabled);
 }
 
 function buildViewerChrome(options) {
@@ -632,39 +657,45 @@ function buildViewerChrome(options) {
   const toolbar = document.createElement("div");
   toolbar.className = "model-viewer-toolbar";
   toolbar.innerHTML =
-    '<label class="model-viewer-field">All parts' +
-      '<select data-action="material">' +
-        materialOptionsHtml("imported") +
-      "</select>" +
-    "</label>" +
-    '<label class="model-viewer-field" data-detail-field hidden>Detail' +
-      '<select data-action="detail">' +
-        '<option value="preview">Fast preview</option>' +
-        '<option value="full">Full quality</option>' +
-      "</select>" +
-    "</label>" +
-    '<label class="model-viewer-toggle"><input type="checkbox" data-action="rotate" checked /> Auto-rotate</label>' +
-    (opts.showExplode
-      ? '<label class="model-viewer-field model-viewer-explode">Explode' +
-          '<input type="range" min="0" max="100" value="0" data-action="explode" />' +
-        "</label>"
-      : "") +
-    (opts.showClip
-      ? '<label class="model-viewer-toggle"><input type="checkbox" data-action="clip-enabled" /> Section</label>' +
-        '<label class="model-viewer-field">Axis' +
-          '<select data-action="clip-axis">' +
-            '<option value="x">X</option>' +
-            '<option value="y">Y</option>' +
-            '<option value="z">Z</option>' +
-          "</select>" +
-        "</label>" +
-        '<label class="model-viewer-field model-viewer-clip">Clip' +
-          '<input type="range" min="0" max="100" value="50" data-action="clip-amount" />' +
-        "</label>"
-      : "") +
-    '<div class="model-viewer-actions">' +
-      '<button type="button" data-action="screenshot">Screenshot</button>' +
-      '<button type="button" data-action="copy-view">Copy view link</button>' +
+    '<div class="model-viewer-toolbar-row">' +
+      '<label class="model-viewer-field">Material' +
+        '<select data-action="material" aria-label="Material">' +
+          materialOptionsHtml("imported") +
+        "</select>" +
+      "</label>" +
+      '<label class="model-viewer-field" data-detail-field hidden>Detail' +
+        '<select data-action="detail" aria-label="Tessellation detail">' +
+          '<option value="preview">Fast</option>' +
+          '<option value="full">Full</option>' +
+        "</select>" +
+      "</label>" +
+      '<label class="model-viewer-toggle"><input type="checkbox" data-action="rotate" checked /> Auto-rotate</label>' +
+      (opts.showExplode
+        ? '<label class="model-viewer-field model-viewer-explode">Explode' +
+            '<input type="range" min="0" max="100" value="0" data-action="explode" aria-label="Explode amount" />' +
+          "</label>"
+        : "") +
+      (opts.showClip
+        ? '<span class="model-viewer-section-group">' +
+            '<label class="model-viewer-toggle"><input type="checkbox" data-action="clip-enabled" /> Section</label>' +
+            '<span class="model-viewer-section-opts is-disabled" data-section-opts>' +
+              '<label class="model-viewer-field">Axis' +
+                '<select data-action="clip-axis" aria-label="Section axis">' +
+                  '<option value="x">X</option>' +
+                  '<option value="y">Y</option>' +
+                  '<option value="z">Z</option>' +
+                "</select>" +
+              "</label>" +
+              '<label class="model-viewer-field model-viewer-clip">Clip' +
+                '<input type="range" min="0" max="100" value="50" data-action="clip-amount" aria-label="Section clip" />' +
+              "</label>" +
+            "</span>" +
+          "</span>"
+        : "") +
+      '<div class="model-viewer-actions">' +
+        '<button type="button" data-action="screenshot">Screenshot</button>' +
+        '<button type="button" data-action="copy-view">Copy view link</button>' +
+      "</div>" +
     "</div>";
 
   shell.appendChild(stage);
@@ -673,11 +704,13 @@ function buildViewerChrome(options) {
   let partsPanel = null;
   if (opts.showParts) {
     partsPanel = document.createElement("div");
-    partsPanel.className = "model-viewer-parts";
+    partsPanel.className = "model-viewer-parts is-collapsed";
     partsPanel.innerHTML =
       '<div class="model-viewer-parts-header">' +
-        "<span>Parts</span>" +
-        '<button type="button" data-action="show-all">Show all</button>' +
+        '<button type="button" class="model-viewer-parts-toggle" data-action="toggle-parts" aria-expanded="false">' +
+          'Parts <span data-parts-count></span>' +
+        "</button>" +
+        '<button type="button" data-action="show-all" class="model-viewer-parts-show-all">Show all</button>' +
       "</div>" +
       '<ul class="model-viewer-parts-list"></ul>';
     shell.appendChild(partsPanel);
@@ -696,6 +729,8 @@ function populatePartsList(partsPanel, parts, materialByPart) {
   const list = partsPanel.querySelector(".model-viewer-parts-list");
   if (!list) return;
   const choices = materialByPart || {};
+  const countEl = partsPanel.querySelector("[data-parts-count]");
+  if (countEl) countEl.textContent = parts.length ? "(" + parts.length + ")" : "";
   list.innerHTML = parts
     .map(function (mesh, index) {
       const name = mesh.userData.partName || mesh.name || "Part " + (index + 1);
@@ -718,11 +753,16 @@ function populatePartsList(partsPanel, parts, materialByPart) {
       );
     })
     .join("");
+  if (!partsPanel.dataset.userToggled) {
+    setPartsPanelCollapsed(partsPanel, true);
+  }
 }
 
 export function createViewer(mount, modelSrc, options) {
   if (!mount) {
     return {
+      park: function () {},
+      resume: function () {},
       dispose: function () {},
       getViewState: function () {
         return null;
@@ -741,9 +781,13 @@ export function createViewer(mount, modelSrc, options) {
   const initialViewState = opts.viewState && typeof opts.viewState === "object" ? opts.viewState : null;
   const projectId = opts.projectId ? String(opts.projectId) : "";
 
+  let mountEl = mount;
   let disposed = false;
+  let parked = false;
   let frameId = 0;
   let cleanup = function () {};
+  let resizeFn = function () {};
+  let restartAnimate = function () {};
   let autoRotate = true;
   let explodeAmount = 0;
   let allMaterialId = null;
@@ -754,7 +798,10 @@ export function createViewer(mount, modelSrc, options) {
   let stepQuality = "preview";
   let animateStarted = false;
   let clipBounds = null;
-  let sizeUnitLabel = "mm";
+  let sizeUnitLabel = "in";
+  const parkBin = document.createElement("div");
+  parkBin.hidden = true;
+  parkBin.setAttribute("aria-hidden", "true");
   const materialByPart = {};
   const clipState = {
     enabled: false,
@@ -788,7 +835,16 @@ export function createViewer(mount, modelSrc, options) {
     '<div class="model-viewer-spinner" aria-hidden="true"></div>' +
     '<p data-status-text>Loading CAD model…</p>' +
     '<p class="model-viewer-status-note">Large STEP files tessellate in a background thread so the page stays responsive.</p>';
-  mount.replaceChildren(status);
+  mountEl.replaceChildren(status);
+
+  const attachToMount = function (node) {
+    if (parked) {
+      if (!parkBin.isConnected) document.body.appendChild(parkBin);
+      parkBin.replaceChildren(node);
+      return;
+    }
+    mountEl.replaceChildren(node);
+  };
 
   const setStatus = function (message) {
     const text = status.querySelector("[data-status-text]");
@@ -805,7 +861,7 @@ export function createViewer(mount, modelSrc, options) {
       const ext = getExtension(modelSrc);
       const isStep = ext === "step" || ext === "stp";
       const showAssemblyTools = isStep;
-      sizeUnitLabel = isStep ? "mm" : "mm";
+      sizeUnitLabel = "in";
 
       const chrome = buildViewerChrome({
         showExplode: showAssemblyTools,
@@ -845,13 +901,14 @@ export function createViewer(mount, modelSrc, options) {
       scene.add(fill);
 
       const resize = function () {
-        if (disposed) return;
-        const width = chrome.stage.clientWidth || mount.clientWidth || 1;
-        const height = chrome.stage.clientHeight || mount.clientHeight || 1;
+        if (disposed || parked) return;
+        const width = chrome.stage.clientWidth || mountEl.clientWidth || 1;
+        const height = chrome.stage.clientHeight || mountEl.clientHeight || 1;
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
       };
+      resizeFn = resize;
 
       const onResize = function () {
         resize();
@@ -864,11 +921,18 @@ export function createViewer(mount, modelSrc, options) {
       }
 
       const animate = function () {
-        if (disposed) return;
+        if (disposed || parked) {
+          frameId = 0;
+          return;
+        }
         controls.autoRotate = autoRotate;
         controls.update();
         renderer.render(scene, camera);
         frameId = requestAnimationFrame(animate);
+      };
+      restartAnimate = function () {
+        if (disposed || parked || !animateStarted || frameId) return;
+        animate();
       };
 
       const applyClippingToMaterials = function () {
@@ -918,7 +982,7 @@ export function createViewer(mount, modelSrc, options) {
           return;
         }
         const size = box.getSize(new THREE.Vector3());
-        chrome.sizeBadge.textContent = formatSizeLabel(size, sizeUnitLabel);
+        chrome.sizeBadge.textContent = formatSizeLabel(sizeForDisplay(size), sizeUnitLabel);
         chrome.sizeBadge.hidden = false;
       };
 
@@ -934,6 +998,7 @@ export function createViewer(mount, modelSrc, options) {
 
         const clipEnabled = chrome.toolbar.querySelector('[data-action="clip-enabled"]');
         if (clipEnabled) clipEnabled.checked = !!clipState.enabled;
+        setSectionOptsVisible(chrome.toolbar, !!clipState.enabled);
         const clipAxis = chrome.toolbar.querySelector('[data-action="clip-axis"]');
         if (clipAxis) clipAxis.value = clipState.axis;
         const clipAmount = chrome.toolbar.querySelector('[data-action="clip-amount"]');
@@ -1181,45 +1246,67 @@ export function createViewer(mount, modelSrc, options) {
       const onToolbarChange = function (event) {
         const target = event.target;
         if (!(target instanceof HTMLElement)) return;
-        const action = target.getAttribute("data-action");
+        const actionEl = target.closest("[data-action]");
+        if (!(actionEl instanceof HTMLElement)) return;
+        const action = actionEl.getAttribute("data-action");
+        const control =
+          target.getAttribute("data-action") != null ? target : actionEl;
+        const isClick = event.type === "click";
+        const isFormEvent = event.type === "change" || event.type === "input";
+
         if (action === "material") {
-          allMaterialId = target.value;
-          applyMaterialPreset(THREE, partMeshes, target.value);
+          if (!isFormEvent) return;
+          allMaterialId = control.value;
+          applyMaterialPreset(THREE, partMeshes, control.value);
           partMeshes.forEach(function (mesh, index) {
-            materialByPart[partMaterialKey(mesh, index)] = target.value;
+            materialByPart[partMaterialKey(mesh, index)] = control.value;
           });
-          syncPartMaterialSelects(target.value);
+          syncPartMaterialSelects(control.value);
           refreshClipPlane();
         } else if (action === "part-material") {
-          const index = Number(target.getAttribute("data-part-index"));
+          if (!isFormEvent) return;
+          const index = Number(control.getAttribute("data-part-index"));
           if (!Number.isFinite(index) || !partMeshes[index]) return;
-          const presetId = target.value || "imported";
+          const presetId = control.value || "imported";
           materialByPart[partMaterialKey(partMeshes[index], index)] = presetId;
           applyMaterialPresetToMesh(THREE, partMeshes[index], presetId);
           refreshClipPlane();
         } else if (action === "rotate") {
-          autoRotate = !!target.checked;
+          if (event.type !== "change") return;
+          if (!(control instanceof HTMLInputElement)) return;
+          autoRotate = !!control.checked;
         } else if (action === "explode") {
-          explodeAmount = Number(target.value || 0) / 100;
+          if (!isFormEvent) return;
+          explodeAmount = Number(control.value || 0) / 100;
           setExplodeAmount(partMeshes, explodeAmount, explodeMeta.maxSpan);
         } else if (action === "clip-enabled") {
-          clipState.enabled = !!target.checked;
+          if (event.type !== "change") return;
+          if (!(control instanceof HTMLInputElement)) return;
+          clipState.enabled = !!control.checked;
+          setSectionOptsVisible(chrome.toolbar, clipState.enabled);
           refreshClipPlane();
         } else if (action === "clip-axis") {
-          clipState.axis = target.value === "y" || target.value === "z" ? target.value : "x";
+          if (!isFormEvent) return;
+          clipState.axis = control.value === "y" || control.value === "z" ? control.value : "x";
           refreshClipPlane();
         } else if (action === "clip-amount") {
-          clipState.amount = Number(target.value || 0) / 100;
+          if (!isFormEvent) return;
+          clipState.amount = Number(control.value || 0) / 100;
           refreshClipPlane();
         } else if (action === "screenshot") {
+          if (!isClick) return;
+          event.preventDefault();
           const dataUrl = captureScreenshotImpl();
           if (dataUrl) {
             downloadDataUrl(dataUrl, (projectId || "model") + "-view.png");
           }
         } else if (action === "copy-view") {
+          if (!isClick) return;
+          event.preventDefault();
           copyViewLink();
         } else if (action === "detail") {
-          const nextQuality = target.value === "full" ? "full" : "preview";
+          if (!isFormEvent) return;
+          const nextQuality = control.value === "full" ? "full" : "preview";
           if (nextQuality === stepQuality || parseInFlight) return;
           stepQuality = nextQuality;
           const preserved = readViewState();
@@ -1234,7 +1321,15 @@ export function createViewer(mount, modelSrc, options) {
               console.warn("STEP retessellate failed:", err);
               setOverlay(null);
             });
+        } else if (action === "toggle-parts") {
+          if (!isClick) return;
+          event.preventDefault();
+          if (!chrome.partsPanel) return;
+          chrome.partsPanel.dataset.userToggled = "1";
+          setPartsPanelCollapsed(chrome.partsPanel, !chrome.partsPanel.classList.contains("is-collapsed"));
         } else if (action === "show-all") {
+          if (!isClick) return;
+          event.preventDefault();
           partMeshes.forEach(function (mesh) {
             mesh.visible = true;
           });
@@ -1265,6 +1360,7 @@ export function createViewer(mount, modelSrc, options) {
 
       cleanup = function () {
         cancelAnimationFrame(frameId);
+        frameId = 0;
         window.removeEventListener("resize", onResize);
         if (resizeObserver) resizeObserver.disconnect();
         chrome.toolbar.removeEventListener("change", onToolbarChange);
@@ -1277,9 +1373,12 @@ export function createViewer(mount, modelSrc, options) {
         }
         if (parseInFlight) terminateStepJob();
         disposeObject3D(modelRoot);
+        modelRoot = null;
         controls.dispose();
         renderer.dispose();
-        mount.replaceChildren();
+        if (parkBin.isConnected) parkBin.remove();
+        parkBin.replaceChildren();
+        mountEl.replaceChildren();
       };
 
       const detailField = chrome.toolbar.querySelector("[data-detail-field]");
@@ -1292,7 +1391,7 @@ export function createViewer(mount, modelSrc, options) {
       return loadCadObject(stepQuality)
         .then(function (object) {
           if (disposed || !object) return;
-          mount.replaceChildren(chrome.shell);
+          attachToMount(chrome.shell);
           const hasCameraOverride =
             (initialViewState && initialViewState.camera) ||
             (initialPreset && initialPreset.camera);
@@ -1301,30 +1400,59 @@ export function createViewer(mount, modelSrc, options) {
           if (initialViewState) applyViewerConfig(initialViewState);
           syncToolbarFromState();
           setOverlay(null);
+          if (!parked) {
+            resize();
+            restartAnimate();
+          }
         })
         .catch(function (err) {
           console.warn("Model load failed:", modelSrc, err);
           if (disposed) return;
-          if (ext === "step" || ext === "stp") {
-            mount.textContent =
-              "Unable to load STEP file" +
-              (err && err.message ? " (" + err.message + ")" : "") +
-              ". Large assemblies can be slow — try exporting as .glb/.gltf for best results.";
+          const message =
+            ext === "step" || ext === "stp"
+              ? "Unable to load STEP file" +
+                (err && err.message ? " (" + err.message + ")" : "") +
+                ". Large assemblies can be slow — try exporting as .glb/.gltf for best results."
+              : "Unable to load 3D model.";
+          if (parked) {
+            parkBin.textContent = message;
           } else {
-            mount.textContent = "Unable to load 3D model.";
+            mountEl.textContent = message;
           }
         });
     })
     .catch(function (err) {
       console.warn("Unable to load Three.js viewer.", err);
       if (!disposed) {
-        mount.textContent = "Unable to load 3D viewer. Check your network connection.";
+        mountEl.textContent = "Unable to load 3D viewer. Check your network connection.";
       }
     });
 
   return {
+    park: function () {
+      if (disposed || parked) return;
+      parked = true;
+      cancelAnimationFrame(frameId);
+      frameId = 0;
+      if (!parkBin.isConnected) document.body.appendChild(parkBin);
+      while (mountEl.firstChild) {
+        parkBin.appendChild(mountEl.firstChild);
+      }
+    },
+    resume: function (nextMount) {
+      if (disposed) return;
+      if (nextMount) mountEl = nextMount;
+      parked = false;
+      while (parkBin.firstChild) {
+        mountEl.appendChild(parkBin.firstChild);
+      }
+      if (parkBin.isConnected) parkBin.remove();
+      resizeFn();
+      restartAnimate();
+    },
     dispose: function () {
       disposed = true;
+      parked = false;
       cleanup();
     },
     getViewState: function () {

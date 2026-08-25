@@ -3,6 +3,10 @@
   "changelog": [
     {
       "date": "2026-08-25",
+      "text": "Project detail layout polish, inches in CAD viewer, model keep-alive, dark scrollbars, public Admin nav removed"
+    },
+    {
+      "date": "2026-08-25",
       "text": "CAD viewer materials, transparency, explode, clip plane, size overlay, screenshot & share link"
     },
     {

@@ -2,12 +2,43 @@ import { escapeHtml } from "./projects.js?v=feat10";
 import { detectLocalAdmin, saveProject } from "./projects-store.js?v=feat10";
 
 let activeViewer = null;
+let activeProjectId = null;
+const viewerCache = new Map();
 let modelManifest = {};
 let projectsById = {};
 
+function flushStaleParkedViewers() {
+  if (window.__portfolioCadUi10) return;
+  window.__portfolioCadUi10 = true;
+  viewerCache.forEach(function (viewer) {
+    if (viewer && typeof viewer.dispose === "function") viewer.dispose();
+  });
+  viewerCache.clear();
+  if (activeViewer && typeof activeViewer.dispose === "function") {
+    activeViewer.dispose();
+  }
+  activeViewer = null;
+  activeProjectId = null;
+}
+
 function ensureModal() {
   let modal = document.getElementById("project-modal");
-  if (modal) return modal;
+  if (modal) {
+    // Upgrade older modal shells created before this layout.
+    if (!modal.querySelector(".project-modal-layout") || modal.querySelector("#project-modal-docs")) {
+      if (activeViewer && typeof activeViewer.dispose === "function") activeViewer.dispose();
+      activeViewer = null;
+      activeProjectId = null;
+      viewerCache.forEach(function (viewer) {
+        if (viewer && typeof viewer.dispose === "function") viewer.dispose();
+      });
+      viewerCache.clear();
+      modal.remove();
+      modal = null;
+    } else {
+      return modal;
+    }
+  }
 
   modal = document.createElement("div");
   modal.id = "project-modal";
@@ -17,11 +48,11 @@ function ensureModal() {
     '<div class="project-modal-backdrop" data-close="true"></div>' +
     '<div class="project-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">' +
       '<button type="button" class="project-modal-close" data-close="true" aria-label="Close">&times;</button>' +
-      '<div class="project-modal-layout">' +
+      '<div class="project-modal-layout" id="project-modal-layout">' +
         '<div class="project-modal-viewer-wrap">' +
           '<div id="project-modal-viewer" class="project-modal-viewer">No CAD model for this project yet.</div>' +
           '<div id="project-modal-downloads" class="project-modal-downloads" hidden></div>' +
-          '<p class="project-modal-hint">Drag to orbit · Scroll to zoom · Screenshot / copy view in the viewer toolbar</p>' +
+          '<p class="project-modal-hint">Drag to orbit · Scroll to zoom</p>' +
         "</div>" +
         '<div class="project-modal-content">' +
           '<h2 id="project-modal-title"></h2>' +
@@ -49,11 +80,42 @@ function ensureModal() {
   return modal;
 }
 
-function disposeActiveViewer() {
-  if (activeViewer && typeof activeViewer.dispose === "function") {
+function parkActiveViewer() {
+  if (!activeViewer) {
+    activeProjectId = null;
+    return;
+  }
+  if (activeProjectId && typeof activeViewer.park === "function") {
+    activeViewer.park();
+    viewerCache.set(activeProjectId, activeViewer);
+  } else if (typeof activeViewer.dispose === "function") {
     activeViewer.dispose();
   }
   activeViewer = null;
+  activeProjectId = null;
+}
+
+function bindSavePreset(project, projectId) {
+  detectLocalAdmin().then(function (isLocal) {
+    const saveWrap = document.getElementById("project-modal-save-preset");
+    if (!saveWrap || !isLocal || !activeViewer) return;
+    saveWrap.hidden = false;
+    saveWrap.innerHTML =
+      '<button type="button" class="btn" data-save-preset>Save current viewer as project default</button>' +
+      '<p class="muted" style="margin:0.4rem 0 0;font-size:0.78rem;">Writes explode, materials, camera, and clip into this project on disk.</p>';
+    saveWrap.querySelector("[data-save-preset]").addEventListener("click", function () {
+      if (!activeViewer || typeof activeViewer.getPreset !== "function") return;
+      const next = Object.assign({}, project, { viewerPreset: activeViewer.getPreset() });
+      saveProject(next)
+        .then(function () {
+          projectsById[projectId] = next;
+          saveWrap.querySelector("p").textContent = "Saved viewer defaults to disk. Commit & push to publish.";
+        })
+        .catch(function (err) {
+          saveWrap.querySelector("p").textContent = err.message || "Unable to save preset.";
+        });
+    });
+  });
 }
 
 function fileNameFromUrl(url) {
@@ -62,38 +124,89 @@ function fileNameFromUrl(url) {
   return parts[parts.length - 1] || "download";
 }
 
-function renderDownloads(project, modelSrc) {
+function documentLabel(doc) {
+  const raw = String((doc && doc.name) || "").trim();
+  if (!raw) return "Document";
+  if (/\.(pdf|docx?|pptx?|xlsx?)$/i.test(raw) && raw.length > 40) {
+    return "PDF document";
+  }
+  if (/\.(pdf|docx?|pptx?|xlsx?)$/i.test(raw)) {
+    return raw.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim() || "Document";
+  }
+  return raw;
+}
+
+function renderDownloads(modelSrc) {
   const wrap = document.getElementById("project-modal-downloads");
   if (!wrap) return;
-  const links = [];
-  if (modelSrc) {
-    links.push(
-      '<a class="project-download-link" href="' +
-        escapeHtml(modelSrc) +
-        '" download="' +
-        escapeHtml(fileNameFromUrl(modelSrc)) +
-        '">Download CAD</a>'
-    );
-  }
-  (project.documents || []).forEach(function (doc) {
-    if (!doc || !doc.url) return;
-    links.push(
-      '<a class="project-download-link" href="' +
-        escapeHtml(doc.url) +
-        '" download="' +
-        escapeHtml(doc.name || fileNameFromUrl(doc.url)) +
-        '" target="_blank" rel="noopener">Download ' +
-        escapeHtml(doc.name || "PDF") +
-        "</a>"
-    );
-  });
-  if (!links.length) {
+  if (!modelSrc) {
     wrap.hidden = true;
     wrap.innerHTML = "";
     return;
   }
   wrap.hidden = false;
-  wrap.innerHTML = links.join("");
+  wrap.innerHTML =
+    '<a class="project-download-link" href="' +
+    escapeHtml(modelSrc) +
+    '" download="' +
+    escapeHtml(fileNameFromUrl(modelSrc)) +
+    '">Download CAD</a>';
+}
+
+function documentsSectionHtml(documents) {
+  if (!documents.length) return "";
+  const first = documents[0];
+  const previewUrl = first && first.url
+    ? escapeHtml(first.url) + "#page=1&zoom=page-width"
+    : "";
+  return (
+    '<section class="project-modal-section project-modal-docs-inline">' +
+      "<h3>Documents</h3>" +
+      '<ul class="project-modal-doc-list">' +
+      documents
+        .map(function (doc) {
+          const url = escapeHtml(doc.url || "");
+          const label = escapeHtml(documentLabel(doc));
+          const fileName = escapeHtml(doc.name || fileNameFromUrl(doc.url));
+          return (
+            "<li>" +
+              '<span class="project-modal-doc-title">' + label + "</span>" +
+              '<span class="project-modal-doc-actions">' +
+                '<a href="' + url + '" target="_blank" rel="noopener">Open</a>' +
+                '<a href="' + url + '" download="' + fileName + '">Download</a>' +
+              "</span>" +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ul>" +
+      (previewUrl
+        ? '<details class="project-modal-pdf-fold" open>' +
+            '<summary><span data-pdf-fold-label>Hide PDF preview</span></summary>' +
+            '<div class="project-modal-pdf-frame">' +
+              '<iframe class="project-modal-pdf" src="' +
+              previewUrl +
+              '" title="' +
+              escapeHtml(documentLabel(first)) +
+              '"></iframe>' +
+            "</div>" +
+          "</details>"
+        : "") +
+    "</section>"
+  );
+}
+
+function bindPdfFoldToggles(root) {
+  if (!root) return;
+  root.querySelectorAll(".project-modal-pdf-fold").forEach(function (fold) {
+    const label = fold.querySelector("[data-pdf-fold-label]");
+    if (!label) return;
+    const sync = function () {
+      label.textContent = fold.open ? "Hide PDF preview" : "Show PDF preview";
+    };
+    sync();
+    fold.addEventListener("toggle", sync);
+  });
 }
 
 function parseHashViewState() {
@@ -105,7 +218,7 @@ function parseHashViewState() {
 export function closeProjectModal() {
   const modal = document.getElementById("project-modal");
   if (!modal) return;
-  disposeActiveViewer();
+  parkActiveViewer();
   modal.setAttribute("hidden", "");
   document.body.classList.remove("modal-open");
   if (window.history && window.history.replaceState) {
@@ -117,6 +230,7 @@ export function closeProjectModal() {
 }
 
 export function openProjectModal(projectId, options) {
+  flushStaleParkedViewers();
   const project = projectsById[projectId];
   if (!project) return;
   const opts = options || {};
@@ -129,6 +243,8 @@ export function openProjectModal(projectId, options) {
 
   titleEl.textContent = project.title;
 
+  const documents = Array.isArray(project.documents) ? project.documents : [];
+
   const tagsHtml = (project.tags || [])
     .map(function (tag) {
       return '<span class="pill ' + escapeHtml(tag.type) + '">' + escapeHtml(tag.label) + "</span>";
@@ -138,57 +254,44 @@ export function openProjectModal(projectId, options) {
   metaEl.innerHTML =
     (project.date ? '<span class="pill date">' + escapeHtml(project.date) + "</span>" : "") +
     tagsHtml +
-    (project.featured ? '<span class="pill featured">Featured</span>' : "");
+    (project.featured ? '<span class="pill featured">Featured</span>' : "") +
+    (documents.length ? '<span class="pill pdf">' + (documents.length === 1 ? "PDF" : documents.length + " PDFs") + "</span>" : "");
 
   const details = project.details || "";
   const story = project.story || [];
   const storyHtml = story.length
-    ? "<h3>Design story</h3><ul class=\"project-story\">" +
+    ? '<section class="project-modal-section"><h3>Design story</h3><ul class="project-story">' +
       story.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("") +
-      "</ul>"
+      "</ul></section>"
     : "";
 
-  const outcomeHtml = (project.outcome || [])
-    .map(function (item) {
-      return "<li>" + escapeHtml(item) + "</li>";
-    })
-    .join("");
-
-  const documents = Array.isArray(project.documents) ? project.documents : [];
-  const documentsHtml = documents.length
-    ? "<h3>Documents</h3>" +
-      documents
-        .map(function (doc) {
-          const url = escapeHtml(doc.url || "");
-          const name = escapeHtml(doc.name || "document.pdf");
-          return (
-            '<div class="project-modal-document">' +
-              '<div class="project-modal-document-header">' +
-                "<strong>" + name + "</strong>" +
-                '<a href="' + url + '" target="_blank" rel="noopener">Open PDF</a>' +
-              "</div>" +
-              '<iframe class="project-modal-pdf" src="' + url + '#view=FitH" title="' + name + '" loading="lazy"></iframe>' +
-            "</div>"
-          );
-        })
-        .join("")
+  const outcomeItems = project.outcome || [];
+  const outcomeHtml = outcomeItems.length
+    ? '<section class="project-modal-section"><h3>Outcome</h3><ul>' +
+      outcomeItems.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("") +
+      "</ul></section>"
     : "";
 
   bodyEl.innerHTML =
-    "<h3>Goal</h3>" +
-    '<p class="goal">' + escapeHtml(project.goal) + "</p>" +
+    '<section class="project-modal-section">' +
+      "<h3>Goal</h3>" +
+      '<p class="goal">' + escapeHtml(project.goal) + "</p>" +
+    "</section>" +
+    documentsSectionHtml(documents) +
     storyHtml +
-    (details ? "<h3>Details</h3><p>" + escapeHtml(details) + "</p>" : "") +
-    documentsHtml +
-    "<h3>Outcome</h3>" +
-    "<ul>" + outcomeHtml + "</ul>" +
-    "<h3>Technical</h3>" +
-    "<p>" + escapeHtml(project.technical) + "</p>" +
+    (details
+      ? '<section class="project-modal-section"><h3>Details</h3><p>' + escapeHtml(details) + "</p></section>"
+      : "") +
+    outcomeHtml +
+    (project.technical
+      ? '<section class="project-modal-section"><h3>Technical</h3><p>' + escapeHtml(project.technical) + "</p></section>"
+      : "") +
     '<div id="project-modal-save-preset" class="project-modal-save-preset" hidden></div>';
 
-  disposeActiveViewer();
+  bindPdfFoldToggles(bodyEl);
+
   const modelSrc = modelManifest[projectId] || project.modelUrl || "";
-  renderDownloads(project, modelSrc);
+  renderDownloads(modelSrc);
 
   if (window.history && window.history.replaceState) {
     const url = new URL(window.location.href);
@@ -196,45 +299,43 @@ export function openProjectModal(projectId, options) {
     window.history.replaceState({}, "", url.pathname + url.search + (opts.preserveHash ? window.location.hash : ""));
   }
 
-  if (modelSrc) {
-    viewerEl.textContent = "Loading CAD model…";
-    import("./model-viewer.js?v=cadui6")
-      .then(function (mod) {
-        if (modal.hasAttribute("hidden")) return;
-        const viewState = opts.viewState || (mod.decodeViewState ? mod.decodeViewState(parseHashViewState() || "") : null);
-        activeViewer = mod.createViewer(viewerEl, modelSrc, {
-          projectId: projectId,
-          preset: project.viewerPreset || null,
-          viewState: viewState
-        });
+  const reuseActive = activeProjectId === projectId && activeViewer;
+  if (!reuseActive) {
+    parkActiveViewer();
+  }
 
-        detectLocalAdmin().then(function (isLocal) {
-          const saveWrap = document.getElementById("project-modal-save-preset");
-          if (!saveWrap || !isLocal || !activeViewer) return;
-          saveWrap.hidden = false;
-          saveWrap.innerHTML =
-            '<button type="button" class="btn" data-save-preset>Save current viewer as project default</button>' +
-            '<p class="muted" style="margin:0.4rem 0 0;font-size:0.78rem;">Writes explode, materials, camera, and clip into this project on disk.</p>';
-          saveWrap.querySelector("[data-save-preset]").addEventListener("click", function () {
-            if (!activeViewer || typeof activeViewer.getPreset !== "function") return;
-            const next = Object.assign({}, project, { viewerPreset: activeViewer.getPreset() });
-            saveProject(next)
-              .then(function () {
-                projectsById[projectId] = next;
-                saveWrap.querySelector("p").textContent = "Saved viewer defaults to disk. Commit & push to publish.";
-              })
-              .catch(function (err) {
-                saveWrap.querySelector("p").textContent = err.message || "Unable to save preset.";
-              });
+  if (modelSrc) {
+    if (reuseActive) {
+      bindSavePreset(project, projectId);
+    } else if (viewerCache.has(projectId)) {
+      activeViewer = viewerCache.get(projectId);
+      viewerCache.delete(projectId);
+      activeProjectId = projectId;
+      if (typeof activeViewer.resume === "function") {
+        activeViewer.resume(viewerEl);
+      }
+      bindSavePreset(project, projectId);
+    } else {
+      viewerEl.textContent = "Loading CAD model…";
+      activeProjectId = projectId;
+      import("./model-viewer.js?v=cadui10")
+        .then(function (mod) {
+          if (activeProjectId !== projectId) return;
+          const viewState = opts.viewState || (mod.decodeViewState ? mod.decodeViewState(parseHashViewState() || "") : null);
+          activeViewer = mod.createViewer(viewerEl, modelSrc, {
+            projectId: projectId,
+            preset: project.viewerPreset || null,
+            viewState: viewState
           });
+          bindSavePreset(project, projectId);
+        })
+        .catch(function (err) {
+          console.warn("3D viewer failed to load.", err);
+          if (activeProjectId === projectId) {
+            viewerEl.textContent = "Unable to load 3D viewer. Check your network connection.";
+          }
         });
-      })
-      .catch(function (err) {
-        console.warn("3D viewer failed to load.", err);
-        if (!modal.hasAttribute("hidden")) {
-          viewerEl.textContent = "Unable to load 3D viewer. Check your network connection.";
-        }
-      });
+    }
   } else {
     viewerEl.textContent =
       "No CAD model linked yet. Add a .glb/.gltf (or .step/.stp) path for \"" +

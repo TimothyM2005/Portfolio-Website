@@ -1,6 +1,6 @@
 # Portfolio
 
-A portfolio site with **Projects**, **Research**, **Resume**, and a local **Admin** editor. Built for GitHub Pages.
+A portfolio site with **Projects**, **Research**, and **Resume** on GitHub Pages. Project editing uses a local **Admin** page (not linked in the public nav).
 
 ## View / edit locally (recommended)
 
@@ -35,7 +35,7 @@ GitHub Pages will redeploy the static site. The live site is **read-only** — e
 2. Edit (or create) a project and set the **Project ID**.
 3. Under **Detail documents / slide decks (PDF)**, choose your PDF(s) → **Upload selected PDFs**.
 4. Click **Save project**.
-5. Open the Projects page, click the card — the PDF embeds in the detail popup (with an “Open PDF” link).
+5. Open the Projects page, click the card — documents appear as short Open/Download links, with a PDF preview below the write-up.
 
 Files land in `docs/projects/<project-id>/` and are listed on the project as a `documents` array in `data/projects.json`.
 
