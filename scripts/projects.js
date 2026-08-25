@@ -40,6 +40,36 @@ function normalizeProject(project) {
 
   const modelUrl = String(project.modelUrl || project.cadUrl || "").trim();
 
+  const documents = Array.isArray(project.documents)
+    ? project.documents
+        .map(function (doc) {
+          if (!doc) return null;
+          if (typeof doc === "string") {
+            const url = String(doc).trim();
+            if (!url) return null;
+            const parts = url.split("/");
+            return { url: url, name: parts[parts.length - 1] || "document.pdf" };
+          }
+          const url = String(doc.url || "").trim();
+          if (!url) return null;
+          const name = String(doc.name || "").trim() || url.split("/").pop() || "document.pdf";
+          return { url: url, name: name };
+        })
+        .filter(Boolean)
+    : [];
+
+  const story = Array.isArray(project.story)
+    ? project.story.map(function (item) { return String(item || "").trim(); }).filter(Boolean)
+    : String(project.story || "")
+        .split("\n")
+        .map(function (line) { return line.trim(); })
+        .filter(Boolean);
+
+  let viewerPreset = null;
+  if (project.viewerPreset && typeof project.viewerPreset === "object") {
+    viewerPreset = project.viewerPreset;
+  }
+
   return {
     id: id,
     title: String(project.title || id).trim(),
@@ -47,10 +77,14 @@ function normalizeProject(project) {
     tags: tags,
     goal: String(project.goal || "").trim(),
     details: String(project.details || "").trim(),
+    story: story,
     outcome: outcome,
     technical: String(project.technical || "").trim(),
     images: images,
     modelUrl: modelUrl,
+    documents: documents,
+    featured: !!project.featured,
+    viewerPreset: viewerPreset,
     order: typeof project.order === "number" ? project.order : null
   };
 }

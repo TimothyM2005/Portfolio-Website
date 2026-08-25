@@ -1,3 +1,8 @@
 {
-    "fsae-gps": "models/gps_case.gltf"
+  "fsae-gps": "models/gps_case.gltf",
+  "gearbox-design": "models/gearbox-design.step",
+  "bell-crank-fea": "models/bell-crank-fea.step",
+  "junior-design-robot": "models/junior-design-robot.step",
+  "rival-chassis": "models/rival-chassis.glb",
+  "battlebot": "models/battlebot.glb"
 }

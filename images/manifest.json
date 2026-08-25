@@ -10,14 +10,8 @@
     "images/battlebot/Wheel.png",
     "images/battlebot/Wheels.png"
   ],
-  "fsae-gps": [
-    "images/fsae-gps/IMG_1095.jpg",
-    "images/fsae-gps/imageGPS.png"
-  ],
-  "freshman-lego": [
-    "images/freshman-lego/Screenshot 2026-03-10 231324.png",
-    "images/freshman-lego/Screenshot 2026-03-10 231332.png",
-    "images/freshman-lego/Screenshot 2026-03-10 231343.png"
+  "bell-crank-fea": [
+    "images/bell-crank-fea/1257618d-1872-4c2a-90e7-701f0eef4a80.png"
   ],
   "frc-intake": [
     "images/frc-intake/Intake V4 Neo (1).png",
@@ -31,6 +25,30 @@
     "images/frc-robot/Elevator.png",
     "images/frc-robot/Robot (1).png",
     "images/frc-robot/Robot.png"
+  ],
+  "freshman-lego": [
+    "images/freshman-lego/Screenshot 2026-03-10 231324.png",
+    "images/freshman-lego/Screenshot 2026-03-10 231332.png",
+    "images/freshman-lego/Screenshot 2026-03-10 231343.png"
+  ],
+  "fsae-gps": [
+    "images/fsae-gps/IMG_1095.jpg",
+    "images/fsae-gps/imageGPS.png"
+  ],
+  "gearbox-design": [
+    "images/gearbox-design/full-assembly.png",
+    "images/gearbox-design/screenshot-2025-11-05-213702.png",
+    "images/gearbox-design/screenshot-2025-11-05-214016.png",
+    "images/gearbox-design/screenshot-2025-11-05-214029-1-.png",
+    "images/gearbox-design/screenshot-2025-11-05-214029.png",
+    "images/gearbox-design/screenshot-2025-11-05-214114.png",
+    "images/gearbox-design/screenshot-2025-11-05-214140.png",
+    "images/gearbox-design/screenshot-2025-11-05-214216.png"
+  ],
+  "junior-design-robot": [
+    "images/junior-design-robot/image.png",
+    "images/junior-design-robot/screenshot_2026-02-22_211826.png",
+    "images/junior-design-robot/screenshot_2026-02-22_212053.png"
   ],
   "rival-arm": [
     "images/rival-arm/Arm (1).png",

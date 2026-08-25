@@ -4,11 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resume — Timothy Mitchell</title>
+  <meta name="description" content="Resume of Timothy Mitchell — mechanical engineering student focused on design, CAD, and Formula Student." />
+  <meta name="author" content="Timothy Mitchell" />
+  <link rel="canonical" href="https://timothym2005.github.io/Portfolio-Website/resume.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Resume — Timothy Mitchell" />
+  <meta property="og:description" content="Resume of Timothy Mitchell — mechanical engineering student focused on design, CAD, and Formula Student." />
+  <meta property="og:url" content="https://timothym2005.github.io/Portfolio-Website/resume.html" />
+  <meta property="og:image" content="https://timothym2005.github.io/Portfolio-Website/images/gearbox-design/full-assembly.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    .resume-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
     .resume-download {
       display: inline-block;
       background: var(--accent-soft);
@@ -17,12 +33,15 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: 500;
-      margin-bottom: 2rem;
       border: 1px solid var(--accent);
     }
     .resume-download:hover {
       background: var(--accent);
       color: var(--bg);
+    }
+    .resume-download[aria-disabled="true"] {
+      opacity: 0.55;
+      pointer-events: none;
     }
     .resume-embed {
       width: 100%;
@@ -38,7 +57,12 @@
       border-radius: 12px;
       padding: 2rem;
       color: var(--text-muted);
-      text-align: center;
+      text-align: left;
+      line-height: 1.55;
+    }
+    .resume-placeholder code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.85em;
     }
   </style>
 </head>
@@ -61,14 +85,17 @@
     </header>
 
     <main>
-      <a href="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" class="resume-download" target="_blank" rel="noopener">Download PDF</a>
-
-      <iframe class="resume-embed" src="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" title="Resume PDF"></iframe>
+      <div class="resume-actions">
+        <a id="resume-download" class="resume-download" href="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" download>Download PDF</a>
+      </div>
+      <div id="resume-viewer">
+        <iframe class="resume-embed" id="resume-frame" src="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" title="Resume PDF"></iframe>
+      </div>
     </main>
 
     <footer>
       <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
-      <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
+      <p><a href="https://github.com/TimothyM2005">GitHub</a> · Built for GitHub Pages</p>
     </footer>
   </div>
 
@@ -76,14 +103,42 @@
 
   <script>
     (function () {
-      var btn = document.querySelector('.back-to-top');
-      if (!btn) return;
-      function update() {
-        if (window.scrollY > 400) btn.classList.add('visible');
-        else btn.classList.remove('visible');
+      var btn = document.querySelector(".back-to-top");
+      if (btn) {
+        function update() {
+          if (window.scrollY > 400) btn.classList.add("visible");
+          else btn.classList.remove("visible");
+        }
+        window.addEventListener("scroll", update);
+        update();
       }
-      window.addEventListener('scroll', update);
-      update();
+
+      var resumeUrl = "docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf";
+      var download = document.getElementById("resume-download");
+      var viewer = document.getElementById("resume-viewer");
+
+      fetch(resumeUrl, { method: "HEAD" })
+        .then(function (response) {
+          if (response.ok) return;
+          throw new Error("missing");
+        })
+        .catch(function () {
+          if (download) {
+            download.setAttribute("aria-disabled", "true");
+            download.removeAttribute("download");
+            download.href = "#";
+            download.textContent = "Resume PDF not uploaded yet";
+          }
+          if (viewer) {
+            viewer.innerHTML =
+              '<div class="resume-placeholder">' +
+                "<p><strong>Add your resume PDF to publish a one-click download.</strong></p>" +
+                "<p>Save it as:</p>" +
+                "<p><code>docs/resume/Timothy Mitchell - Resume Website.pdf</code></p>" +
+                "<p>Then commit and push. The Download PDF button and preview will appear automatically.</p>" +
+              "</div>";
+          }
+        });
     })();
   </script>
 </body>

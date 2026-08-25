@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Timothy Mitchell Portfolio</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -175,6 +177,17 @@
       word-break: break-all;
     }
 
+    .asset-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      background: var(--bg);
+    }
+
+    .asset-block label {
+      color: var(--accent);
+    }
+
     .hidden {
       display: none !important;
     }
@@ -205,29 +218,33 @@
     </nav>
     <header>
       <h1>Project Admin</h1>
-      <p class="tagline">Log in to add or edit portfolio projects</p>
+      <p class="tagline">Edit projects locally, then push to GitHub Pages</p>
     </header>
 
     <main class="admin-wrap">
       <section id="setup-warning" class="admin-panel hidden">
-        <h2>Firebase setup required</h2>
+        <h2>Local admin server required</h2>
         <p class="muted">
-          Update <code>scripts/firebase-config.js</code> with your Firebase web app keys, enable Email/Password Auth,
-          create a Firestore database, and add your admin user. See the README for full steps.
+          The live GitHub Pages site is read-only. To add or edit projects, run the local admin server from your repo:
+        </p>
+        <pre style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1rem; overflow: auto; font-size: 0.85rem;">python scripts/local_admin_server.py</pre>
+        <p class="muted" style="margin-top: 0.75rem; margin-bottom: 0;">
+          Then open <code>http://127.0.0.1:8000/admin.html</code>, save your changes, and
+          <code>git add</code> / <code>git commit</code> / <code>git push</code> to publish.
         </p>
       </section>
 
-      <section id="login-panel" class="admin-panel">
+      <section id="login-panel" class="admin-panel hidden">
         <h2>Login</h2>
-        <p class="muted">Use the Firebase Auth email/password account you created for this site.</p>
+        <p class="muted">Optional Firebase login (only if you still use Firestore). Preferred workflow is the local admin server.</p>
         <form id="login-form" class="form-grid">
           <div class="form-row">
             <label for="login-email">Email</label>
-            <input id="login-email" type="email" autocomplete="username" required />
+            <input id="login-email" type="email" autocomplete="username" />
           </div>
           <div class="form-row">
             <label for="login-password">Password</label>
-            <input id="login-password" type="password" autocomplete="current-password" required />
+            <input id="login-password" type="password" autocomplete="current-password" />
           </div>
           <div class="actions">
             <button class="btn primary" type="submit">Sign in</button>
@@ -240,13 +257,17 @@
         <div class="admin-panel">
           <div class="actions" style="justify-content: space-between; margin-top: 0;">
             <p class="muted" style="margin: 0;" id="signed-in-as"></p>
-            <button class="btn" type="button" id="logout-btn">Log out</button>
+            <button class="btn hidden" type="button" id="logout-btn">Log out</button>
           </div>
+          <p class="muted" style="margin: 0.75rem 0 0;" id="publish-hint">
+            After saving, publish with:
+            <code>git add -A &amp;&amp; git commit -m "Update projects" &amp;&amp; git push</code>
+          </p>
         </div>
 
         <div class="admin-panel">
           <h2 id="form-title">Add project</h2>
-          <p class="muted">Upload images and CAD files here after setting a Project ID. Files are stored in Firebase Storage.</p>
+          <p class="muted">Upload images, CAD, and PDF documents after setting a Project ID. Files are written into this repo on disk.</p>
           <form id="project-form" class="form-grid">
             <div class="form-row two">
               <div>
@@ -281,6 +302,51 @@
               <textarea id="project-details" placeholder="Longer write-up for the project detail modal"></textarea>
             </div>
             <div class="form-row">
+              <label for="project-story">Design story (one short paragraph per line)</label>
+              <textarea id="project-story" placeholder="What you decided, what failed, what changed…"></textarea>
+            </div>
+            <div class="form-row two">
+              <div>
+                <label for="project-featured">
+                  <input id="project-featured" type="checkbox" />
+                  Featured project (homepage highlight)
+                </label>
+              </div>
+              <div>
+                <label for="project-explode">Default explode (0–100)</label>
+                <input id="project-explode" type="number" min="0" max="100" step="1" placeholder="0" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="project-default-material">Default material (all parts)</label>
+              <select id="project-default-material">
+                <option value="">Imported colors</option>
+                <option value="aluminum">Aluminum</option>
+                <option value="steel">Steel</option>
+                <option value="plastic">Plastic</option>
+                <option value="matte">Matte</option>
+                <option value="glass">Glass</option>
+                <option value="acrylic">Acrylic</option>
+                <option value="frosted">Frosted</option>
+                <option value="clear">Clear</option>
+                <option value="tintBlue">Tinted blue</option>
+                <option value="tintAmber">Tinted amber</option>
+              </select>
+            </div>
+
+            <div class="form-row asset-block" id="documents-upload-block">
+              <label for="project-documents">PDF for detail popup (slide decks / reports)</label>
+              <p class="muted" style="margin: 0 0 0.45rem;">
+                These PDFs appear in the project detail popup under Details. Set a Project ID first, then upload, then Save.
+              </p>
+              <input id="project-documents" type="file" accept=".pdf,application/pdf" multiple />
+              <div class="actions" style="margin-top: 0.35rem;">
+                <button class="btn" type="button" id="upload-documents-btn">Upload selected PDFs</button>
+              </div>
+              <ul id="document-preview-list" class="asset-list"></ul>
+            </div>
+
+            <div class="form-row">
               <label for="project-outcome">Outcome (one bullet per line)</label>
               <textarea id="project-outcome" required></textarea>
             </div>
@@ -300,6 +366,9 @@
 
             <div class="form-row">
               <label for="project-cad">CAD model (.step / .stp / .glb / .gltf)</label>
+              <p class="muted" style="margin: 0 0 0.45rem;">
+                Files up to 100 MB. Large STEP files are gzipped on upload, then tessellated in a background thread. A .glb export is still the fastest option for the viewer.
+              </p>
               <input id="project-cad" type="file" accept=".step,.stp,.glb,.gltf,model/gltf-binary,model/gltf+json" />
               <div class="actions" style="margin-top: 0.35rem;">
                 <button class="btn" type="button" id="upload-cad-btn">Upload CAD file</button>
@@ -311,10 +380,27 @@
             <div class="actions">
               <button class="btn primary" type="submit" id="save-btn">Save project</button>
               <button class="btn" type="button" id="reset-btn">Clear form</button>
-              <button class="btn" type="button" id="seed-btn">Seed from local JSON</button>
+              <button class="btn" type="button" id="seed-btn" hidden>Seed from local JSON</button>
             </div>
             <p id="form-status" class="status" hidden></p>
           </form>
+        </div>
+
+        <div class="admin-panel">
+          <h2>Featured project</h2>
+          <p class="muted">This project appears in the homepage highlight above the project grid. Only one can be featured.</p>
+          <div class="form-row two" style="align-items: end;">
+            <div>
+              <label for="featured-project-select">Homepage featured</label>
+              <select id="featured-project-select">
+                <option value="">None</option>
+              </select>
+            </div>
+            <div class="actions" style="margin-top: 0;">
+              <button class="btn primary" type="button" id="save-featured-btn">Set featured</button>
+            </div>
+          </div>
+          <p id="featured-status" class="status" hidden></p>
         </div>
 
         <div class="admin-panel">
@@ -332,18 +418,20 @@
 
   <script type="module">
     import {
+      detectLocalAdmin,
       isFirebaseConfigured,
       watchAuth,
       login,
       logout,
       loadProjects,
       saveProject,
+      setFeaturedProject,
       deleteProject,
       seedProjectsFromLocal,
       uploadProjectFile,
       deleteStorageUrl
-    } from "./scripts/projects-store.js";
-    import { escapeHtml } from "./scripts/projects.js";
+    } from "./scripts/projects-store.js?v=feat11";
+    import { escapeHtml } from "./scripts/projects.js?v=feat11";
 
     const setupWarning = document.getElementById("setup-warning");
     const loginPanel = document.getElementById("login-panel");
@@ -351,17 +439,25 @@
     const loginForm = document.getElementById("login-form");
     const loginStatus = document.getElementById("login-status");
     const formStatus = document.getElementById("form-status");
+    const featuredStatus = document.getElementById("featured-status");
+    const featuredSelect = document.getElementById("featured-project-select");
+    const saveFeaturedBtn = document.getElementById("save-featured-btn");
     const projectForm = document.getElementById("project-form");
     const projectList = document.getElementById("project-list");
     const signedInAs = document.getElementById("signed-in-as");
     const formTitle = document.getElementById("form-title");
     const imagePreviewList = document.getElementById("image-preview-list");
+    const documentPreviewList = document.getElementById("document-preview-list");
     const cadPreview = document.getElementById("cad-preview");
+    const logoutBtn = document.getElementById("logout-btn");
+    const seedBtn = document.getElementById("seed-btn");
 
     let editingId = null;
     let currentProjects = [];
     let draftImages = [];
+    let draftDocuments = [];
     let draftModelUrl = "";
+    let localMode = false;
 
     function setStatus(el, message, isError) {
       if (!el) return;
@@ -421,6 +517,28 @@
           .join("");
       }
 
+      if (!draftDocuments.length) {
+        documentPreviewList.innerHTML = '<li><span class="meta">No PDFs uploaded yet.</span></li>';
+      } else {
+        documentPreviewList.innerHTML = draftDocuments
+          .map(function (doc, index) {
+            const name = doc && doc.name ? doc.name : "document.pdf";
+            const url = doc && doc.url ? doc.url : "";
+            return (
+              "<li>" +
+                '<div style="min-width:0;">' +
+                  '<strong style="display:block;font-size:0.9rem;">' + escapeHtml(name) + "</strong>" +
+                  (url
+                    ? '<a class="meta" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">Open PDF</a>'
+                    : '<span class="meta">PDF</span>') +
+                "</div>" +
+                '<button class="btn danger" type="button" data-remove-document="' + index + '">Remove</button>' +
+              "</li>"
+            );
+          })
+          .join("");
+      }
+
       if (draftModelUrl) {
         cadPreview.innerHTML =
           'CAD linked: <a href="' + escapeHtml(draftModelUrl) + '" target="_blank" rel="noopener">open file</a>';
@@ -432,6 +550,7 @@
     function clearForm() {
       editingId = null;
       draftImages = [];
+      draftDocuments = [];
       draftModelUrl = "";
       formTitle.textContent = "Add project";
       projectForm.reset();
@@ -443,6 +562,11 @@
     function fillForm(project) {
       editingId = project.id;
       draftImages = Array.isArray(project.images) ? project.images.slice() : [];
+      draftDocuments = Array.isArray(project.documents)
+        ? project.documents.map(function (doc) {
+            return { url: doc.url, name: doc.name || "document.pdf" };
+          })
+        : [];
       draftModelUrl = project.modelUrl || "";
       formTitle.textContent = "Edit project";
       document.getElementById("project-id").value = project.id;
@@ -453,16 +577,50 @@
       document.getElementById("project-order").value = project.order != null ? project.order : "";
       document.getElementById("project-goal").value = project.goal || "";
       document.getElementById("project-details").value = project.details || "";
+      document.getElementById("project-story").value = (project.story || []).join("\n");
+      document.getElementById("project-featured").checked = !!project.featured;
+      const preset = project.viewerPreset || {};
+      document.getElementById("project-explode").value =
+        preset.explode != null ? Math.round(Number(preset.explode) * 100) : "";
+      document.getElementById("project-default-material").value = preset.allMaterial || "";
       document.getElementById("project-outcome").value = (project.outcome || []).join("\n");
       document.getElementById("project-technical").value = project.technical || "";
       renderAssetPreviews();
       setStatus(formStatus, "");
+      const docsBlock = document.getElementById("documents-upload-block");
+      if (docsBlock && typeof docsBlock.scrollIntoView === "function") {
+        docsBlock.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        formTitle.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function renderFeaturedSelect(projects) {
+      if (!featuredSelect) return;
+      const featured = (projects || []).find(function (project) {
+        return project && project.featured;
+      });
+      featuredSelect.innerHTML =
+        '<option value="">None</option>' +
+        (projects || [])
+          .map(function (project) {
+            return (
+              '<option value="' +
+              escapeHtml(project.id) +
+              '">' +
+              escapeHtml(project.title || project.id) +
+              "</option>"
+            );
+          })
+          .join("");
+      featuredSelect.value = featured ? featured.id : "";
     }
 
     function renderList(projects) {
       currentProjects = projects || [];
+      renderFeaturedSelect(currentProjects);
       if (!currentProjects.length) {
-        projectList.innerHTML = '<li><span class="meta">No projects in Firestore yet. Add one above or seed from local JSON.</span></li>';
+        projectList.innerHTML = '<li><span class="meta">No projects yet. Add one above.</span></li>';
         return;
       }
 
@@ -470,7 +628,9 @@
         .map(function (project) {
           const assetBits = [];
           if (project.images && project.images.length) assetBits.push(project.images.length + " image(s)");
+          if (project.documents && project.documents.length) assetBits.push(project.documents.length + " PDF(s)");
           if (project.modelUrl) assetBits.push("CAD");
+          if (project.featured) assetBits.push("Featured");
           return (
             "<li>" +
               "<div>" +
@@ -482,6 +642,9 @@
                 "</div>" +
               "</div>" +
               '<div class="actions">' +
+                (project.featured
+                  ? ""
+                  : '<button class="btn" type="button" data-feature="' + escapeHtml(project.id) + '">Make featured</button>') +
                 '<button class="btn" type="button" data-edit="' + escapeHtml(project.id) + '">Edit</button>' +
                 '<button class="btn danger" type="button" data-delete="' + escapeHtml(project.id) + '">Delete</button>' +
               "</div>" +
@@ -492,34 +655,52 @@
     }
 
     async function refreshProjects() {
-      const result = await loadProjects({ preferFirestore: true });
+      const result = await loadProjects({ preferLocalAdmin: localMode, preferFirestore: !localMode && isFirebaseConfigured() });
       renderList(result.projects);
     }
 
-    function showLoggedOut() {
-      loginPanel.classList.remove("hidden");
-      dashboard.classList.add("hidden");
-    }
-
-    function showLoggedIn(user) {
+    function showDashboard(label) {
+      setupWarning.classList.add("hidden");
       loginPanel.classList.add("hidden");
       dashboard.classList.remove("hidden");
-      signedInAs.textContent = "Signed in as " + (user.email || "admin");
+      signedInAs.textContent = label || "Local admin mode";
       refreshProjects().catch(function (err) {
         setStatus(formStatus, err.message || "Unable to load projects.", true);
       });
     }
 
-    if (!isFirebaseConfigured()) {
+    function showReadOnly() {
       setupWarning.classList.remove("hidden");
-      loginForm.querySelector("button").disabled = true;
-      setStatus(loginStatus, "Firebase config placeholders are still set.", true);
+      loginPanel.classList.add("hidden");
+      dashboard.classList.add("hidden");
     }
 
-    watchAuth(function (user) {
-      if (user) showLoggedIn(user);
-      else showLoggedOut();
-    });
+    async function boot() {
+      localMode = await detectLocalAdmin();
+      if (localMode) {
+        logoutBtn.classList.add("hidden");
+        seedBtn.hidden = true;
+        showDashboard("Local admin — edits write to this repo");
+        return;
+      }
+
+      if (isFirebaseConfigured()) {
+        setupWarning.classList.add("hidden");
+        loginPanel.classList.remove("hidden");
+        seedBtn.hidden = false;
+        logoutBtn.classList.remove("hidden");
+        watchAuth(function (user) {
+          if (user) showDashboard("Signed in as " + (user.email || "admin"));
+          else {
+            loginPanel.classList.remove("hidden");
+            dashboard.classList.add("hidden");
+          }
+        });
+        return;
+      }
+
+      showReadOnly();
+    }
 
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -535,14 +716,14 @@
       }
     });
 
-    document.getElementById("logout-btn").addEventListener("click", async function () {
+    logoutBtn.addEventListener("click", async function () {
       await logout();
       clearForm();
     });
 
     document.getElementById("reset-btn").addEventListener("click", clearForm);
 
-    document.getElementById("seed-btn").addEventListener("click", async function () {
+    seedBtn.addEventListener("click", async function () {
       if (!confirm("Copy all projects from data/projects.json into Firestore?")) return;
       setStatus(formStatus, "Seeding projects…");
       try {
@@ -594,7 +775,8 @@
         return;
       }
 
-      setStatus(formStatus, "Uploading CAD file…");
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+      setStatus(formStatus, "Uploading CAD file (" + sizeMb + " MB)…");
       try {
         if (draftModelUrl) {
           await deleteStorageUrl(draftModelUrl);
@@ -606,6 +788,36 @@
         setStatus(formStatus, "CAD file uploaded. Remember to Save project.");
       } catch (err) {
         setStatus(formStatus, err.message || "CAD upload failed.", true);
+      }
+    });
+
+    document.getElementById("upload-documents-btn").addEventListener("click", async function () {
+      const projectId = currentProjectId();
+      const input = document.getElementById("project-documents");
+      const files = Array.from(input.files || []);
+      if (!projectId) {
+        setStatus(formStatus, "Enter a Project ID before uploading.", true);
+        return;
+      }
+      if (!files.length) {
+        setStatus(formStatus, "Choose one or more PDF files first.", true);
+        return;
+      }
+
+      setStatus(formStatus, "Uploading PDFs…");
+      try {
+        for (let i = 0; i < files.length; i += 1) {
+          const uploaded = await uploadProjectFile(projectId, files[i], "documents");
+          draftDocuments.push({
+            url: uploaded.url,
+            name: (uploaded.document && uploaded.document.name) || uploaded.name || files[i].name
+          });
+        }
+        input.value = "";
+        renderAssetPreviews();
+        setStatus(formStatus, "Uploaded " + files.length + " PDF(s). Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "PDF upload failed.", true);
       }
     });
 
@@ -641,10 +853,47 @@
       }
     });
 
+    documentPreviewList.addEventListener("click", async function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const indexRaw = target.getAttribute("data-remove-document");
+      if (indexRaw == null) return;
+      const index = Number(indexRaw);
+      const doc = draftDocuments[index];
+      if (!doc || !doc.url) return;
+      setStatus(formStatus, "Removing PDF…");
+      try {
+        await deleteStorageUrl(doc.url);
+        draftDocuments.splice(index, 1);
+        renderAssetPreviews();
+        setStatus(formStatus, "PDF removed. Remember to Save project.");
+      } catch (err) {
+        setStatus(formStatus, err.message || "Unable to remove PDF.", true);
+      }
+    });
+
     projectForm.addEventListener("submit", async function (event) {
       event.preventDefault();
       const id = document.getElementById("project-id").value.trim();
       const orderRaw = document.getElementById("project-order").value.trim();
+      const explodeRaw = document.getElementById("project-explode").value.trim();
+      const defaultMaterial = document.getElementById("project-default-material").value;
+      const existingPreset =
+        editingId && currentProjects.find(function (item) { return item.id === editingId; })
+          ? (currentProjects.find(function (item) { return item.id === editingId; }).viewerPreset || {})
+          : {};
+      const viewerPreset = Object.assign({}, existingPreset);
+      if (explodeRaw === "") {
+        delete viewerPreset.explode;
+      } else {
+        viewerPreset.explode = Math.max(0, Math.min(100, Number(explodeRaw) || 0)) / 100;
+      }
+      if (defaultMaterial) viewerPreset.allMaterial = defaultMaterial;
+      else delete viewerPreset.allMaterial;
+      if (!Object.keys(viewerPreset).length) {
+        // keep empty as undefined below
+      }
+
       const project = {
         id: editingId || id,
         title: document.getElementById("project-title").value.trim(),
@@ -652,27 +901,72 @@
         tags: parseTags(document.getElementById("project-tags").value),
         goal: document.getElementById("project-goal").value.trim(),
         details: document.getElementById("project-details").value.trim(),
+        story: document.getElementById("project-story").value
+          .split("\n")
+          .map(function (line) { return line.trim(); })
+          .filter(Boolean),
+        featured: document.getElementById("project-featured").checked,
         outcome: document.getElementById("project-outcome").value,
         technical: document.getElementById("project-technical").value.trim(),
         images: draftImages.slice(),
+        documents: draftDocuments.map(function (doc) {
+          return { url: doc.url, name: doc.name || "document.pdf" };
+        }),
         modelUrl: draftModelUrl || "",
         order: orderRaw === "" ? null : Number(orderRaw)
       };
+      if (Object.keys(viewerPreset).length) project.viewerPreset = viewerPreset;
 
       setStatus(formStatus, "Saving…");
       try {
         await saveProject(project);
         clearForm();
         await refreshProjects();
-        setStatus(formStatus, "Project saved. Refresh the Projects page to see it.");
+        setStatus(
+          formStatus,
+          localMode
+            ? "Project saved to disk. Commit and push to publish on GitHub Pages."
+            : "Project saved. Refresh the Projects page to see it."
+        );
       } catch (err) {
         setStatus(formStatus, err.message || "Save failed.", true);
       }
     });
 
+    async function applyFeatured(projectId) {
+      setStatus(featuredStatus, "Updating featured project…");
+      try {
+        const projects = await setFeaturedProject(projectId || "");
+        renderList(projects);
+        const label = projectId
+          ? (projects.find(function (item) { return item.id === projectId; }) || {}).title || projectId
+          : "None";
+        setStatus(featuredStatus, "Featured project set to: " + label);
+        if (editingId) {
+          const editing = projects.find(function (item) { return item.id === editingId; });
+          if (editing) document.getElementById("project-featured").checked = !!editing.featured;
+        }
+      } catch (err) {
+        setStatus(featuredStatus, err.message || "Unable to update featured project.", true);
+      }
+    }
+
+    if (saveFeaturedBtn) {
+      saveFeaturedBtn.addEventListener("click", function () {
+        applyFeatured(featuredSelect ? featuredSelect.value : "");
+      });
+    }
+
     projectList.addEventListener("click", async function (event) {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+
+      const featureId = target.getAttribute("data-feature");
+      if (featureId) {
+        if (featuredSelect) featuredSelect.value = featureId;
+        await applyFeatured(featureId);
+        return;
+      }
 
       const editId = target.getAttribute("data-edit");
       if (editId) {
@@ -691,6 +985,11 @@
             for (let i = 0; i < (project.images || []).length; i += 1) {
               await deleteStorageUrl(project.images[i]);
             }
+            for (let i = 0; i < (project.documents || []).length; i += 1) {
+              if (project.documents[i] && project.documents[i].url) {
+                await deleteStorageUrl(project.documents[i].url);
+              }
+            }
             if (project.modelUrl) await deleteStorageUrl(project.modelUrl);
           }
           await deleteProject(deleteId);
@@ -704,6 +1003,11 @@
     });
 
     renderAssetPreviews();
+    boot().catch(function (err) {
+      console.error(err);
+      showReadOnly();
+      setStatus(loginStatus, err.message || "Unable to start admin.", true);
+    });
   </script>
 </body>
 </html>

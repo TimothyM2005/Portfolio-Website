@@ -4,10 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Timothy Mitchell — Portfolio of Design, CAD & Programming</title>
+  <meta name="description" content="Portfolio of Timothy Mitchell — mechanical design, CAD, FEA, Formula Student, and robotics projects. SolidWorks, Onshape, and engineering coursework." />
+  <meta name="author" content="Timothy Mitchell" />
+  <link rel="canonical" href="https://timothym2005.github.io/Portfolio-Website/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Timothy Mitchell — Portfolio of Design, CAD & Programming" />
+  <meta property="og:description" content="Mechanical design, CAD, FEA, Formula Student, and robotics projects." />
+  <meta property="og:url" content="https://timothym2005.github.io/Portfolio-Website/" />
+  <meta property="og:image" content="https://timothym2005.github.io/Portfolio-Website/images/gearbox-design/full-assembly.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Timothy Mitchell — Portfolio of Design, CAD & Programming" />
+  <meta name="twitter:description" content="Mechanical design, CAD, FEA, Formula Student, and robotics projects." />
+  <meta name="twitter:image" content="https://timothym2005.github.io/Portfolio-Website/images/gearbox-design/full-assembly.png" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
   <style>
     /* Projects page only */
     section {
@@ -20,26 +41,94 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
       column-span: all;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .projects-heading-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem 1rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .projects-filter-count {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .project-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-filter-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      font: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .project-filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .project-filter-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .project.is-filter-hidden {
+      display: none;
     }
 
     .projects {
       column-count: 1;
-      column-gap: 1.5rem;
+      column-gap: 1.35rem;
     }
 
     .project {
       break-inside: avoid;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.35rem;
     }
 
-    @media (min-width: 600px) {
+    @media (min-width: 640px) {
       .projects { column-count: 2; }
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: 980px) {
       .projects { column-count: 3; }
+    }
+
+    @media (min-width: 1400px) {
+      .projects {
+        column-count: 4;
+        column-gap: 1.25rem;
+      }
     }
 
     .project {
@@ -332,19 +421,388 @@
 
     .project-modal-viewer {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      min-height: 320px;
+      min-height: 420px;
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
       background: radial-gradient(circle at top, #1f2630, #141922 65%);
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
       color: var(--text-muted);
       font-size: 0.9rem;
       text-align: center;
+      padding: 0;
+      position: relative;
+    }
+
+    .model-viewer-shell {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-rows: minmax(280px, 1fr) auto auto;
+      min-height: 420px;
+    }
+
+    .model-viewer-stage {
+      position: relative;
+      min-height: 280px;
+      height: 100%;
+      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+    }
+
+    .model-viewer-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 0.85rem;
+      align-items: center;
+      padding: 0.55rem 0.7rem;
+      border-top: 1px solid var(--border);
+      background: rgba(13, 17, 23, 0.92);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .model-viewer-field {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .model-viewer-field select,
+    .model-viewer-field input[type="range"] {
+      font: inherit;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .model-viewer-field select {
+      padding: 0.2rem 0.4rem;
+    }
+
+    .model-viewer-explode input[type="range"] {
+      width: 7rem;
+      vertical-align: middle;
+    }
+
+    .model-viewer-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+
+    .model-viewer-parts {
+      max-height: 9.5rem;
+      overflow: auto;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      text-align: left;
+    }
+
+    .model-viewer-parts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .model-viewer-parts-header button {
+      appearance: none;
+      border: 0;
+      background: none;
+      color: var(--accent);
+      font: inherit;
+      font-size: 0.78rem;
+      text-transform: none;
+      letter-spacing: 0;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .model-viewer-parts-header button:hover {
+      text-decoration: underline;
+    }
+
+    .model-viewer-parts-list {
+      list-style: none;
+      margin: 0;
+      padding: 0.35rem 0.55rem 0.55rem;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .model-viewer-part-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .model-viewer-part-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .model-viewer-part-toggle span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .model-viewer-part-material {
+      font: inherit;
+      font-size: 0.72rem;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.15rem 0.3rem;
+      max-width: 9.5rem;
+    }
+
+    .model-viewer-parts-list label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .model-viewer-size {
+      position: absolute;
+      left: 0.6rem;
+      bottom: 0.6rem;
+      z-index: 2;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(13, 17, 23, 0.78);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      pointer-events: none;
+    }
+
+    .model-viewer-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .model-viewer-actions button {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+    }
+
+    .model-viewer-actions button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .project-modal-downloads {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.55rem;
+    }
+
+    .project-download-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .project-download-link:hover {
+      border-color: var(--accent);
+    }
+
+    .project-story {
+      margin: 0.35rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--text);
+    }
+
+    .project-story li + li {
+      margin-top: 0.35rem;
+    }
+
+    .pill.featured {
+      background: rgba(63, 185, 80, 0.18);
+      color: var(--success);
+    }
+
+    .featured-project {
+      margin: 0 0 1.25rem;
+    }
+
+    .featured-card {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.2fr);
+      gap: 1rem;
       padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.08), transparent 55%), var(--surface);
+      cursor: pointer;
+    }
+
+    .featured-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .featured-media {
+      aspect-ratio: 16 / 10;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #11161d;
+    }
+
+    .featured-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .featured-eyebrow {
+      margin: 0 0 0.35rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .featured-card h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.25rem;
+    }
+
+    .featured-card .goal {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .featured-card .project-open-hint {
+      margin-top: 0.75rem !important;
+    }
+
+    .projects-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-search {
+      flex: 1 1 220px;
+      max-width: 320px;
+    }
+
+    .project-search input {
+      width: 100%;
+      font: inherit;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+    }
+
+    .site-meta-footer {
+      margin-top: 0.55rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .site-meta-footer details {
+      margin-top: 0.35rem;
+    }
+
+    .site-meta-footer summary {
+      cursor: pointer;
+      color: var(--accent);
+    }
+
+    .site-changelog {
+      margin: 0.45rem 0 0;
+      padding-left: 1.1rem;
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 800px) {
+      .featured-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .model-viewer-status p {
+      margin: 0;
+    }
+
+    .model-viewer-status-note {
+      max-width: 22rem;
+      font-size: 0.78rem;
+    }
+
+    .model-viewer-spinner {
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: model-viewer-spin 0.8s linear infinite;
+    }
+
+    @keyframes model-viewer-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .model-viewer-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: rgba(13, 17, 23, 0.72);
+      color: var(--text-muted);
+      z-index: 2;
+      font-size: 0.85rem;
+    }
+
+    .model-viewer-overlay[hidden] {
+      display: none !important;
     }
 
     .project-modal-hint {
@@ -390,6 +848,32 @@
       font-style: italic;
     }
 
+    .project-modal-document {
+      margin: 0.75rem 0 1rem;
+    }
+
+    .project-modal-document-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.45rem;
+    }
+
+    .project-modal-document-header a {
+      font-size: 0.85rem;
+    }
+
+    .project-modal-pdf {
+      width: 100%;
+      min-height: 420px;
+      height: 50vh;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+    }
+
     @media (max-width: 860px) {
       .project-modal-layout {
         grid-template-columns: 1fr;
@@ -399,12 +883,80 @@
         aspect-ratio: 16 / 10;
         min-height: 240px;
       }
+
+      .project-modal-pdf {
+        min-height: 320px;
+        height: 45vh;
+      }
     }
 
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
+    }
+
+    .hero-intro {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .hero-affiliation {
+      max-width: 28rem;
+      padding: 0.7rem 0 0.15rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .hero-affiliation-kicker {
+      margin: 0 0 0.2rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .hero-affiliation-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .hero-affiliation-meta {
+      margin: 0.2rem 0 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .hero-affiliation-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.55rem;
+    }
+
+    .hero-affiliation-actions a,
+    .hero-affiliation-actions button {
+      appearance: none;
+      border: 0;
+      background: none;
+      padding: 0;
+      font: inherit;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .hero-affiliation-actions a:hover,
+    .hero-affiliation-actions button:hover {
+      text-decoration: underline;
     }
 
     .hero-profile {
@@ -433,8 +985,13 @@
 
     @media (min-width: 980px) {
       .hero-grid {
-        grid-template-columns: minmax(280px, 1fr) minmax(420px, 540px);
+        grid-template-columns: minmax(320px, 1.15fr) minmax(420px, 540px);
         align-items: start;
+        gap: 2rem;
+      }
+
+      .hero-intro {
+        padding-top: 0.35rem;
       }
     }
   </style>
@@ -443,7 +1000,7 @@
   <div class="container" id="top">
     <nav class="contact" aria-label="Contact">
       <span><a href="mailto:timothy.mitchell2022@gmail.com">timothy.mitchell2022@gmail.com</a></span>
-      <span><a href="www.linkedin.com/in/timothy-mitchell-">LinkedIn</a></span>
+      <span><a href="https://www.linkedin.com/in/timothy-mitchell-">LinkedIn</a></span>
       <span><a href="https://github.com/TimothyM2005">GitHub</a></span>
     </nav>
     <nav class="site-nav" aria-label="Main">
@@ -454,9 +1011,20 @@
     </nav>
     <header>
       <div class="hero-grid">
-        <div>
-          <h1>Timothy Mitchell</h1>
-          <p class="tagline">Portfolio of Design, CAD & Programming</p>
+        <div class="hero-intro">
+          <div>
+            <h1>Timothy Mitchell</h1>
+            <p class="tagline">Portfolio of Design, CAD &amp; Programming</p>
+          </div>
+          <aside class="hero-affiliation" aria-label="Formula Student affiliation">
+            <p class="hero-affiliation-kicker">Formula Student</p>
+            <p class="hero-affiliation-title">UNC Charlotte · Vehicle Dynamics</p>
+            <p class="hero-affiliation-meta">Subteam member</p>
+            <div class="hero-affiliation-actions">
+              <button type="button" data-filter-jump="formula">View Formula projects</button>
+              <a href="research.html">Tire research</a>
+            </div>
+          </aside>
         </div>
         <aside class="hero-profile" aria-label="Quick profile">
           <h2>Education</h2>
@@ -473,7 +1041,18 @@
     </header>
 
     <section>
-      <h2>Projects</h2>
+      <div class="projects-heading-row">
+        <h2>Projects</h2>
+        <p id="projects-filter-count" class="projects-filter-count" hidden></p>
+      </div>
+      <div id="featured-project" class="featured-project" hidden></div>
+      <div class="projects-toolbar">
+        <div class="project-filters" id="project-filters" role="toolbar" aria-label="Filter projects"></div>
+        <label class="project-search">
+          <span class="visually-hidden">Search projects</span>
+          <input id="project-search" type="search" placeholder="Search projects…" autocomplete="off" />
+        </label>
+      </div>
       <div class="projects" id="projects-grid">
         <p style="color: var(--text-muted); font-size: 0.9rem;">Loading projects…</p>
       </div>
@@ -481,15 +1060,16 @@
 
     <footer>
       <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
-      <p><a href="https://github.com">GitHub</a> · Built for GitHub Pages</p>
+      <p><a href="https://github.com/TimothyM2005">GitHub</a> · Built for GitHub Pages</p>
+      <div id="site-meta-footer" class="site-meta-footer" hidden></div>
     </footer>
   </div>
 
   <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
 
   <script type="module">
-    import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js";
-    import { loadProjects } from "./scripts/projects-store.js";
+    import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js?v=feat10";
+    import { loadProjects } from "./scripts/projects-store.js?v=feat10";
 
     const AUTO_ADVANCE_MS = 4500;
     const PAUSE_AFTER_MANUAL_MS = 8000;
@@ -631,24 +1211,244 @@
         const imageManifest = buildImageManifest(projects, folderImageManifest);
         const modelManifest = buildModelManifest(projects, fileModelManifest);
         initCarousels(imageManifest);
+        renderFeaturedProject(projects, imageManifest);
 
-        // Load Three.js / CAD viewers after cards are on screen so a CDN failure
-        // cannot leave the page stuck on "Loading projects…"
-        return Promise.all([
-          import("./scripts/model-viewer.js"),
-          import("./scripts/project-modal.js")
-        ])
-          .then(function (mods) {
-            mods[0].initModelViewers(modelManifest);
-            mods[1].initProjectModal(projects, modelManifest);
+        // Bind detail-modal clicks independently of Three.js so CDN failures
+        // cannot disable "Click for details".
+        return import("./scripts/project-modal.js?v=cadui6")
+          .then(function (modalMod) {
+            modalMod.initProjectModal(projects, modelManifest);
+            return import("./scripts/model-viewer.js?v=cadui6")
+              .then(function (viewerMod) {
+                viewerMod.initModelViewers(modelManifest);
+              })
+              .catch(function (err) {
+                console.warn("3D viewer unavailable; project details still work.", err);
+              })
+              .then(function () {
+                return modelManifest;
+              });
           })
           .catch(function (err) {
-            console.warn("3D viewer unavailable; projects still listed.", err);
+            console.warn("Project modal unavailable.", err);
+            return modelManifest;
           });
       });
     }
 
     const grid = document.getElementById("projects-grid");
+    const filtersEl = document.getElementById("project-filters");
+    const filterCountEl = document.getElementById("projects-filter-count");
+    let allProjects = [];
+    let activeModelManifest = {};
+    let activeFilter = "all";
+    let activeSearch = "";
+
+    const FILTER_DEFS = [
+      { id: "all", label: "All" },
+      { id: "solidworks", label: "SolidWorks" },
+      { id: "onshape", label: "Onshape" },
+      { id: "formula", label: "Formula Student" },
+      { id: "rival", label: "Rival" },
+      { id: "frc", label: "FRC" },
+      { id: "fea", label: "FEA" },
+      { id: "cad", label: "3D CAD" }
+    ];
+
+    function projectSearchText(project) {
+      const tags = (project.tags || []).map(function (tag) {
+        return String(tag.label || "") + " " + String(tag.type || "");
+      }).join(" ");
+      const story = (project.story || []).join(" ");
+      return [
+        project.id,
+        project.title,
+        project.goal,
+        project.details,
+        project.technical,
+        story,
+        tags
+      ].join(" ").toLowerCase();
+    }
+
+    function projectMatchesSearch(project, query) {
+      if (!query) return true;
+      return projectSearchText(project).indexOf(query) !== -1;
+    }
+
+    function projectMatchesFilter(project, filterId, modelManifest) {
+      if (!filterId || filterId === "all") return true;
+      const text = projectSearchText(project);
+      const tags = project.tags || [];
+
+      if (filterId === "solidworks") {
+        return tags.some(function (tag) {
+          return String(tag.type).toLowerCase() === "solidworks" ||
+            String(tag.label).toLowerCase().indexOf("solidworks") !== -1;
+        }) || text.indexOf("solidworks") !== -1;
+      }
+      if (filterId === "onshape") {
+        return tags.some(function (tag) {
+          return String(tag.type).toLowerCase() === "onshape" ||
+            String(tag.label).toLowerCase().indexOf("onshape") !== -1;
+        }) || text.indexOf("onshape") !== -1;
+      }
+      if (filterId === "formula") {
+        return tags.some(function (tag) {
+          return String(tag.type).toLowerCase() === "formula" ||
+            String(tag.label).toLowerCase().indexOf("formula") !== -1;
+        }) || text.indexOf("formula") !== -1 || text.indexOf("fsae") !== -1;
+      }
+      if (filterId === "rival") {
+        return text.indexOf("rival") !== -1;
+      }
+      if (filterId === "frc") {
+        return text.indexOf("frc") !== -1;
+      }
+      if (filterId === "fea") {
+        return text.indexOf("fea") !== -1;
+      }
+      if (filterId === "cad") {
+        return !!(project.modelUrl || (modelManifest && modelManifest[project.id]));
+      }
+      return true;
+    }
+
+    function availableFilters(projects, modelManifest) {
+      return FILTER_DEFS.filter(function (def) {
+        if (def.id === "all") return true;
+        return projects.some(function (project) {
+          return projectMatchesFilter(project, def.id, modelManifest);
+        });
+      });
+    }
+
+    function applyProjectFilter(filterId) {
+      activeFilter = filterId || "all";
+      let visible = 0;
+      document.querySelectorAll("#projects-grid .project").forEach(function (card) {
+        const id = card.getAttribute("data-project");
+        const project = allProjects.find(function (item) { return item.id === id; });
+        const show = project
+          ? projectMatchesFilter(project, activeFilter, activeModelManifest) &&
+            projectMatchesSearch(project, activeSearch)
+          : activeFilter === "all" && !activeSearch;
+        card.classList.toggle("is-filter-hidden", !show);
+        if (show) visible += 1;
+      });
+
+      if (filtersEl) {
+        filtersEl.querySelectorAll(".project-filter-btn").forEach(function (btn) {
+          btn.classList.toggle("active", btn.getAttribute("data-filter") === activeFilter);
+        });
+      }
+
+      if (filterCountEl) {
+        if (activeFilter === "all" && !activeSearch) {
+          filterCountEl.hidden = true;
+          filterCountEl.textContent = "";
+        } else {
+          filterCountEl.hidden = false;
+          filterCountEl.textContent = visible + " shown";
+        }
+      }
+    }
+
+    function renderFeaturedProject(projects, imageManifest) {
+      const host = document.getElementById("featured-project");
+      if (!host) return;
+      const featured = (projects || []).find(function (project) { return project && project.featured; });
+      if (!featured) {
+        host.hidden = true;
+        host.innerHTML = "";
+        return;
+      }
+      const images = (imageManifest && imageManifest[featured.id]) || featured.images || [];
+      const img = images[0]
+        ? '<img src="' + images[0].replace(/"/g, "&quot;") + '" alt="" loading="lazy" />'
+        : "";
+      const storyLine = (featured.story && featured.story[0]) || featured.goal || "";
+      host.hidden = false;
+      host.innerHTML =
+        '<article class="featured-card" data-project="' + featured.id + '" tabindex="0" role="button" aria-label="Open featured project ' + featured.title.replace(/"/g, "&quot;") + '">' +
+          '<div class="featured-media">' + img + "</div>" +
+          "<div>" +
+            '<p class="featured-eyebrow">Featured project</p>' +
+            "<h3>" + featured.title.replace(/</g, "&lt;") + "</h3>" +
+            '<p class="goal">' + storyLine.replace(/</g, "&lt;") + "</p>" +
+            '<p class="project-open-hint">Open details, CAD viewer &amp; downloads</p>' +
+          "</div>" +
+        "</article>";
+    }
+
+    function initSiteMeta() {
+      const host = document.getElementById("site-meta-footer");
+      if (!host) return;
+      fetch("data/site-meta.json")
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (meta) {
+          if (!meta || !meta.lastUpdated) return;
+          const changelog = Array.isArray(meta.changelog) ? meta.changelog : [];
+          const list = changelog
+            .slice(0, 6)
+            .map(function (entry) {
+              return "<li><strong>" + String(entry.date || "") + "</strong> — " + String(entry.text || "") + "</li>";
+            })
+            .join("");
+          host.hidden = false;
+          host.innerHTML =
+            "<p>Last updated " + String(meta.lastUpdated) + "</p>" +
+            (list
+              ? "<details><summary>Changelog</summary><ul class=\"site-changelog\">" + list + "</ul></details>"
+              : "");
+        })
+        .catch(function () {});
+    }
+
+    function initProjectFilters(projects, modelManifest) {
+      allProjects = projects || [];
+      activeModelManifest = modelManifest || {};
+      if (!filtersEl) return;
+
+      const defs = availableFilters(allProjects, activeModelManifest);
+      filtersEl.innerHTML = defs.map(function (def) {
+        const activeClass = def.id === "all" ? " active" : "";
+        return (
+          '<button type="button" class="project-filter-btn' + activeClass +
+          '" data-filter="' + def.id + '">' + def.label + "</button>"
+        );
+      }).join("");
+
+      filtersEl.onclick = function (event) {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        const filterId = target.getAttribute("data-filter");
+        if (!filterId) return;
+        applyProjectFilter(filterId);
+      };
+
+      const searchInput = document.getElementById("project-search");
+      if (searchInput && searchInput.dataset.bound !== "true") {
+        searchInput.dataset.bound = "true";
+        searchInput.addEventListener("input", function () {
+          activeSearch = String(searchInput.value || "").trim().toLowerCase();
+          applyProjectFilter(activeFilter);
+        });
+      }
+
+      applyProjectFilter("all");
+    }
+
+    document.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const jump = target.getAttribute("data-filter-jump");
+      if (!jump) return;
+      applyProjectFilter(jump);
+      const section = document.getElementById("project-filters");
+      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
     function showLoadError(message) {
       if (!grid) return;
       grid.innerHTML =
@@ -660,7 +1460,10 @@
     loadProjects()
       .then(function (result) {
         const projects = renderProjects(result.projects, grid);
-        return initMedia(projects);
+        initSiteMeta();
+        return initMedia(projects).then(function (modelManifest) {
+          initProjectFilters(projects, modelManifest || {});
+        });
       })
       .catch(function (err) {
         console.error(err);
