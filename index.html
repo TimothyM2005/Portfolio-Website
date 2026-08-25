@@ -497,12 +497,16 @@
     .model-viewer-toolbar {
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 0.35rem;
       padding: 0.4rem 0.6rem;
       border-top: 1px solid var(--border);
       background: rgba(13, 17, 23, 0.92);
       font-size: 0.76rem;
       color: var(--text-muted);
+    }
+
+    .model-viewer-finish-field select {
+      max-width: 12.5rem;
     }
 
     .model-viewer-toolbar-row {
@@ -534,7 +538,8 @@
     }
 
     .model-viewer-explode input[type="range"],
-    .model-viewer-clip input[type="range"] {
+    .model-viewer-clip input[type="range"],
+    .model-viewer-light-intensity input[type="range"] {
       width: 4.75rem;
       vertical-align: middle;
     }
@@ -1555,10 +1560,10 @@
 
         // Bind detail-modal clicks independently of Three.js so CDN failures
         // cannot disable "Click for details".
-        return import("./scripts/project-modal.js?v=modalui10")
+        return import("./scripts/project-modal.js?v=modalui13")
           .then(function (modalMod) {
             modalMod.initProjectModal(projects, modelManifest);
-            return import("./scripts/model-viewer.js?v=cadui10")
+            return import("./scripts/model-viewer.js?v=cadui13")
               .then(function (viewerMod) {
                 viewerMod.initModelViewers(modelManifest);
               })

@@ -8,8 +8,8 @@ let modelManifest = {};
 let projectsById = {};
 
 function flushStaleParkedViewers() {
-  if (window.__portfolioCadUi10) return;
-  window.__portfolioCadUi10 = true;
+  if (window.__portfolioCadUi13) return;
+  window.__portfolioCadUi13 = true;
   viewerCache.forEach(function (viewer) {
     if (viewer && typeof viewer.dispose === "function") viewer.dispose();
   });
@@ -339,7 +339,7 @@ export function openProjectModal(projectId, options) {
     } else {
       viewerEl.textContent = "Loading CAD model…";
       activeProjectId = projectId;
-      import("./model-viewer.js?v=cadui10")
+      import("./model-viewer.js?v=cadui13")
         .then(function (mod) {
           if (activeProjectId !== projectId) return;
           const viewState = opts.viewState || (mod.decodeViewState ? mod.decodeViewState(parseHashViewState() || "") : null);

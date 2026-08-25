@@ -24,30 +24,48 @@ const TESSELLATION = {
 
 const MATERIAL_PRESETS = {
   imported: null,
-  aluminum: { color: 0xb0b7bf, metalness: 0.85, roughness: 0.28 },
-  steel: { color: 0x8a9299, metalness: 0.9, roughness: 0.35 },
-  plastic: { color: 0x4b5563, metalness: 0.05, roughness: 0.55 },
-  matte: { color: 0x9aa3ad, metalness: 0.05, roughness: 0.9 },
-  glass: { color: 0xc8e7f5, metalness: 0.05, roughness: 0.05, opacity: 0.22, transparent: true },
-  acrylic: { color: 0xd7e6ef, metalness: 0.0, roughness: 0.18, opacity: 0.42, transparent: true },
-  frosted: { color: 0xe8eaed, metalness: 0.0, roughness: 0.72, opacity: 0.55, transparent: true },
-  clear: { color: 0xffffff, metalness: 0.0, roughness: 0.04, opacity: 0.12, transparent: true },
-  tintBlue: { color: 0x4a90d9, metalness: 0.05, roughness: 0.2, opacity: 0.4, transparent: true },
-  tintAmber: { color: 0xd4a017, metalness: 0.05, roughness: 0.25, opacity: 0.45, transparent: true }
+  satin: { keepColors: true, roughness: 0.42, metalnessMin: 0.1, envMapIntensity: 0.75 },
+  glossy: { keepColors: true, roughness: 0.2, metalnessMin: 0.18, envMapIntensity: 0.95 },
+  softMatte: { keepColors: true, roughness: 0.82, metalness: 0.04, envMapIntensity: 0.3 },
+  polished: { color: 0xd0d5db, metalness: 0.92, roughness: 0.16, envMapIntensity: 1.05 },
+  aluminum: { color: 0xb0b7bf, metalness: 0.85, roughness: 0.28, envMapIntensity: 0.9 },
+  steel: { color: 0x8a9299, metalness: 0.88, roughness: 0.34, envMapIntensity: 0.85 },
+  plastic: { color: 0x4b5563, metalness: 0.06, roughness: 0.48, envMapIntensity: 0.55 },
+  matte: { color: 0x9aa3ad, metalness: 0.02, roughness: 0.88, envMapIntensity: 0.28 },
+  glass: { color: 0xc8e7f5, metalness: 0.05, roughness: 0.08, opacity: 0.22, transparent: true, envMapIntensity: 0.95 },
+  acrylic: { color: 0xd7e6ef, metalness: 0.0, roughness: 0.22, opacity: 0.42, transparent: true, envMapIntensity: 0.8 },
+  frosted: { color: 0xe8eaed, metalness: 0.0, roughness: 0.75, opacity: 0.55, transparent: true, envMapIntensity: 0.45 },
+  clear: { color: 0xffffff, metalness: 0.0, roughness: 0.05, opacity: 0.12, transparent: true, envMapIntensity: 1.0 },
+  tintBlue: { color: 0x4a90d9, metalness: 0.05, roughness: 0.22, opacity: 0.4, transparent: true, envMapIntensity: 0.8 },
+  tintAmber: { color: 0xd4a017, metalness: 0.05, roughness: 0.28, opacity: 0.45, transparent: true, envMapIntensity: 0.8 }
 };
 
 const MATERIAL_OPTION_LABELS = {
-  imported: "Imported colors",
+  imported: "Original colors",
+  satin: "Satin (keep colors)",
+  glossy: "Glossy (keep colors)",
+  softMatte: "Matte (keep colors)",
+  polished: "Polished metal",
   aluminum: "Aluminum",
   steel: "Steel",
   plastic: "Plastic",
-  matte: "Matte",
+  matte: "Neutral matte",
   glass: "Glass (clear)",
   acrylic: "Acrylic (translucent)",
   frosted: "Frosted (translucent)",
   clear: "Clear (near invisible)",
   tintBlue: "Tinted blue",
   tintAmber: "Tinted amber"
+};
+
+const LIGHT_PRESETS = {
+  studio: { key: [3.2, 4.5, 2.8], fill: [-3.5, 1.2, -2.2], hemi: 0.38, keyIntensity: 0.72, fillIntensity: 0.22 },
+  front: { key: [0.4, 2.8, 5.2], fill: [-2.5, 1.0, -1.5], hemi: 0.32, keyIntensity: 0.78, fillIntensity: 0.2 },
+  top: { key: [0.8, 6.5, 0.6], fill: [2.5, 0.8, -2.0], hemi: 0.28, keyIntensity: 0.82, fillIntensity: 0.18 },
+  left: { key: [-5.5, 3.2, 1.5], fill: [3.0, 1.2, 2.0], hemi: 0.3, keyIntensity: 0.78, fillIntensity: 0.2 },
+  right: { key: [5.5, 3.2, 1.5], fill: [-3.0, 1.2, 2.0], hemi: 0.3, keyIntensity: 0.78, fillIntensity: 0.2 },
+  back: { key: [-1.2, 2.8, -5.2], fill: [2.5, 1.4, 3.0], hemi: 0.34, keyIntensity: 0.72, fillIntensity: 0.24 },
+  rim: { key: [-3.5, 2.5, -4.0], fill: [4.2, 1.0, 2.5], hemi: 0.26, keyIntensity: 0.85, fillIntensity: 0.28 }
 };
 
 function materialOptionsHtml(selectedId) {
@@ -71,22 +89,25 @@ function loadThreeBundle() {
   if (!threeBundlePromise) {
     threeBundlePromise = Promise.all([
       import("three"),
-      import("three/addons/controls/OrbitControls.js"),
+      import("three/addons/controls/TrackballControls.js"),
       import("three/addons/loaders/GLTFLoader.js"),
-      import("three/addons/loaders/DRACOLoader.js")
+      import("three/addons/loaders/DRACOLoader.js"),
+      import("three/addons/environments/RoomEnvironment.js")
     ]).then(function (mods) {
       const THREE = mods[0];
-      const OrbitControls = mods[1].OrbitControls;
+      const TrackballControls = mods[1].TrackballControls;
       const GLTFLoader = mods[2].GLTFLoader;
       const DRACOLoader = mods[3].DRACOLoader;
+      const RoomEnvironment = mods[4].RoomEnvironment;
       const gltfLoader = new GLTFLoader();
       const dracoLoader = new DRACOLoader();
       dracoLoader.setDecoderPath(THREE_CDN + "examples/jsm/libs/draco/");
       gltfLoader.setDRACOLoader(dracoLoader);
       return {
         THREE: THREE,
-        OrbitControls: OrbitControls,
-        gltfLoader: gltfLoader
+        TrackballControls: TrackballControls,
+        gltfLoader: gltfLoader,
+        RoomEnvironment: RoomEnvironment
       };
     });
   }
@@ -102,12 +123,18 @@ function fitCameraToObject(THREE, camera, controls, object) {
   const fov = camera.fov * (Math.PI / 180);
   const distance = maxDim / (2 * Math.tan(fov / 2));
 
+  camera.up.set(0, 1, 0);
   camera.position.set(center.x + distance * 1.4, center.y + distance * 0.8, center.z + distance * 1.4);
   camera.near = Math.max(0.01, maxDim / 1000);
   camera.far = Math.max(1000, maxDim * 50);
   camera.updateProjectionMatrix();
 
   controls.target.copy(center);
+  if (typeof controls.handleResize === "function") controls.handleResize();
+  if (typeof controls.minDistance === "number") {
+    controls.minDistance = Math.max(maxDim * 0.05, 0.01);
+    controls.maxDistance = Math.max(maxDim * 40, 10);
+  }
   controls.update();
 }
 
@@ -519,6 +546,33 @@ function collectPartMeshes(root) {
   return parts;
 }
 
+function applyKeepColorFinish(THREE, mesh, preset) {
+  const imported = mesh.userData.importedMaterials;
+  if (!imported || !imported.length) return false;
+
+  const adjust = function (source) {
+    const mat = source && source.clone ? source.clone() : source;
+    if (!mat) return mat;
+    if (mat.isMeshStandardMaterial || mat.isMeshPhysicalMaterial) {
+      if (preset.roughness != null) mat.roughness = preset.roughness;
+      if (preset.metalness != null) {
+        mat.metalness = preset.metalness;
+      } else if (preset.metalnessMin != null) {
+        mat.metalness = Math.max(Number(mat.metalness) || 0, preset.metalnessMin);
+      }
+      mat.envMapIntensity = preset.envMapIntensity != null ? preset.envMapIntensity : 0.7;
+      mat.needsUpdate = true;
+    } else if (mat.isMeshPhongMaterial) {
+      if (preset.roughness != null) mat.shininess = Math.max(8, (1 - preset.roughness) * 80);
+      mat.needsUpdate = true;
+    }
+    return mat;
+  };
+
+  mesh.material = imported.length > 1 ? imported.map(adjust) : adjust(imported[0]);
+  return true;
+}
+
 function applyMaterialPresetToMesh(THREE, mesh, presetId) {
   if (!mesh) return;
   const id = presetId || "imported";
@@ -528,19 +582,27 @@ function applyMaterialPresetToMesh(THREE, mesh, presetId) {
   if (!preset || id === "imported") {
     const imported = mesh.userData.importedMaterials;
     if (imported && imported.length) {
-      mesh.material = imported.length > 1 ? imported : imported[0];
+      mesh.material = imported.length > 1
+        ? imported.map(function (mat) { return mat && mat.clone ? mat.clone() : mat; })
+        : (imported[0] && imported[0].clone ? imported[0].clone() : imported[0]);
     }
     return;
   }
 
+  if (preset.keepColors) {
+    if (applyKeepColorFinish(THREE, mesh, preset)) return;
+  }
+
   const transparent = !!(preset.transparent || (preset.opacity != null && preset.opacity < 1));
   const opacity = preset.opacity != null ? preset.opacity : 1;
+  const envMapIntensity = preset.envMapIntensity != null ? preset.envMapIntensity : 0.7;
 
   const makeMat = function (baseColor) {
     return new THREE.MeshStandardMaterial({
       color: baseColor != null ? baseColor : preset.color,
       metalness: preset.metalness,
       roughness: preset.roughness,
+      envMapIntensity: envMapIntensity,
       side: THREE.DoubleSide,
       transparent: transparent,
       opacity: opacity,
@@ -619,11 +681,14 @@ function formatSizeLabel(size, unitLabel) {
   return "≈ " + fmt(size.x) + " × " + fmt(size.y) + " × " + fmt(size.z) + " " + unitLabel;
 }
 
-function sizeForDisplay(sizeMm) {
+function sizeForDisplay(sizeUnits) {
+  const max = Math.max(Math.abs(sizeUnits.x), Math.abs(sizeUnits.y), Math.abs(sizeUnits.z)) || 0;
+  // GLB/glTF models are often authored in meters; STEP tessellation is mm.
+  const scale = max > 0 && max < 8 ? 39.3700787 : 1 / MM_PER_INCH;
   return {
-    x: sizeMm.x / MM_PER_INCH,
-    y: sizeMm.y / MM_PER_INCH,
-    z: sizeMm.z / MM_PER_INCH
+    x: sizeUnits.x * scale,
+    y: sizeUnits.y * scale,
+    z: sizeUnits.z * scale
   };
 }
 
@@ -658,8 +723,8 @@ function buildViewerChrome(options) {
   toolbar.className = "model-viewer-toolbar";
   toolbar.innerHTML =
     '<div class="model-viewer-toolbar-row">' +
-      '<label class="model-viewer-field">Material' +
-        '<select data-action="material" aria-label="Material">' +
+      '<label class="model-viewer-field model-viewer-finish-field">Finish' +
+        '<select data-action="material" aria-label="Surface finish">' +
           materialOptionsHtml("imported") +
         "</select>" +
       "</label>" +
@@ -669,7 +734,30 @@ function buildViewerChrome(options) {
           '<option value="full">Full</option>' +
         "</select>" +
       "</label>" +
+      '<label class="model-viewer-field">Light' +
+        '<select data-action="light" aria-label="Lighting direction">' +
+          '<option value="studio" selected>Studio</option>' +
+          '<option value="front">Front</option>' +
+          '<option value="top">Top</option>' +
+          '<option value="left">Left</option>' +
+          '<option value="right">Right</option>' +
+          '<option value="back">Back</option>' +
+          '<option value="rim">Rim</option>' +
+        "</select>" +
+      "</label>" +
+      '<label class="model-viewer-field model-viewer-light-intensity">Bright' +
+        '<input type="range" min="40" max="140" value="70" data-action="light-intensity" aria-label="Light brightness" />' +
+      "</label>" +
+    "</div>" +
+    '<div class="model-viewer-toolbar-row">' +
       '<label class="model-viewer-toggle"><input type="checkbox" data-action="rotate" checked /> Auto-rotate</label>' +
+      '<label class="model-viewer-field">Spin' +
+        '<select data-action="rotate-axis" aria-label="Auto-rotate axis">' +
+          '<option value="y" selected>Y</option>' +
+          '<option value="x">X</option>' +
+          '<option value="z">Z</option>' +
+        "</select>" +
+      "</label>" +
       (opts.showExplode
         ? '<label class="model-viewer-field model-viewer-explode">Explode' +
             '<input type="range" min="0" max="100" value="0" data-action="explode" aria-label="Explode amount" />' +
@@ -789,6 +877,9 @@ export function createViewer(mount, modelSrc, options) {
   let resizeFn = function () {};
   let restartAnimate = function () {};
   let autoRotate = true;
+  let autoRotateAxisId = "y";
+  let lightPresetId = "studio";
+  let lightIntensityScale = 0.7;
   let explodeAmount = 0;
   let allMaterialId = null;
   let modelRoot = null;
@@ -856,7 +947,7 @@ export function createViewer(mount, modelSrc, options) {
     .then(function (bundle) {
       if (disposed) return;
       const THREE = bundle.THREE;
-      const OrbitControls = bundle.OrbitControls;
+      const TrackballControls = bundle.TrackballControls;
       const gltfLoader = bundle.gltfLoader;
       const ext = getExtension(modelSrc);
       const isStep = ext === "step" || ext === "stp";
@@ -875,6 +966,10 @@ export function createViewer(mount, modelSrc, options) {
       });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.82;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.localClippingEnabled = false;
       renderer.domElement.className = "model-viewer-canvas";
       chrome.stage.appendChild(renderer.domElement);
@@ -883,22 +978,87 @@ export function createViewer(mount, modelSrc, options) {
       scene.background = null;
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.01, 1000);
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.08;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.2;
+      const controls = new TrackballControls(camera, renderer.domElement);
+      controls.rotateSpeed = 2.2;
+      controls.zoomSpeed = 1.2;
+      controls.panSpeed = 0.6;
+      controls.staticMoving = false;
+      controls.dynamicDampingFactor = 0.12;
+
+      let userOrbiting = false;
+      const autoRotateAxis = new THREE.Vector3(0, 1, 0);
+      const autoRotateOffset = new THREE.Vector3();
+      const AUTO_ROTATE_SPEED = 0.01;
+      const setAutoRotateAxis = function (axisId) {
+        autoRotateAxisId = axisId === "x" || axisId === "z" ? axisId : "y";
+        autoRotateAxis.set(
+          autoRotateAxisId === "x" ? 1 : 0,
+          autoRotateAxisId === "y" ? 1 : 0,
+          autoRotateAxisId === "z" ? 1 : 0
+        );
+      };
+      setAutoRotateAxis(autoRotateAxisId);
+      controls.addEventListener("start", function () {
+        userOrbiting = true;
+      });
+      controls.addEventListener("end", function () {
+        userOrbiting = false;
+      });
 
       const clipPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
 
-      const hemi = new THREE.HemisphereLight(0xffffff, 0x1a1a1a, 1.0);
+      const hemi = new THREE.HemisphereLight(0xffffff, 0x1a1a1a, 0.38);
       scene.add(hemi);
-      const dir = new THREE.DirectionalLight(0xffffff, 1.15);
-      dir.position.set(3, 5, 2);
+      const dir = new THREE.DirectionalLight(0xffffff, 0.72);
+      dir.castShadow = true;
+      dir.shadow.mapSize.set(2048, 2048);
+      dir.shadow.bias = -0.00015;
       scene.add(dir);
-      const fill = new THREE.DirectionalLight(0xffffff, 0.35);
-      fill.position.set(-4, 1, -2);
+      const fill = new THREE.DirectionalLight(0xffffff, 0.22);
       scene.add(fill);
+
+      try {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        const envTex = pmrem.fromScene(new bundle.RoomEnvironment(), 0.08).texture;
+        scene.environment = envTex;
+        if ("environmentIntensity" in scene) scene.environmentIntensity = 0.45;
+        pmrem.dispose();
+      } catch (envErr) {
+        console.warn("Environment map unavailable:", envErr);
+      }
+
+      const applyLightPreset = function (presetId, intensityScale) {
+        lightPresetId = LIGHT_PRESETS[presetId] ? presetId : "studio";
+        lightIntensityScale = Number.isFinite(intensityScale) ? intensityScale : lightIntensityScale;
+        const preset = LIGHT_PRESETS[lightPresetId] || LIGHT_PRESETS.studio;
+        const scale = Math.max(0.4, Math.min(1.8, lightIntensityScale));
+        dir.position.set(preset.key[0], preset.key[1], preset.key[2]);
+        fill.position.set(preset.fill[0], preset.fill[1], preset.fill[2]);
+        hemi.intensity = preset.hemi * scale;
+        dir.intensity = preset.keyIntensity * scale;
+        fill.intensity = preset.fillIntensity * scale;
+      };
+      applyLightPreset(lightPresetId, lightIntensityScale);
+
+      const updateShadowFrustum = function (object) {
+        if (!object) return;
+        const box = new THREE.Box3().setFromObject(object);
+        if (box.isEmpty()) return;
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+        const radius = Math.max(size.x, size.y, size.z) * 0.75 || 1;
+        dir.target.position.copy(center);
+        if (!dir.target.parent) scene.add(dir.target);
+        const cam = dir.shadow.camera;
+        cam.near = 0.1;
+        cam.far = radius * 12;
+        cam.left = -radius * 2;
+        cam.right = radius * 2;
+        cam.top = radius * 2;
+        cam.bottom = -radius * 2;
+        cam.updateProjectionMatrix();
+        dir.shadow.needsUpdate = true;
+      };
 
       const resize = function () {
         if (disposed || parked) return;
@@ -907,6 +1067,7 @@ export function createViewer(mount, modelSrc, options) {
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
+        if (typeof controls.handleResize === "function") controls.handleResize();
       };
       resizeFn = resize;
 
@@ -925,7 +1086,12 @@ export function createViewer(mount, modelSrc, options) {
           frameId = 0;
           return;
         }
-        controls.autoRotate = autoRotate;
+        if (autoRotate && !userOrbiting) {
+          autoRotateOffset.copy(camera.position).sub(controls.target);
+          autoRotateOffset.applyAxisAngle(autoRotateAxis, AUTO_ROTATE_SPEED);
+          camera.position.copy(controls.target).add(autoRotateOffset);
+          camera.up.applyAxisAngle(autoRotateAxis, AUTO_ROTATE_SPEED);
+        }
         controls.update();
         renderer.render(scene, camera);
         frameId = requestAnimationFrame(animate);
@@ -990,6 +1156,15 @@ export function createViewer(mount, modelSrc, options) {
         const rotateInput = chrome.toolbar.querySelector('[data-action="rotate"]');
         if (rotateInput) rotateInput.checked = !!autoRotate;
 
+        const rotateAxis = chrome.toolbar.querySelector('[data-action="rotate-axis"]');
+        if (rotateAxis) rotateAxis.value = autoRotateAxisId;
+
+        const lightSelect = chrome.toolbar.querySelector('[data-action="light"]');
+        if (lightSelect) lightSelect.value = lightPresetId;
+
+        const lightIntensity = chrome.toolbar.querySelector('[data-action="light-intensity"]');
+        if (lightIntensity) lightIntensity.value = String(Math.round(lightIntensityScale * 100));
+
         const explodeInput = chrome.toolbar.querySelector('[data-action="explode"]');
         if (explodeInput) explodeInput.value = String(Math.round(clamp01(explodeAmount) * 100));
 
@@ -1028,11 +1203,15 @@ export function createViewer(mount, modelSrc, options) {
         const state = {
           camera: {
             position: vec3ToArray(camera.position),
-            target: vec3ToArray(controls.target)
+            target: vec3ToArray(controls.target),
+            up: vec3ToArray(camera.up)
           },
           explode: showAssemblyTools ? round3(clamp01(explodeAmount)) : 0,
           materials: materials,
           autoRotate: !!autoRotate,
+          rotateAxis: autoRotateAxisId,
+          light: lightPresetId,
+          lightIntensity: round3(lightIntensityScale),
           clip: showAssemblyTools
             ? {
                 enabled: !!clipState.enabled,
@@ -1049,12 +1228,20 @@ export function createViewer(mount, modelSrc, options) {
         if (!cameraState) return;
         const pos = cameraState.position;
         const target = cameraState.target;
+        const up = cameraState.up;
         if (Array.isArray(pos) && pos.length >= 3) {
           camera.position.set(Number(pos[0]) || 0, Number(pos[1]) || 0, Number(pos[2]) || 0);
         }
         if (Array.isArray(target) && target.length >= 3) {
           controls.target.set(Number(target[0]) || 0, Number(target[1]) || 0, Number(target[2]) || 0);
         }
+        if (Array.isArray(up) && up.length >= 3) {
+          camera.up.set(Number(up[0]) || 0, Number(up[1]) || 1, Number(up[2]) || 0);
+        } else {
+          camera.up.set(0, 1, 0);
+        }
+        camera.lookAt(controls.target);
+        if (typeof controls.handleResize === "function") controls.handleResize();
         controls.update();
       };
 
@@ -1101,6 +1288,10 @@ export function createViewer(mount, modelSrc, options) {
         if (typeof config.autoRotate === "boolean") {
           autoRotate = config.autoRotate;
         }
+        if (config.rotateAxis) setAutoRotateAxis(config.rotateAxis);
+        if (config.light || config.lightIntensity != null) {
+          applyLightPreset(config.light || lightPresetId, config.lightIntensity != null ? Number(config.lightIntensity) : lightIntensityScale);
+        }
         if (showAssemblyTools && config.explode != null) {
           explodeAmount = clamp01(config.explode);
           setExplodeAmount(partMeshes, explodeAmount, explodeMeta.maxSpan);
@@ -1126,7 +1317,16 @@ export function createViewer(mount, modelSrc, options) {
           const presetId = materialByPart[key] || mesh.userData.materialPreset || "imported";
           materialByPart[key] = presetId;
           applyMaterialPresetToMesh(THREE, mesh, presetId);
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
         });
+        object.traverse(function (obj) {
+          if (obj && obj.isMesh) {
+            obj.castShadow = true;
+            obj.receiveShadow = true;
+          }
+        });
+        updateShadowFrustum(object);
         if (showAssemblyTools) {
           explodeMeta = prepareExplodeData(THREE, partMeshes);
           clipBounds = explodeMeta.box ? explodeMeta.box.clone() : null;
@@ -1236,6 +1436,9 @@ export function createViewer(mount, modelSrc, options) {
           explode: state.explode,
           materials: state.materials,
           autoRotate: state.autoRotate,
+          rotateAxis: state.rotateAxis,
+          light: state.light,
+          lightIntensity: state.lightIntensity,
           camera: state.camera,
           clip: state.clip
         };
@@ -1275,6 +1478,15 @@ export function createViewer(mount, modelSrc, options) {
           if (event.type !== "change") return;
           if (!(control instanceof HTMLInputElement)) return;
           autoRotate = !!control.checked;
+        } else if (action === "rotate-axis") {
+          if (!isFormEvent) return;
+          setAutoRotateAxis(control.value);
+        } else if (action === "light") {
+          if (!isFormEvent) return;
+          applyLightPreset(control.value, lightIntensityScale);
+        } else if (action === "light-intensity") {
+          if (!isFormEvent) return;
+          applyLightPreset(lightPresetId, Number(control.value || 100) / 100);
         } else if (action === "explode") {
           if (!isFormEvent) return;
           explodeAmount = Number(control.value || 0) / 100;
