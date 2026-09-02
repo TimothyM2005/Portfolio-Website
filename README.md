@@ -39,6 +39,34 @@ GitHub Pages will redeploy the static site. The live site is **read-only** — e
 
 Files land in `docs/projects/<project-id>/` and are listed on the project as a `documents` array in `data/projects.json`.
 
+## Protecting your work (copyright & fingerprints)
+
+Nothing on the public web can fully stop someone from copying a file, but you can **mark ownership**, **discourage casual reuse**, and **prove you had the original**.
+
+1. Install optional signing tools (one time):
+
+   ```bash
+   pip install -r requirements-work.txt
+   ```
+
+2. Edit `data/copyright.json` if you want different owner text, watermark wording, or to turn stamping on/off.
+
+3. **Automatic:** when you upload a PDF through local Admin, it is stamped with copyright metadata and a light diagonal watermark, and `data/work-manifest.json` is refreshed.
+
+4. **Batch:** sign every PDF under `docs/` and rebuild the manifest:
+
+   ```bash
+   python scripts/sign_work.py
+   ```
+
+   Or use **Admin → Work protection → Sign all PDFs & refresh manifest**.
+
+The manifest lists SHA-256 hashes for PDFs, images, and CAD under `docs/`, `images/`, and `models/`. Commit it with your site — together with git history, it helps show you published those exact files first.
+
+The live site also shows copyright notices in the footer and a subtle overlay on embedded PDF previews.
+
+**Note:** this is metadata + watermarking + fingerprinting, not a legal digital certificate (Adobe PKI). For court-grade cryptographic signing, export PDFs from Adobe Acrobat or similar with a purchased document-signing certificate.
+
 ## Publishing on GitHub Pages (first-time setup)
 
 1. Create a repository and push the project (e.g. branch `main`, root folder).

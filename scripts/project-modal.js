@@ -1,5 +1,8 @@
 import { escapeHtml } from "./projects.js?v=feat10";
 import { detectLocalAdmin, saveProject } from "./projects-store.js?v=feat10";
+import { loadCopyrightConfig, pdfOverlayHtml, watermarkText } from "./copyright.js?v=protect1";
+
+loadCopyrightConfig();
 
 let activeViewer = null;
 let activeProjectId = null;
@@ -176,12 +179,13 @@ function documentsSectionHtml(documents) {
     : inlineOk
       ? '<details class="project-modal-pdf-fold" open>' +
           '<summary><span data-pdf-fold-label>Hide PDF preview</span></summary>' +
-          '<div class="project-modal-pdf-frame">' +
+          '<div class="project-modal-pdf-frame pdf-viewer-wrap">' +
             '<iframe class="project-modal-pdf" src="' +
             escapeHtml(firstUrl) +
             '#page=1&zoom=page-width" title="' +
             escapeHtml(documentLabel(first)) +
             '"></iframe>' +
+            pdfOverlayHtml() +
           "</div>" +
         "</details>"
       : '<div class="project-modal-pdf-mobile">' +
@@ -212,6 +216,11 @@ function documentsSectionHtml(documents) {
         })
         .join("") +
       "</ul>" +
+      '<p class="work-copyright-notice">' +
+      escapeHtml(watermarkText()) +
+      " — " +
+      "This document is for portfolio viewing only. See " +
+      '<a href="data/work-manifest.json" target="_blank" rel="noopener">work manifest</a> for content fingerprints.</p>' +
       previewBlock +
     "</section>"
   );

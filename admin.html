@@ -404,6 +404,20 @@
         </div>
 
         <div class="admin-panel">
+          <h2>Work protection</h2>
+          <p class="muted">
+            Stamp PDFs with your name, copyright metadata, and a light watermark. Builds
+            <code>data/work-manifest.json</code> (SHA-256 fingerprints for docs, images, and CAD).
+            Requires <code>pip install -r requirements-work.txt</code>. New PDF uploads are stamped automatically.
+          </p>
+          <div class="actions">
+            <button class="btn" type="button" id="sign-all-work-btn">Sign all PDFs &amp; refresh manifest</button>
+            <button class="btn secondary" type="button" id="refresh-manifest-btn">Refresh manifest only</button>
+          </div>
+          <p class="muted" id="protect-status" style="margin-top: 0.75rem;"></p>
+        </div>
+
+        <div class="admin-panel">
           <h2>Existing projects</h2>
           <ul class="project-list" id="project-list"></ul>
         </div>
@@ -806,8 +820,10 @@
 
       setStatus(formStatus, "Uploading PDFs…");
       try {
+        let stampedCount = 0;
         for (let i = 0; i < files.length; i += 1) {
           const uploaded = await uploadProjectFile(projectId, files[i], "documents");
+          if (uploaded.protection && uploaded.protection.stamped) stampedCount += 1;
           draftDocuments.push({
             url: uploaded.url,
             name: (uploaded.document && uploaded.document.name) || uploaded.name || files[i].name
@@ -815,7 +831,9 @@
         }
         input.value = "";
         renderAssetPreviews();
-        setStatus(formStatus, "Uploaded " + files.length + " PDF(s). Remember to Save project.");
+        let message = "Uploaded " + files.length + " PDF(s). Remember to Save project.";
+        if (stampedCount) message += " Stamped " + stampedCount + " with copyright metadata/watermark.";
+        setStatus(formStatus, message);
       } catch (err) {
         setStatus(formStatus, err.message || "PDF upload failed.", true);
       }
@@ -1001,6 +1019,47 @@
         }
       }
     });
+
+    const protectStatus = document.getElementById("protect-status");
+    const signAllWorkBtn = document.getElementById("sign-all-work-btn");
+    const refreshManifestBtn = document.getElementById("refresh-manifest-btn");
+
+    async function callProtectApi(path) {
+      const response = await fetch(path, { method: "POST" });
+      const payload = await response.json().catch(function () { return {}; });
+      if (!response.ok) {
+        throw new Error(payload.error || "Work protection request failed.");
+      }
+      return payload;
+    }
+
+    if (signAllWorkBtn) {
+      signAllWorkBtn.addEventListener("click", async function () {
+        setStatus(protectStatus, "Signing PDFs and rebuilding manifest…");
+        try {
+          const result = await callProtectApi("/api/protect/sign-all");
+          const stamped = (result.pdfs || []).filter(function (item) { return item.stamped; }).length;
+          setStatus(
+            protectStatus,
+            "Signed " + stamped + " PDF(s). Manifest lists " + (result.fileCount || 0) + " protected file(s)."
+          );
+        } catch (err) {
+          setStatus(protectStatus, err.message || "Signing failed.", true);
+        }
+      });
+    }
+
+    if (refreshManifestBtn) {
+      refreshManifestBtn.addEventListener("click", async function () {
+        setStatus(protectStatus, "Refreshing work manifest…");
+        try {
+          const result = await callProtectApi("/api/protect/manifest");
+          setStatus(protectStatus, "Manifest updated (" + (result.fileCount || 0) + " files).");
+        } catch (err) {
+          setStatus(protectStatus, err.message || "Manifest refresh failed.", true);
+        }
+      });
+    }
 
     renderAssetPreviews();
     boot().catch(function (err) {

@@ -180,6 +180,58 @@ footer a:hover {
   text-decoration: underline;
 }
 
+.site-copyright {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-copyright a {
+  color: var(--accent);
+}
+
+.pdf-viewer-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-copyright-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.25rem, 6vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.1);
+  transform: rotate(-28deg);
+  user-select: none;
+  z-index: 1;
+  text-align: center;
+  padding: 1rem;
+}
+
+.work-copyright-notice {
+  margin: 0.75rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.work-copyright-notice a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.work-copyright-notice a:hover {
+  text-decoration: underline;
+}
+
 /* Back to top */
 .back-to-top {
   position: fixed;

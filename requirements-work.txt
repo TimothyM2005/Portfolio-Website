@@ -1,0 +1,4 @@
+# Optional — used by scripts/work_protection.py and scripts/sign_work.py
+# Install: pip install -r requirements-work.txt
+pypdf>=4.0
+reportlab>=4.0

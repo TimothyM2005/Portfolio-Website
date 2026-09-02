@@ -24,6 +24,16 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
+
+try:
+    from work_protection import build_work_manifest, protect_uploaded_pdf, sign_all_pdfs
+except ImportError:
+    build_work_manifest = None
+    protect_uploaded_pdf = None
+    sign_all_pdfs = None
+
 HOST = "127.0.0.1"
 PORT = 8000
 
@@ -577,6 +587,12 @@ class AdminHandler(SimpleHTTPRequestHandler):
                 abs_path = os.path.join(dest_dir, candidate)
                 with open(abs_path, "wb") as f:
                     f.write(data)
+                protection = None
+                if protect_uploaded_pdf:
+                    try:
+                        protection = protect_uploaded_pdf(abs_path)
+                    except Exception as exc:
+                        protection = {"error": str(exc)}
                 rel = repo_rel(abs_path)
                 self._send_json(
                     200,
@@ -586,7 +602,29 @@ class AdminHandler(SimpleHTTPRequestHandler):
                         "path": rel,
                         "name": candidate,
                         "document": {"url": rel, "name": candidate},
+                        "protection": protection,
                     },
+                )
+                return
+
+            if path == "/api/protect/sign-all":
+                if not sign_all_pdfs:
+                    raise ValueError(
+                        "Work protection is unavailable. Run: pip install -r requirements-work.txt"
+                    )
+                result = sign_all_pdfs()
+                self._send_json(200, {"ok": True, **result})
+                return
+
+            if path == "/api/protect/manifest":
+                if not build_work_manifest:
+                    raise ValueError(
+                        "Work protection is unavailable. Run: pip install -r requirements-work.txt"
+                    )
+                manifest = build_work_manifest()
+                self._send_json(
+                    200,
+                    {"ok": True, "path": "data/work-manifest.json", "fileCount": len(manifest.get("files") or [])},
                 )
                 return
 

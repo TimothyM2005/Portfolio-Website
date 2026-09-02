@@ -1,0 +1,615 @@
+{
+  "owner": "Timothy Mitchell",
+  "copyright": "\u00a9 2026 Timothy Mitchell. All rights reserved.",
+  "notice": "Unauthorized copying, redistribution, or commercial use is prohibited.",
+  "generated": "2026-09-02",
+  "purpose": "Content fingerprint record. Git commit history plus these hashes help prove you published this work first.",
+  "files": [
+    {
+      "path": "docs/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "docs/projects/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "docs/projects/bell-crank-fea/bell-crank-project-2-.pdf",
+      "sha256": "b23b2d8dfc5ecacc9643dacbb6684f3482958fdd92d7c5d17b933a56178148b8",
+      "bytes": 1659692,
+      "modified": "2026-09-02"
+    },
+    {
+      "path": "docs/projects/junior-design-robot/megr-3156-spring-2026-team-7-formal-design-review.pdf",
+      "sha256": "b3011607cfe6656362235c7620ce0885f28e0b960ab85eef99aa5aaff1a2d0fe",
+      "bytes": 3942315,
+      "modified": "2026-09-02"
+    },
+    {
+      "path": "docs/research/.gitkeep",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "docs/research/Introduction to Tire Analysis - Published.pdf",
+      "sha256": "b6fb9d80f0d0f98458dae3513c9f4645acbda4c9ac8566be63a78ef770d6f05c",
+      "bytes": 1555264,
+      "modified": "2026-09-02"
+    },
+    {
+      "path": "docs/resume/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "docs/resume/Timothy Mitchell - Resume Website.pdf",
+      "sha256": "14548bbc65f18f954f3af613ca8a59c4383a2e805141ad114813b4ba72fe1dfa",
+      "bytes": 244771,
+      "modified": "2026-09-02"
+    },
+    {
+      "path": "images/battlebot/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Byte (1).png",
+      "sha256": "18e7cafdd6d7d96e34fefafbeb13bc5edccbbf616916f642efe58f536a2ec8c3",
+      "bytes": 2306767,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Byte (2).png",
+      "sha256": "22103bc1210f4c09d2ba10de06b43df56b1839b38ae4213ec7cd5f7a0e2639a7",
+      "bytes": 2523581,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Byte.png",
+      "sha256": "c63774a0764643b703a064b0f934b5dcf8d96428fb1a07dd9de7136bfa72a5d2",
+      "bytes": 1965373,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/IMG_5632.jpg",
+      "sha256": "87321715744accc2bf6aeee2d218fe6a04d677698eea7307236feae2e7bd8295",
+      "bytes": 975946,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Spark V4 (1).png",
+      "sha256": "85c2788951f30ff51670b7edf1378fd12c846cb0cb63add2d551034bae8a3323",
+      "bytes": 1520413,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Spark V4.png",
+      "sha256": "2a544e1d0eb73f5c74177b4e1bec3e83ba4efbb579ea0372ab062ac0ea0b6ae0",
+      "bytes": 1678159,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Wheel (1).png",
+      "sha256": "bb486d10716651c64492e652a00231350f1734dba1bfdeb8608e053799751add",
+      "bytes": 2202825,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Wheel.png",
+      "sha256": "3e7b7a9226cb41781cb234f3b587c11fbb644679e11a0a7e0b0f268da91f8410",
+      "bytes": 1092844,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/battlebot/Wheels.png",
+      "sha256": "bb2620cc83d60040ff9ab2f5fd98176632bf3ef2633199ea6d6fef86e46598c5",
+      "bytes": 1428096,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/bell-crank-fea/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/bell-crank-fea/1257618d-1872-4c2a-90e7-701f0eef4a80.png",
+      "sha256": "161fb10855bdbbe16f2b4de9b994cbfacd8b0e4644f6da89558b9f4675d75532",
+      "bytes": 178761,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/bladed-arb/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/bracket-fea/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/brake-rotor-manufacturing/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/frc-intake/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-intake/Intake V4 Neo (1).png",
+      "sha256": "2bea9b0ed1ea3763618e96fb972d0ab8c70c55cf6b597d110a4475328771aa25",
+      "bytes": 3395081,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-intake/Intake V4 Neo (2).png",
+      "sha256": "ba39a7e97434993406a4116d0700f15e814373a6c5872e09309c996fb2e2ab5e",
+      "bytes": 2531193,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-intake/Intake V4 Neo.png",
+      "sha256": "d168c6fb8688173921518e16c442feaf7333ee50bbe8cc8c0dbeb6707a48f4b3",
+      "bytes": 2295387,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-intake/Intake V4.2 Neo.png",
+      "sha256": "40f72e98f21dbbfe59d709831e4d47eebed4ef42febb9dc01a65855579eacbfe",
+      "bytes": 1018802,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/Chassis.png",
+      "sha256": "210a3cf2fdce8da5587ce6645fa9469104ed4db8552c48334d35e3c2332f9e36",
+      "bytes": 3048557,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/Elevator (1).png",
+      "sha256": "5d811da903ce42cf89259f8cf6b2efc0daaca05b9b104a89e0bffe22312c26c3",
+      "bytes": 2425498,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/Elevator.png",
+      "sha256": "1ed07396705a94c1e03e7322700a0bc1da814601f4b80b25fe5b89663d3bf143",
+      "bytes": 1817671,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/Robot (1).png",
+      "sha256": "b92c06920bdadbf4831de743eef2064e9d2b5bd7ea55b067515cc8693cf7c42f",
+      "bytes": 2994625,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/frc-robot/Robot.png",
+      "sha256": "1d0688aca00f7300a0cea47b8f522bfe59d5e94479fb190aacbfd06c432b8730",
+      "bytes": 3064190,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/freshman-lego/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/freshman-lego/Screenshot 2026-03-10 231324.png",
+      "sha256": "138d6ff0f3b41f6bac354088056148a44962db7a9c814d611938ee060b4c83d5",
+      "bytes": 615810,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/freshman-lego/Screenshot 2026-03-10 231332.png",
+      "sha256": "2de4112019e9e53b12ebf0eaf2c99ad36854a9cdbaf7e8d696435f222699f6b6",
+      "bytes": 553825,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/freshman-lego/Screenshot 2026-03-10 231343.png",
+      "sha256": "08549e81e99a3a99e9989c4d0fb45bea1003ce04f87567bdc1d17f143d243648",
+      "bytes": 578274,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/fsae-gps/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/fsae-gps/IMG_1095.jpg",
+      "sha256": "7b88412bb484e76ffff55c7f6c8537580c247e122ff9f904f41080ac6a877184",
+      "bytes": 6036615,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/fsae-gps/imageGPS.png",
+      "sha256": "92080d21b124dc6e584f205f07683ca39e209563c2a9ce93cba7d24a54ebb119",
+      "bytes": 134947,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/gearbox-design/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/gearbox-design/full-assembly.png",
+      "sha256": "ed9ef7f4745b0ef587d8b65be62f71565566e3b00773e4e1f123c4c1ae6f42fb",
+      "bytes": 182081,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-213702.png",
+      "sha256": "28d87641acf212f0d69fe4bc948f7c2123cee34e7017d07db12a426ccbc42947",
+      "bytes": 79480,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214016.png",
+      "sha256": "e9122f6e1c583f0628afe633b210fd1489e21ba9504703e0c0e0478a30db4ff5",
+      "bytes": 110094,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214029-1-.png",
+      "sha256": "622d3a4e3bc366dd6bdc50df4676fd7095f678a7389b172eb6842300fcc9931a",
+      "bytes": 131172,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214029.png",
+      "sha256": "622d3a4e3bc366dd6bdc50df4676fd7095f678a7389b172eb6842300fcc9931a",
+      "bytes": 131172,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214114.png",
+      "sha256": "36c6df15c7a686bea22b2c43de538cf972d643d85c01f1740311ab0d79d53320",
+      "bytes": 216729,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214140.png",
+      "sha256": "75cfc51788606f65250fd55407d7587e9b62f15bcc2c2b1792acd112a1ce5769",
+      "bytes": 257007,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/gearbox-design/screenshot-2025-11-05-214216.png",
+      "sha256": "849f3891c16eb1e0b5bd1955ef9464316cd8b60d89daeb44521d5a2da8589e28",
+      "bytes": 360134,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/junior-design-robot/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/junior-design-robot/image.png",
+      "sha256": "91832803d408ba95a898b545622f5da8b428ac3de673d6cdbda64f4410b3ab85",
+      "bytes": 1373498,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/junior-design-robot/screenshot_2026-02-22_211826.png",
+      "sha256": "33bfe2cd2ab3afcec80dbff59b983ee4807a7d590a8f106fb7677f2a55f04459",
+      "bytes": 453827,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/junior-design-robot/screenshot_2026-02-22_212053.png",
+      "sha256": "bfbe217cf49338de96a4846d2ec5de86418df386922ff0d0d952e80d46ff4205",
+      "bytes": 869887,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/manifest.json",
+      "sha256": "8253830891931a316a33c72e8640314929c038f41ec07ec4b72ba648a3b50409",
+      "bytes": 3117,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "images/motech-workbook/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/rival-arm/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-arm/Arm (1).png",
+      "sha256": "15cba48803e8340a62da81394b4f734347060ceef002b3bad7dca5015fd65077",
+      "bytes": 2640445,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-arm/Arm (2).png",
+      "sha256": "be1e92ddd7ff5b2d05e461908ae9a4b599936ba1709977aef03c2f053bc07bc2",
+      "bytes": 1912861,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-arm/Arm.png",
+      "sha256": "4665088acce91b04bf38cd4fe5e5245def1e441ba5f3224334173dbccf4ef0e9",
+      "bytes": 1234644,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-arm/Playtime.png",
+      "sha256": "eb7573ef6bd435f1f9877bddf31b4ab893725367b064e550626b320abc0c78c4",
+      "bytes": 3060294,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Belly Pan.png",
+      "sha256": "38cea80eaf3f19e6e1b2f0a8017d9acabc9fc0946d8c5b9eb6f091b39ea3ae41",
+      "bytes": 702145,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Chasis Assembly (1).png",
+      "sha256": "dbd73f464d39a90c16e0a57d5afe165eccb56c8a30658c1013adbe29ebfed0c2",
+      "bytes": 2888923,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Chasis Assembly (2).png",
+      "sha256": "dda02fd8373946461b045df44153d4d1aaa4117310bcaa4751db1424ffd3e814",
+      "bytes": 1612584,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Chasis Assembly (3).png",
+      "sha256": "0da0bb8370f3ea697e14fee81df6cf68d7f30eb386d43e3b177caf109740cd0a",
+      "bytes": 2672716,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Chasis Assembly.png",
+      "sha256": "4e78caefc753e974b15db56ea18a65bdbecdb356b361456740095ac679d6c8d3",
+      "bytes": 2375453,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-chassis/Main_Robot.png",
+      "sha256": "62a9e3e7f60778a71ea76885bd7338596dcdce641f298764696f6794518f296c",
+      "bytes": 2401846,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-fourbar/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-fourbar/Flip Down.png",
+      "sha256": "dd0baa7f1c6d6da6618eabd5dccc10813da237efdce63ea70d2ae467416d247b",
+      "bytes": 1661174,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-shuttlecock/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-shuttlecock/Intake (1).png",
+      "sha256": "d0269691393cdb0e27a12a8ab1a76084f3274a4d9d198fe3368e3ecac4640c77",
+      "bytes": 588040,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-shuttlecock/Intake (2).png",
+      "sha256": "a0bf5e4e7c3720c6de8f5ec588f80486f341c19649d392926ffcad9733665650",
+      "bytes": 1525060,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-shuttlecock/Intake.png",
+      "sha256": "24742d36e94250e7cb3f703296ea83c12c6248b908d870e5b4a14552e84c82a2",
+      "bytes": 1602278,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/rival-shuttlecock/Main Robot.png",
+      "sha256": "e1fd13e27a67248e1b78b7fd648b509487332604d27590339e7a5d79aa0fc7f4",
+      "bytes": 3444516,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/tensile-testing-rig/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-08-20"
+    },
+    {
+      "path": "images/wcp-arm/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-arm/Arm Assembly (1).png",
+      "sha256": "475f517964fbf055f510119cb68beb5737e41761aeddd790db8121a203af98ff",
+      "bytes": 3020582,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-arm/Arm Assembly.png",
+      "sha256": "1d9e36fe9a0fdbe17f54a3df11d5afe74b2eac96f1b12a69ad3902e6f6fe1ba3",
+      "bytes": 2747137,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-arm/Robot (2).png",
+      "sha256": "ec2788de5f388e66531ad371c0f9a1f0f63746942ef50671c4d7faf953dd185e",
+      "bytes": 4231783,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-basketball/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-basketball/Arm Assembly (2).png",
+      "sha256": "5bf483f3475ea7fc5e81e61145346ec2d7db905ff2f9a72f4707f28a501fbc5a",
+      "bytes": 1852404,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/Fuel Intake v1.png",
+      "sha256": "0590d465e84917bb22bc6c6ff64b847bb1728484ec2c704e3e2faff66a01766b",
+      "bytes": 2116376,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/Hopper Assembly.png",
+      "sha256": "5145eec7ee39384c77f2e4f99e40bde3fe68dd5e9c769db705c3516dcb79a25c",
+      "bytes": 2410595,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/Shooter Assembly (1).png",
+      "sha256": "083de2a654f30fad75bafdbb17dc0ef08e8a1fadca1f4dfd9102826cff34c3e5",
+      "bytes": 2612149,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/Shooter Assembly (2).png",
+      "sha256": "ca3c5151a716d9d06e7e5081d6d52b4156bb0da8b7bc10acb84ef041d85964dc",
+      "bytes": 2436440,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "images/wcp-launcher/Shooter Assembly.png",
+      "sha256": "f926e51ebe3e0e48f3b5f7abb01d93115135e75c4409a479c0c70926899c86d9",
+      "bytes": 1846920,
+      "modified": "2026-04-22"
+    },
+    {
+      "path": "models/battlebot.glb",
+      "sha256": "7b35153c51faf24204994de6d73f718e865cfed7e91d125d01e4cda365ff996e",
+      "bytes": 15047740,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/bell-crank-fea.step",
+      "sha256": "587bf45feeac0dae1433f93201fe59a6f014dc1542645598b4d91faaba1c9698",
+      "bytes": 286483,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/data.bin",
+      "sha256": "617b24c7e9ae172610ca6148df46c1effc160de2fa00d1138c6bf5456484ceb2",
+      "bytes": 47316,
+      "modified": "2026-04-28"
+    },
+    {
+      "path": "models/frc-intake.glb",
+      "sha256": "4cd2d69390a865b76fd134612af1b6f56e273736fd6d8b0c6a5dc36e8e85ef22",
+      "bytes": 12672448,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/frc-robot.glb",
+      "sha256": "e38239279e03f4b253a56a7a0552dcbe620ebe3e1a7427540a480f2906a9764e",
+      "bytes": 16900412,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/freshman-lego.glb",
+      "sha256": "e38239279e03f4b253a56a7a0552dcbe620ebe3e1a7427540a480f2906a9764e",
+      "bytes": 16900412,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/gearbox-design.step",
+      "sha256": "c663ce505d258f5fbb03c5b33dc6225772c2f9079c473daf225ffdf161d3048f",
+      "bytes": 9509130,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/gps_case.gltf",
+      "sha256": "dfb709393808066c2c505ab41935274d217907cd0648f2cad5831d0eac30bf4c",
+      "bytes": 2168,
+      "modified": "2026-04-28"
+    },
+    {
+      "path": "models/junior-design-robot.glb",
+      "sha256": "d24dd7b85b7de2e84cdfd87502d34c78d03253ba9975384fa7dc1d1dbdbe05d6",
+      "bytes": 45879648,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/manifest.json",
+      "sha256": "9d48c4e9a58d9d080006df82ef63dabc2399b0450a29f00de85271f45f72a31f",
+      "bytes": 493,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/rival-chassis.glb",
+      "sha256": "e90706d9b2a46e3e00088ab24552d9ede34b04ff8bb95c4798a9ce97b678b75a",
+      "bytes": 88626428,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/wcp-arm.glb",
+      "sha256": "f455e8c1eafbc81a4af0c02e4f87f899b2ca84b2d59ee9fb56944729918cd894",
+      "bytes": 49414440,
+      "modified": "2026-08-25"
+    },
+    {
+      "path": "models/wcp-launcher.glb",
+      "sha256": "29d298a8ffa5602a56a422fa839c4c0246829c10776a2d864181a073299a50bf",
+      "bytes": 26056912,
+      "modified": "2026-08-25"
+    }
+  ]
+}

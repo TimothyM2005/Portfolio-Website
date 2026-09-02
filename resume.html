@@ -88,13 +88,17 @@
         <a id="resume-download" class="resume-download" href="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" download>Download PDF</a>
       </div>
       <div id="resume-viewer">
-        <iframe class="resume-embed" id="resume-frame" src="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" title="Resume PDF"></iframe>
+        <div class="pdf-viewer-wrap">
+          <iframe class="resume-embed" id="resume-frame" src="docs/resume/Timothy%20Mitchell%20-%20Resume%20Website.pdf" title="Resume PDF"></iframe>
+          <div class="pdf-copyright-overlay" aria-hidden="true">© Timothy Mitchell</div>
+        </div>
       </div>
     </main>
 
     <footer>
       <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
       <p><a href="https://github.com/TimothyM2005">GitHub</a> · Built for GitHub Pages</p>
+      <div id="site-copyright" class="site-meta-footer" hidden></div>
     </footer>
   </div>
 
@@ -154,6 +158,10 @@
           }
         });
     })();
+  </script>
+  <script type="module">
+    import { applySiteCopyrightFooter } from "./scripts/copyright.js?v=protect1";
+    applySiteCopyrightFooter("site-copyright");
   </script>
 </body>
 </html>

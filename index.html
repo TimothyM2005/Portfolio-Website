@@ -1406,11 +1406,17 @@
     <footer>
       <p>Timothy Mitchell — Portfolio of Design, CAD & Programming</p>
       <p><a href="https://github.com/TimothyM2005">GitHub</a> · Built for GitHub Pages</p>
+      <div id="site-copyright" class="site-meta-footer" hidden></div>
       <div id="site-meta-footer" class="site-meta-footer" hidden></div>
     </footer>
   </div>
 
   <a href="#top" class="back-to-top" aria-label="Back to top">&uarr;</a>
+
+  <script type="module">
+    import { applySiteCopyrightFooter } from "./scripts/copyright.js?v=protect1";
+    applySiteCopyrightFooter("site-copyright");
+  </script>
 
   <script type="module">
     import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js?v=feat10";

@@ -286,7 +286,8 @@ export async function uploadProjectFile(projectId, file, folder) {
       url: result.url,
       path: result.path || result.url,
       name: result.name || file.name,
-      document: result.document || null
+      document: result.document || null,
+      protection: result.protection || null
     };
   }
 
