@@ -108,9 +108,14 @@ Manual alternative:
 
 Cards with a linked model show a **3D CAD** pill. `.glb/.gltf` is the most reliable for web viewing. STEP files are gzipped on upload and tessellated in a **Web Worker** (Fast preview by default) so the page stays interactive; use **Full quality** in the viewer for a denser mesh.
 
+## Printable export
+
+Open [print.html](print.html) (linked from the site footer as "Printable version") for a single-page, print-friendly version of the portfolio — profile info plus every project's goal/outcome/technical writeup and a thumbnail. Click **Print / Save as PDF** and choose "Save as PDF" in the browser print dialog to generate a document you can hand out or attach to applications. It pulls live from `data/projects.json`, so it always matches the current site content.
+
 ## Structure
 
 - **index.html** — Projects page (search, filters, featured highlight, CAD modal).
+- **print.html** — Printable/PDF-exportable summary of the portfolio.
 - **admin.html** — Local project editor (featured picker, uploads, viewer defaults).
 - **data/projects.json** — Project content source of truth for GitHub Pages.
 - **data/site-meta.json** — Last-updated date and short changelog.

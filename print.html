@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timothy Mitchell — Portfolio (Printable)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1b1f24;
+      --ink-muted: #57606a;
+      --line: #d0d7de;
+      --accent: #0b5fff;
+      --paper: #ffffff;
+      --backdrop: #e9ebee;
+    }
+
+    @page {
+      size: letter;
+      margin: 0.65in;
+    }
+
+    html {
+      background: var(--backdrop);
+    }
+
+    body {
+      font-family: 'Outfit', Arial, sans-serif;
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .toolbar p {
+      font-size: 0.85rem;
+      color: #c9d1d9;
+    }
+
+    .toolbar a {
+      color: #9dc4ff;
+    }
+
+    .toolbar button {
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid #3d444d;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .toolbar button:hover {
+      filter: brightness(1.08);
+    }
+
+    .sheet {
+      max-width: 8.5in;
+      margin: 2rem auto;
+      padding: 0.75in 0.7in;
+      background: var(--paper);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .doc-header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .doc-header .tagline {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      margin-top: 0.15rem;
+    }
+
+    .doc-header .contact {
+      text-align: right;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .doc-header .contact a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      padding: 0.85rem 0 1.1rem;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 1.3rem;
+    }
+
+    .profile-grid h2 {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--ink-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-grid p {
+      font-size: 0.82rem;
+    }
+
+    .profile-grid p + p {
+      margin-top: 0.2rem;
+    }
+
+    h2.section-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin: 1.4rem 0 0.7rem;
+      padding-top: 0.2rem;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: 1.15in 1fr;
+      gap: 0.55rem 0.65rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--line);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .project:last-child {
+      border-bottom: none;
+    }
+
+    .project .thumb {
+      grid-row: 1 / span 2;
+      width: 1.15in;
+      height: 1.15in;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      object-fit: cover;
+      background: #f0f1f3;
+    }
+
+    .project.no-thumb {
+      grid-template-columns: 1fr;
+    }
+
+    .project-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.4rem 0.6rem;
+    }
+
+    .project-head h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .project-head .date {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.15rem;
+    }
+
+    .project-tags span {
+      font-size: 0.68rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.05rem 0.5rem;
+      color: var(--ink-muted);
+    }
+
+    .project-body {
+      font-size: 0.82rem;
+    }
+
+    .project-body p {
+      margin-top: 0.3rem;
+    }
+
+    .project-body .label {
+      font-weight: 600;
+      color: var(--ink-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.45rem;
+    }
+
+    .project-body ul {
+      margin: 0.2rem 0 0 1.1rem;
+    }
+
+    .doc-footer {
+      margin-top: 1.5rem;
+      padding-top: 0.7rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .load-state {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      padding: 1rem 0;
+    }
+
+    @media print {
+      .toolbar { display: none; }
+      html, body { background: var(--paper); }
+      .sheet {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <p>Printable export — use your browser's print dialog and choose "Save as PDF".</p>
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+    <p><a href="index.html">Back to site</a></p>
+  </div>
+
+  <main class="sheet" id="sheet">
+    <div class="doc-header">
+      <div>
+        <h1>Timothy Mitchell</h1>
+        <p class="tagline">Portfolio of Design, CAD &amp; Programming</p>
+      </div>
+      <div class="contact">
+        <p><a href="mailto:timothy.mitchell2022@gmail.com">timothy.mitchell2022@gmail.com</a></p>
+        <p><a href="https://www.linkedin.com/in/timothy-mitchell-">linkedin.com/in/timothy-mitchell-</a></p>
+        <p><a href="https://github.com/TimothyM2005">github.com/TimothyM2005</a></p>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div>
+        <h2>Education</h2>
+        <p><strong>UNC Charlotte</strong> — B.S. Mechanical Engineering (Expected Dec 2027)</p>
+        <p><strong>Durham Tech Community College</strong> — Associate in Engineering (May 2025)</p>
+      </div>
+      <div>
+        <h2>Related Coursework</h2>
+        <p>Statics, Solids, Mechatronics 1 &amp; 2, Manufacturing Systems, Machine Shop, Dynamics, Thermodynamics, Linear Algebra</p>
+      </div>
+      <div>
+        <h2>Skills</h2>
+        <p>SolidWorks, Onshape, Python, Java, React, C, C++, Excel, 3D Modeling, Manufacturing, 3D Printing, Electronics, KiCAD</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Projects</h2>
+    <div id="projects-list">
+      <p class="load-state">Loading projects…</p>
+    </div>
+
+    <div class="doc-footer">
+      <span>Generated from timothym2005.github.io/Portfolio-Website</span>
+      <span id="generated-date"></span>
+    </div>
+  </main>
+
+  <script type="module">
+    import { loadProjects } from "./scripts/projects-store.js";
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    async function loadImageManifest() {
+      try {
+        const response = await fetch("images/manifest.json", { cache: "no-store" });
+        if (!response.ok) return {};
+        return await response.json();
+      } catch (err) {
+        return {};
+      }
+    }
+
+    function renderProject(project, thumb) {
+      const tagsHtml = project.tags
+        .map(function (tag) { return "<span>" + escapeHtml(tag.label) + "</span>"; })
+        .join("");
+
+      const outcomeHtml = project.outcome
+        .map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; })
+        .join("");
+
+      const thumbHtml = thumb
+        ? '<img class="thumb" src="' + escapeHtml(thumb) + '" alt="" />'
+        : "";
+
+      return (
+        '<article class="project' + (thumb ? "" : " no-thumb") + '">' +
+          thumbHtml +
+          '<div class="project-head">' +
+            "<h3>" + escapeHtml(project.title) + "</h3>" +
+            (project.date ? '<span class="date">' + escapeHtml(project.date) + "</span>" : "") +
+          "</div>" +
+          '<div class="project-tags">' + tagsHtml + "</div>" +
+          '<div class="project-body">' +
+            (project.goal ? '<p class="label">Goal</p><p>' + escapeHtml(project.goal) + "</p>" : "") +
+            (outcomeHtml ? '<p class="label">Outcome</p><ul>' + outcomeHtml + "</ul>" : "") +
+            (project.technical ? '<p class="label">Technical</p><p>' + escapeHtml(project.technical) + "</p>" : "") +
+          "</div>" +
+        "</article>"
+      );
+    }
+
+    Promise.all([loadProjects(), loadImageManifest()])
+      .then(function (results) {
+        const projects = results[0].projects || [];
+        const imageManifest = results[1] || {};
+        const list = document.getElementById("projects-list");
+        if (!projects.length) {
+          list.innerHTML = '<p class="load-state">No projects found.</p>';
+          return;
+        }
+        list.innerHTML = projects
+          .map(function (project) {
+            const thumb = project.images[0] || (imageManifest[project.id] || [])[0] || "";
+            return renderProject(project, thumb);
+          })
+          .join("");
+      })
+      .catch(function (err) {
+        console.error(err);
+        document.getElementById("projects-list").innerHTML =
+          '<p class="load-state">Unable to load projects. Run this page from the local admin server or GitHub Pages (not as a local file:// path).</p>';
+      });
+
+    document.getElementById("generated-date").textContent =
+      "Generated " + new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  </script>
+</body>
+</html>
