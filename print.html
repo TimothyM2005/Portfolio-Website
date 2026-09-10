@@ -155,9 +155,6 @@
     }
 
     .project {
-      display: grid;
-      grid-template-columns: 1.15in 1fr;
-      gap: 0.55rem 0.65rem;
       padding: 0.7rem 0;
       border-bottom: 1px solid var(--line);
       break-inside: avoid;
@@ -168,18 +165,20 @@
       border-bottom: none;
     }
 
-    .project .thumb {
-      grid-row: 1 / span 2;
-      width: 1.15in;
-      height: 1.15in;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      object-fit: cover;
-      background: #f0f1f3;
+    .project-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.55rem;
     }
 
-    .project.no-thumb {
-      grid-template-columns: 1fr;
+    .project-images img {
+      width: 1in;
+      height: 1in;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      object-fit: contain;
+      background: #f0f1f3;
     }
 
     .project-head {
@@ -196,25 +195,6 @@
 
     .project-head .date {
       font-size: 0.78rem;
-      color: var(--ink-muted);
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem;
-      margin-top: 0.15rem;
-    }
-
-    .project-body {
-      grid-column: 1 / -1;
-    }
-
-    .project-tags span {
-      font-size: 0.68rem;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 0.05rem 0.5rem;
       color: var(--ink-muted);
     }
 
@@ -336,27 +316,28 @@
       }
     }
 
-    function renderProject(project, thumb) {
-      const tagsHtml = project.tags
-        .map(function (tag) { return "<span>" + escapeHtml(tag.label) + "</span>"; })
-        .join("");
+    const MAX_IMAGES = 4;
 
+    function renderProject(project, images) {
       const outcomeHtml = project.outcome
         .map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; })
         .join("");
 
-      const thumbHtml = thumb
-        ? '<img class="thumb" src="' + escapeHtml(thumb) + '" alt="" />'
+      const imagesHtml = images.length
+        ? '<div class="project-images">' +
+            images
+              .map(function (src) { return '<img src="' + escapeHtml(src) + '" alt="" />'; })
+              .join("") +
+          "</div>"
         : "";
 
       return (
-        '<article class="project' + (thumb ? "" : " no-thumb") + '">' +
-          thumbHtml +
+        '<article class="project">' +
+          imagesHtml +
           '<div class="project-head">' +
             "<h3>" + escapeHtml(project.title) + "</h3>" +
             (project.date ? '<span class="date">' + escapeHtml(project.date) + "</span>" : "") +
           "</div>" +
-          '<div class="project-tags">' + tagsHtml + "</div>" +
           '<div class="project-body">' +
             (project.goal ? '<p class="label">Goal</p><p>' + escapeHtml(project.goal) + "</p>" : "") +
             (outcomeHtml ? '<p class="label">Outcome</p><ul>' + outcomeHtml + "</ul>" : "") +
@@ -377,8 +358,8 @@
         }
         list.innerHTML = projects
           .map(function (project) {
-            const thumb = project.images[0] || (imageManifest[project.id] || [])[0] || "";
-            return renderProject(project, thumb);
+            const source = project.images.length ? project.images : (imageManifest[project.id] || []);
+            return renderProject(project, source.slice(0, MAX_IMAGES));
           })
           .join("");
       })
