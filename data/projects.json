@@ -11555,11 +11555,11 @@
     "documents": [],
     "featured": false,
     "viewerPreset": null,
-    "order": 1
+    "order": 0
   },
   {
     "id": "ShockBar-RCA",
-    "title": "Rear Shock Bar RCA",
+    "title": "Formula Student - Rear Shock Bar RCA",
     "date": "July 2026",
     "tags": [
       {
@@ -11579,8 +11579,8 @@
     "details": "",
     "story": [],
     "outcome": [
-      "Used Ansys to perform RCA and identify zones under our Safety Factor minimum",
-      "Using SolidWorks, redesigned the shockbar to meet new Safety Factor requirements",
+      "Used Ansys to perform RCA and identify zones under our minimum safety factor",
+      "Using SolidWorks, redesigned the shock bar to meet new Safety Factor requirements",
       "Validated the new shock bar for a Safety Factor of 2"
     ],
     "technical": "Ansys FEA was performed for a max loading case of 800lb\nOriginal SF of 1 was identified\nRedesigned SF of 2 was validated using Ansys",
@@ -11596,6 +11596,6 @@
     "documents": [],
     "featured": false,
     "viewerPreset": null,
-    "order": 2
+    "order": 0
   }
 ]
