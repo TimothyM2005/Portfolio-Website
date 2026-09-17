@@ -1,6 +1,14 @@
 {
-  "lastUpdated": "2026-08-25",
+  "lastUpdated": "2026-09-17",
   "changelog": [
+    {
+      "date": "2026-09-17",
+      "text": "Updated project \"ShockBar-RCA\""
+    },
+    {
+      "date": "2026-09-17",
+      "text": "Updated project \"ARB-Assembly\""
+    },
     {
       "date": "2026-08-25",
       "text": "Updated project \"wcp-launcher\""
@@ -40,14 +48,6 @@
     {
       "date": "2026-08-25",
       "text": "Project detail layout polish, inches in CAD viewer, model keep-alive, dark scrollbars, public Admin nav removed"
-    },
-    {
-      "date": "2026-08-25",
-      "text": "CAD viewer materials, transparency, explode, clip plane, size overlay, screenshot & share link"
-    },
-    {
-      "date": "2026-08-25",
-      "text": "Projects: search, featured highlight, design stories, CAD/PDF downloads, viewer presets, Admin featured picker"
     }
   ]
 }

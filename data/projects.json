@@ -11524,5 +11524,78 @@
     "featured": false,
     "viewerPreset": null,
     "order": 2
+  },
+  {
+    "id": "ARB-Assembly",
+    "title": "Formula Student - ARB Assemblys",
+    "date": "Aug 2026",
+    "tags": [
+      {
+        "type": "solidworks",
+        "label": "SolidWorks"
+      },
+      {
+        "type": "formula",
+        "label": "Formula Student"
+      }
+    ],
+    "goal": "Design and Validate an ARB",
+    "details": "",
+    "story": [],
+    "outcome": [
+      "Designed a Formula Student-style ARB assembly using SolidWorks.",
+      "Used a top-down modeling style to reduce modeling time.",
+      "Used a Python script to calculate roll stiffness to determine tube size and ARB arm lengths."
+    ],
+    "technical": "SolidWorks parametric geometry sketch driving the top-down modeling in the assembly",
+    "images": [
+      "images/Front-ARB-Assembly/front-arb-assemblie.png"
+    ],
+    "modelUrl": "",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 1
+  },
+  {
+    "id": "ShockBar-RCA",
+    "title": "Rear Shock Bar RCA",
+    "date": "July 2026",
+    "tags": [
+      {
+        "type": "solidworks",
+        "label": "SolidWorks"
+      },
+      {
+        "type": "course",
+        "label": "ANSYS"
+      },
+      {
+        "type": "formula",
+        "label": "Formula Student"
+      }
+    ],
+    "goal": "Perform RCA on the rear shock bar and redesign the components",
+    "details": "",
+    "story": [],
+    "outcome": [
+      "Used Ansys to perform RCA and identify zones under our Safety Factor minimum",
+      "Using SolidWorks, redesigned the shockbar to meet new Safety Factor requirements",
+      "Validated the new shock bar for a Safety Factor of 2"
+    ],
+    "technical": "Ansys FEA was performed for a max loading case of 800lb\nOriginal SF of 1 was identified\nRedesigned SF of 2 was validated using Ansys",
+    "images": [
+      "images/ShockBar-RCA/33f24f55-2a3e-4c7f-8f5e-18ba77f151e5.png",
+      "images/ShockBar-RCA/3d8ec6df-34e7-4af5-8c99-6592f16ee63c.png",
+      "images/ShockBar-RCA/afadf016-f990-4248-887c-8d0e887b9bac.png",
+      "images/ShockBar-RCA/a56f2fd3-3893-48e2-a5a7-ff7121a5977f.png",
+      "images/ShockBar-RCA/4592f6a2-8faf-47f2-b391-a762d05e517b.png",
+      "images/ShockBar-RCA/892346a7-0632-4953-90bc-5e53e0b659cb.png"
+    ],
+    "modelUrl": "",
+    "documents": [],
+    "featured": false,
+    "viewerPreset": null,
+    "order": 2
   }
 ]

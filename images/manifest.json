@@ -1,4 +1,15 @@
 {
+  "Front-ARB-Assembly": [
+    "images/Front-ARB-Assembly/front-arb-assemblie.png"
+  ],
+  "ShockBar-RCA": [
+    "images/ShockBar-RCA/33f24f55-2a3e-4c7f-8f5e-18ba77f151e5.png",
+    "images/ShockBar-RCA/3d8ec6df-34e7-4af5-8c99-6592f16ee63c.png",
+    "images/ShockBar-RCA/4592f6a2-8faf-47f2-b391-a762d05e517b.png",
+    "images/ShockBar-RCA/892346a7-0632-4953-90bc-5e53e0b659cb.png",
+    "images/ShockBar-RCA/a56f2fd3-3893-48e2-a5a7-ff7121a5977f.png",
+    "images/ShockBar-RCA/afadf016-f990-4248-887c-8d0e887b9bac.png"
+  ],
   "battlebot": [
     "images/battlebot/Byte (1).png",
     "images/battlebot/Byte (2).png",
