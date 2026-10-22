@@ -19,7 +19,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script type="importmap">
   {
@@ -107,27 +107,24 @@
     }
 
     .projects {
-      column-count: 1;
-      column-gap: 1.35rem;
-    }
-
-    .project {
-      break-inside: avoid;
-      margin-bottom: 1.35rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.35rem;
+      align-items: start;
     }
 
     @media (min-width: 640px) {
-      .projects { column-count: 2; }
+      .projects { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (min-width: 980px) {
-      .projects { column-count: 3; }
+      .projects { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (min-width: 1400px) {
       .projects {
-        column-count: 4;
-        column-gap: 1.25rem;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
       }
     }
 
@@ -159,7 +156,8 @@
     }
 
     .project-title {
-      font-size: 1.1rem;
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
       font-weight: 600;
     }
 
@@ -170,36 +168,19 @@
     }
 
     .pill {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 500;
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
       font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
     }
 
     .pill.date {
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    .pill.solidworks {
-      background: rgba(163, 113, 247, 0.2);
-      color: var(--tag-swd);
-    }
-
-    .pill.onshape {
-      background: rgba(121, 192, 255, 0.2);
-      color: var(--tag-onshape);
-    }
-
-    .pill.formula {
-      background: rgba(63, 185, 80, 0.2);
-      color: var(--success);
-    }
-
-    .pill.course {
-      background: rgba(210, 153, 34, 0.2);
-      color: #d29922;
+      color: var(--text);
     }
 
     .project h3 {
@@ -325,7 +306,7 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
-      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+      background: radial-gradient(circle at top, #231f18, #121110 65%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -343,11 +324,6 @@
 
     .model-viewer-canvas:active {
       cursor: grabbing;
-    }
-
-    .pill.cad {
-      background: rgba(88, 166, 255, 0.18);
-      color: var(--accent);
     }
 
     .project {
@@ -382,7 +358,7 @@
     .project-modal-backdrop {
       position: absolute;
       inset: 0;
-      background: rgba(1, 4, 9, 0.72);
+      background: rgba(6, 5, 4, 0.75);
     }
 
     .project-modal-dialog {
@@ -468,7 +444,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+      background: radial-gradient(circle at top, #231f18, #121110 65%);
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -491,7 +467,7 @@
       position: relative;
       min-height: 280px;
       height: 100%;
-      background: radial-gradient(circle at top, #1f2630, #141922 65%);
+      background: radial-gradient(circle at top, #231f18, #121110 65%);
     }
 
     .model-viewer-toolbar {
@@ -500,7 +476,7 @@
       gap: 0.35rem;
       padding: 0.4rem 0.6rem;
       border-top: 1px solid var(--border);
-      background: rgba(13, 17, 23, 0.92);
+      background: rgba(15, 13, 11, 0.92);
       font-size: 0.76rem;
       color: var(--text-muted);
     }
@@ -749,7 +725,7 @@
       z-index: 2;
       padding: 0.25rem 0.5rem;
       border-radius: 6px;
-      background: rgba(13, 17, 23, 0.78);
+      background: rgba(15, 13, 11, 0.78);
       border: 1px solid var(--border);
       color: var(--text-muted);
       font-size: 0.72rem;
@@ -847,13 +823,14 @@
     }
 
     .pill.featured {
-      background: rgba(63, 185, 80, 0.18);
-      color: var(--success);
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
     }
 
     .pill.pdf {
-      background: rgba(248, 81, 73, 0.16);
-      color: #ff7b72;
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
     .featured-project {
@@ -867,7 +844,7 @@
       padding: 1rem;
       border: 1px solid var(--border);
       border-radius: 14px;
-      background: linear-gradient(135deg, rgba(88, 166, 255, 0.08), transparent 55%), var(--surface);
+      background: linear-gradient(135deg, var(--accent-soft), transparent 55%), var(--surface);
       cursor: pointer;
     }
 
@@ -881,7 +858,7 @@
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
-      background: #11161d;
+      background: #141210;
     }
 
     .featured-media img {
@@ -900,8 +877,9 @@
     }
 
     .featured-card h3 {
+      font-family: 'Fraunces', serif;
       margin: 0 0 0.45rem;
-      font-size: 1.25rem;
+      font-size: 1.4rem;
     }
 
     .featured-card .goal {
@@ -994,7 +972,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.75rem;
-      background: rgba(13, 17, 23, 0.72);
+      background: rgba(15, 13, 11, 0.72);
       color: var(--text-muted);
       z-index: 2;
       font-size: 0.85rem;
@@ -1011,7 +989,8 @@
     }
 
     .project-modal-content h2 {
-      font-size: 1.25rem;
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
       line-height: 1.25;
       margin: 0 2.2rem 0.4rem 0;
     }
@@ -1194,7 +1173,7 @@
     }
 
     .project-modal-pdf-frame {
-      background: #0b0e12;
+      background: #121110;
       min-height: 480px;
       height: min(58vh, 640px);
     }
@@ -1205,7 +1184,7 @@
       min-height: 480px;
       border: 0;
       display: block;
-      background: #0b0e12;
+      background: #121110;
     }
 
     @media (max-width: 860px) {

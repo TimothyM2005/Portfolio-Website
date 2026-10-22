@@ -9,14 +9,14 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Construct a GPS antenna, mount it lighter and more stable.",
-    "details": "Designed a lightweight GPS antenna mount for Formula SAE packaging constraints. The part was FEA-validated in SolidWorks, then 3D printed and mounted with three frame contact points for improved stiffness versus the previous two-point design.",
+    "goal": "Make the GPS antenna mount lighter without losing the stiffness the old two-point design needed.",
+    "details": "The original two-point mount flexed more than the team wanted. SolidWorks FEA set the stress limits for how much material could safely come out, and the redesign added a third frame contact point to recover the stiffness a straight weight cut would have cost.",
     "outcome": [
-      "Fully 3D printed",
-      "30% reduction in weight from the original",
-      "3 points of contact to the frame rather than 2 on the original"
+      "30% lighter than the original mount",
+      "3 points of frame contact, up from 2, for added stiffness",
+      "Fully 3D printed"
     ],
-    "technical": "Used SolidWorks FEA to determine stress limitations on the part and evaluate the amount of removable material.",
+    "technical": "SolidWorks FEA set the stress limits that determined how much material could safely come out of the bracket.",
     "featured": false
   },
   {
@@ -29,13 +29,17 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Design a low-cost double four-bar linkage.",
+    "goal": "Build a four-bar linkage cheap enough to prototype more than once.",
     "outcome": [
-      "Low cost using only Polycard and 3D printed parts",
-      "Weight-reduced plates for less moving mass"
+      "Built from polycarbonate and 3D printed parts to keep cost down",
+      "Weight-reduced plates cut moving mass",
+      "Single motor drives the full extension range"
     ],
-    "technical": "Fully functional four-bar linkage based on extension limits using a single motor for extension.",
-    "featured": false
+    "technical": "One motor drives the linkage through its full range of extension.",
+    "featured": false,
+    "story": [
+      "Polycarbonate plates and 3D printed links kept the cost low enough to iterate without rethinking the budget each time."
+    ]
   },
   {
     "id": "freshman-lego",
@@ -47,15 +51,17 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Construct a full LEGO set in SolidWorks using Excel for different part configurations.",
+    "goal": "Model a full LEGO Technic set in SolidWorks with Excel driving part configurations.",
     "details": "",
-    "story": [],
-    "outcome": [
-      "A 240-piece LEGO Technic set",
-      "60+% of the parts are configurable",
-      "Advanced understanding of SolidWorks Part Studio"
+    "story": [
+      "A table of configurable properties meant most of the 240 pieces didn't need to be modeled one at a time \u2014 adjusting a few values in Excel rebuilt the right part automatically."
     ],
-    "technical": "Several configurable properties for the table enable the easy assembly of over 40 unique parts, reducing CAD time by more than 200% by eliminating the need to construct parts individually.",
+    "outcome": [
+      "240-piece LEGO Technic set, fully modeled in SolidWorks",
+      "Over 60% of parts driven by a single configuration table",
+      "Cut CAD time dramatically versus modeling each part individually"
+    ],
+    "technical": "A configuration table drives more than 40 unique parts from one base model, so most pieces update automatically instead of being rebuilt by hand.",
     "images": [
       "images/freshman-lego/Screenshot 2026-03-10 231324.png",
       "images/freshman-lego/Screenshot 2026-03-10 231332.png",
@@ -77,15 +83,19 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Make a system to extract shuttlecocks from a tube.",
+    "goal": "Build a 3-DOF system that can pull shuttlecocks out of a tube at any angle.",
     "outcome": [
-      "3 DOF system able to extract at any angle",
-      "Easy implementation with the rest of the robot",
-      "Fully 3D printed and easily assembleable",
-      "Master Sketch can easily change major values and auto-rebuild"
+      "3-DOF system extracts at any angle",
+      "Fully 3D printed and easy to assemble",
+      "Drops into the rest of the robot with minimal interface work",
+      "Master sketch rebuilds the whole assembly from a few key values"
     ],
-    "technical": "Uses a 3 DOF system powered by 2 servos for exact rotation, plus 1 motor to spin the roller bars. Uses an embossed hex shape through a bearing connecting to an insert into the tube to transmit power without running a shaft or external systems.",
-    "featured": false
+    "technical": "Two servos handle precise rotation and one motor spins the roller bars. Power reaches the rollers through an embossed hex insert pressed into the tube, crossing a bearing without a shaft running through it.",
+    "featured": false,
+    "story": [
+      "Power to the roller bars had to cross a bearing without a shaft running through it, so the drive uses an embossed hex insert pressed into the tube instead.",
+      "A master sketch keeps the geometry parametric \u2014 changing a few values and rebuilding updates the whole assembly."
+    ]
   },
   {
     "id": "rival-chassis",
@@ -97,14 +107,14 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Make a rigid and sturdy chassis using omnidirectional wheels to control the robot's movement.",
+    "goal": "Build a rigid omnidirectional chassis that's actually easy to manufacture.",
     "details": "",
     "outcome": [
-      "Easily machinable aluminum plates",
-      "Sheet metal parts to reduce complexity and hardware",
-      "CNC motor mount as both rigid mounting system and heat sink"
+      "Aluminum plates sized to stay easily machinable",
+      "Sheet metal parts cut complexity and hardware count",
+      "CNC motor mount doubles as a rigid mount and heat sink"
     ],
-    "technical": "Dead axle wheel system for smooth rotation on bearings. Wheels powered via 4 brushless motors with belts. 3D printing for extra parts to reduce machining complexity.",
+    "technical": "Dead axle wheels ride on bearings for smooth rotation, driven by four brushless motors through belts; 3D printed parts fill in where machining would add complexity.",
     "images": [
       "images/rival-chassis/Belly Pan.png",
       "images/rival-chassis/Chasis Assembly (1).png",
@@ -116,7 +126,11 @@
     "modelUrl": "models/rival-chassis.glb",
     "documents": [],
     "order": 1787637050512,
-    "featured": false
+    "featured": false,
+    "story": [
+      "Dead axles keep the wheels spinning smoothly on bearings while four brushless motors drive them through belts.",
+      "Sheet metal and CNC parts replaced what would otherwise be more complex machined assemblies \u2014 the motor mount doubles as a heat sink."
+    ]
   },
   {
     "id": "battlebot",
@@ -128,15 +142,15 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Make a 1 lb 3D printed battle bot.",
+    "goal": "Build a 1 lb 3D printed battle bot that can take a hit and keep fighting.",
     "details": "",
     "outcome": [
-      "Modular, easy-swap armor system",
-      "Custom resin cast wheels",
-      "Easily assembled using heat-set inserts",
-      "Custom fully balanced drum with interlocking motor connection for maximum torque output"
+      "Modular armor swaps in seconds between matches",
+      "Custom resin-cast wheels",
+      "Heat-set inserts for fast, reliable assembly",
+      "Balanced drum spinner with an interlocking motor connection for max torque"
     ],
-    "technical": "Fully 3D printed vertical drum spinner. 4-wheel belt drive in rear. Custom wheel molds with draft angles for easy removal. All parts designed from scratch.",
+    "technical": "Fully 3D printed vertical drum spinner with a 4-wheel rear belt drive. Custom wheel molds use draft angles for easy removal, and every part was designed from scratch.",
     "images": [
       "images/battlebot/Byte (1).png",
       "images/battlebot/Byte (2).png",
@@ -151,7 +165,11 @@
     "modelUrl": "models/battlebot.glb",
     "documents": [],
     "order": 1787637615241,
-    "featured": false
+    "featured": false,
+    "story": [
+      "Armor panels swap out fast between matches instead of requiring a rebuild.",
+      "The drum spinner is custom-balanced with an interlocking motor connection to put as much torque as possible into every hit."
+    ]
   },
   {
     "id": "wcp-arm",
@@ -163,14 +181,14 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Make a 3 DOF arm gearbox.",
+    "goal": "Design a compact 3-DOF arm gearbox with torque to spare.",
     "details": "",
     "story": [],
     "outcome": [
       "Fully custom gearbox plates",
-      "55:1 gearbox to supply a surplus of torque"
+      "55:1 reduction for a comfortable torque margin"
     ],
-    "technical": "Uses a combination of chains and gears to supply the load from the motors to the arm assembly.",
+    "technical": "Chains and gears carry the load from the motors to the arm assembly.",
     "images": [
       "images/wcp-arm/Arm Assembly (1).png",
       "images/wcp-arm/Arm Assembly.png",
@@ -192,12 +210,12 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Develop a unique intake for basketballs.",
+    "goal": "Fit a basketball intake into a footprint smaller than a typical end effector needs.",
     "outcome": [
       "Compact end effector",
-      "Unique gear stacking for a compact design"
+      "Unique gear stack keeps the whole assembly small"
     ],
-    "technical": "Uses a NEO Vortex motor for through-shaft capability, sandwiched inside the intake to reduce part and assembly complexity.",
+    "technical": "A NEO Vortex motor sits inside the intake itself, using its through-shaft capability to cut part and assembly complexity.",
     "featured": false
   },
   {
@@ -210,16 +228,19 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Create a system to launch small 6\" plastic balls and pick them up off the ground.",
+    "goal": "Build a turreted launcher and intake that can pick up and fire 6-inch balls autonomously.",
     "details": "",
-    "story": [],
-    "outcome": [
-      "Turreted shooter with circular rack and pinion for hood angle",
-      "1 motor to actuate all belts in the hopper up to the feeder",
-      "Weight-reduced aluminum plates for lower COG and moving mass",
-      "1 motor to power the entire intake subsystem"
+    "story": [
+      "One motor drives every belt in the hopper, from pickup to the feeder, to keep the electronics count down.",
+      "The shooter hood sits on a circular rack and pinion so it can sweep a wide range of firing angles for autonomous vision targeting."
     ],
-    "technical": "2 NEO 550 outrunner motors for the shooter hood; many angles for autonomous vision. Belts and gears on a Kraken motor to reduce electronics for the intake.",
+    "outcome": [
+      "Turreted shooter sweeps a wide range of hood angles via rack and pinion",
+      "One motor drives the entire hopper, from pickup to feeder",
+      "Weight-reduced aluminum plates keep the center of gravity low",
+      "One motor powers the entire intake subsystem"
+    ],
+    "technical": "Two NEO 550 motors actuate the shooter hood across a wide range of autonomous-vision angles. A Kraken motor drives belts and gears for the intake, keeping the electronics count down.",
     "images": [
       "images/wcp-launcher/Fuel Intake v1.png",
       "images/wcp-launcher/Hopper Assembly.png",
@@ -11308,15 +11329,19 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Create an arm system with complete freedom of motion to place objects in specific locations easily.",
+    "goal": "Build an arm with full freedom of motion that still places objects precisely.",
     "outcome": [
-      "Differential gearbox for X and Z-axis rotation",
-      "Virtual 4-bar so input stays in place regardless of arm orientation",
-      "QDD motors with 3 Nm torque",
-      "Weight-reduced plates to lower CG for vertically extending system"
+      "Differential gearbox drives X and Z-axis rotation",
+      "Virtual 4-bar keeps the input fixed regardless of arm orientation",
+      "QDD motors deliver 3 Nm of torque",
+      "Weight-reduced plates keep the CG low on a vertically extending system"
     ],
-    "technical": "Single shaft with dead and live axles at one pivot so the differential can rotate while a stationary pulley rotates in X but is unaffected by Z rotation.",
-    "featured": false
+    "technical": "A single shaft carries dead and live axles through one pivot, so the differential can rotate while a stationary pulley rotates in X but stays unaffected by Z rotation.",
+    "featured": false,
+    "story": [
+      "A differential gearbox handles X and Z-axis rotation from a single shaft, with dead and live axles sharing one pivot so the two motions don't interfere.",
+      "A virtual four-bar keeps the end input stationary no matter how the arm is oriented."
+    ]
   },
   {
     "id": "frc-intake",
@@ -11328,14 +11353,14 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Create a system to pick up small cones and 10\" inflatable cubes off the ground.",
+    "goal": "Build an intake that handles both small cones and 10-inch inflatable cubes without added complexity.",
     "outcome": [
-      "Pneumatic-powered extension to reduce complexity",
-      "Single high-torque motor for maximum grip",
-      "Mostly Lexan construction to reduce weight",
-      "Configurable master sketch for geometry and plate design"
+      "Pneumatic extension keeps the mechanism simple",
+      "One high-torque motor for maximum grip",
+      "Mostly Lexan construction to save weight",
+      "Configurable master sketch drives geometry and plate design"
     ],
-    "technical": "Through shafts resist torsion on the intake. Small aluminum scab plates on intake arms for compression strength.",
+    "technical": "Through-shafts resist torsion across the intake, with small aluminum scab plates on the arms adding compression strength where it's needed.",
     "featured": false
   },
   {
@@ -11348,15 +11373,15 @@
         "label": "Onshape"
       }
     ],
-    "goal": "Create a system to score game pieces and navigate the field effectively. Team project of 4.",
+    "goal": "Build a full competition robot \u2014 scoring, field navigation, and reliability \u2014 as a 4-person team.",
     "details": "",
     "story": [],
     "outcome": [
-      "Swerve modules: 15 ft/s and omnidirectional movement",
-      "Robust rigid elevator system",
-      "Specific electronic placement to maximize CG location"
+      "Swerve drive: 15 ft/s, fully omnidirectional",
+      "Rigid elevator system",
+      "Electronics placed deliberately to keep the CG where it needed to be"
     ],
-    "technical": "Belly pan for critical electronics with integrated cable management. Wire paths zip-tied and constrained to reduce electrical faults.",
+    "technical": "A belly pan houses the critical electronics with integrated cable management; wire paths are zip-tied and constrained to cut down on electrical faults.",
     "images": [
       "images/frc-robot/Chassis.png",
       "images/frc-robot/Elevator (1).png",
@@ -11384,19 +11409,19 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Design a functional gearbox to meet course load, packaging, and manufacturability requirements.",
+    "goal": "Design a gearbox that meets course load and packaging requirements \u2014 and is actually easy to service.",
     "details": "",
     "story": [
-      "Housing packaging drove shaft spacing before gear selection was locked.",
+      "Housing packaging drove shaft spacing before gear selection was locked in.",
       "McMaster gears and dry-running sleeve bearings kept cost and lead time down for a course build.",
-      "Service access on the front housing was prioritized so the gear train could be inspected without full disassembly."
+      "Front-housing service access was prioritized so the gear train can be inspected without a full teardown."
     ],
     "outcome": [
-      "Complete CAD gearbox assembly with defined gear ratios",
+      "Complete CAD assembly with defined gear ratios",
       "Packaging optimized for mounting and serviceability",
-      "Design prepared for fabrication and validation"
+      "Ready for fabrication and validation"
     ],
-    "technical": "Used SolidWorks for part modeling, assembly mates, and detail drawings; iterated gear selection and shaft support layout for torque transmission and durability.",
+    "technical": "Modeled in SolidWorks with full assembly mates and detail drawings; gear selection and shaft support were iterated for torque transmission and durability.",
     "images": [
       "images/gearbox-design/full-assembly.png",
       "images/gearbox-design/screenshot-2025-11-05-214216.png",
@@ -11460,15 +11485,17 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Design and develop a junior design robot to satisfy competition/course performance requirements.",
+    "goal": "Design a junior-design robot that handles mobility and manipulation in one integrated package.",
     "details": "",
-    "story": [],
-    "outcome": [
-      "Integrated mechanical subsystems for mobility and manipulation",
-      "CAD-driven packaging for electronics and actuators",
-      "Design iterated for reliability and manufacturability"
+    "story": [
+      "Drive layout, structural rigidity, and subsystem interfaces were worked together in CAD rather than bolted on after the fact, so mobility and manipulation share the same frame without fighting each other for space."
     ],
-    "technical": "Developed full-robot CAD with attention to drive layout, structural rigidity, and subsystem interfaces for assembly and testing.",
+    "outcome": [
+      "Mechanical subsystems for mobility and manipulation integrated into one frame",
+      "Electronics and actuators packaged directly from CAD",
+      "Iterated for reliability and manufacturability before build"
+    ],
+    "technical": "Full-robot CAD covers drive layout, structural rigidity, and subsystem interfaces, built for assembly and testing rather than just appearance.",
     "images": [
       "images/junior-design-robot/image.png",
       "images/junior-design-robot/screenshot_2026-02-22_211826.png",
@@ -11499,18 +11526,18 @@
         "label": "SolidWorks"
       }
     ],
-    "goal": "Analyze a suspension bell crank under expected race loads to validate strength and stiffness.",
+    "goal": "Validate a suspension bell crank against race loads, then cut weight without giving up the safety margin.",
     "details": "",
     "story": [
-      "FEA flagged bending hotspots at the arm root; material was removed only where stress margins stayed healthy.",
-      "The redesign traded a little stiffness for a clear weight reduction while keeping race-load factors of safety."
+      "FEA flagged bending hotspots at the arm root, so material only came out where the stress margin stayed healthy.",
+      "The redesign traded a little stiffness for a clear weight cut while keeping the race-load factor of safety intact."
     ],
     "outcome": [
-      "FEA study completed for critical load cases",
+      "FEA completed for the critical load cases",
       "High-stress regions identified and redesigned",
-      "Weight reduced while maintaining structural margins"
+      "Weight cut while structural margins held"
     ],
-    "technical": "Applied SolidWorks Simulation to evaluate stress, displacement, and factor of safety; used results to refine geometry and material/section choices.",
+    "technical": "SolidWorks Simulation evaluated stress, displacement, and factor of safety; the results drove the geometry and material changes directly.",
     "images": [
       "images/bell-crank-fea/1257618d-1872-4c2a-90e7-701f0eef4a80.png"
     ],
@@ -11527,7 +11554,7 @@
   },
   {
     "id": "ARB-Assembly",
-    "title": "Formula Student - ARB Assemblys",
+    "title": "Formula Student \u2014 ARB Assembly",
     "date": "Aug 2026",
     "tags": [
       {
@@ -11539,15 +11566,18 @@
         "label": "Formula Student"
       }
     ],
-    "goal": "Design and Validate an ARB",
+    "goal": "Design and validate a Formula Student anti-roll bar from the numbers up, not just the geometry.",
     "details": "",
-    "story": [],
-    "outcome": [
-      "Designed a Formula Student-style ARB assembly using SolidWorks.",
-      "Used a top-down modeling style to reduce modeling time.",
-      "Used a Python script to calculate roll stiffness to determine tube size and ARB arm lengths."
+    "story": [
+      "Roll stiffness was calculated in Python first, which set the tube size and arm lengths before any geometry was drawn.",
+      "Top-down modeling kept the whole assembly driven from one parametric sketch, so a single dimension change updates every part."
     ],
-    "technical": "SolidWorks parametric geometry sketch driving the top-down modeling in the assembly",
+    "outcome": [
+      "ARB assembly fully modeled in SolidWorks from a top-down parametric sketch",
+      "Tube size and arm lengths set by a Python roll-stiffness calculation, not guesswork",
+      "Full assembly rebuilds from a single driving sketch"
+    ],
+    "technical": "A parametric top-down sketch drives the whole assembly, so geometry changes propagate without rebuilding each part by hand.",
     "images": [
       "images/Front-ARB-Assembly/front-arb-assemblie.png"
     ],
@@ -11559,7 +11589,7 @@
   },
   {
     "id": "ShockBar-RCA",
-    "title": "Formula Student - Rear Shock Bar RCA",
+    "title": "Formula Student \u2014 Rear Shock Bar RCA",
     "date": "July 2026",
     "tags": [
       {
@@ -11575,15 +11605,18 @@
         "label": "Formula Student"
       }
     ],
-    "goal": "Perform RCA on the rear shock bar and redesign the components",
+    "goal": "Find out why the rear shock bar was under-strength, then redesign it to hit Safety Factor 2.",
     "details": "",
-    "story": [],
-    "outcome": [
-      "Used Ansys to perform RCA and identify zones under our minimum safety factor",
-      "Using SolidWorks, redesigned the shock bar to meet new Safety Factor requirements",
-      "Validated the new shock bar for a Safety Factor of 2"
+    "story": [
+      "An Ansys root-cause analysis under an 800 lb loading case turned up a safety factor of 1 \u2014 below the team's minimum.",
+      "The shock bar was redesigned in SolidWorks and revalidated in Ansys, landing at a safety factor of 2 for the same load case."
     ],
-    "technical": "Ansys FEA was performed for a max loading case of 800lb\nOriginal SF of 1 was identified\nRedesigned SF of 2 was validated using Ansys",
+    "outcome": [
+      "Root-cause analysis in Ansys identified the under-strength zones",
+      "Shock bar redesigned in SolidWorks to meet the safety factor target",
+      "Redesign validated at a Safety Factor of 2, up from 1"
+    ],
+    "technical": "Ansys FEA ran the 800 lb max loading case against both the original and redesigned geometry \u2014 original SF of 1, redesigned SF of 2.",
     "images": [
       "images/ShockBar-RCA/33f24f55-2a3e-4c7f-8f5e-18ba77f151e5.png",
       "images/ShockBar-RCA/3d8ec6df-34e7-4af5-8c99-6592f16ee63c.png",

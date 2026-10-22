@@ -1,19 +1,19 @@
 /* Shared layout and header/footer - used by index.html, research.html, resume.html */
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface-hover: #21262d;
-  --text: #e6edf3;
-  --text-muted: #8b949e;
-  --accent: #58a6ff;
-  --accent-soft: rgba(88, 166, 255, 0.15);
-  --border: #30363d;
-  --success: #3fb950;
-  --tag-swd: #a371f7;
-  --tag-onshape: #79c0ff;
-  --scrollbar-track: #0d1117;
-  --scrollbar-thumb: #30363d;
-  --scrollbar-thumb-hover: #484f58;
+  --bg: #0b0a09;
+  --surface: #161310;
+  --surface-hover: #201c17;
+  --text: #ece6da;
+  --text-muted: #8f8678;
+  --accent: #ef8a45;
+  --accent-soft: rgba(239, 138, 69, 0.16);
+  --border: #2a2620;
+  --success: #8fae5e;
+  --tag-swd: #c99bdb;
+  --tag-onshape: #7fb0c9;
+  --scrollbar-track: #0b0a09;
+  --scrollbar-thumb: #2a2620;
+  --scrollbar-thumb-hover: #3a342b;
 }
 
 * {
@@ -52,7 +52,7 @@ html {
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -136,9 +136,10 @@ header {
 }
 
 header h1 {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.1rem, 5vw, 3.1rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   margin-bottom: 0.25rem;
 }
 
