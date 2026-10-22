@@ -129,42 +129,42 @@
     }
 
     .project {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: border-color 0.2s, background 0.2s;
+      border-top: 2px solid var(--border);
+      padding-top: 0.9rem;
+      transition: border-color 0.2s;
       display: flex;
       flex-direction: column;
     }
 
     .project-body {
-      padding: 1.25rem 1.5rem;
+      padding: 0.85rem 0 0;
     }
 
     .project:hover {
-      border-color: var(--accent);
-      background: var(--surface-hover);
+      border-top-color: var(--accent);
+    }
+
+    .project:hover .project-title {
+      color: var(--accent);
     }
 
     .project-body .project-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem 1rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.3rem;
     }
 
     .project-title {
       font-family: 'Fraunces', serif;
       font-size: 1.2rem;
       font-weight: 600;
+      transition: color 0.15s;
     }
 
-    .project-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    .project-meta-line {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+      margin: 0 0 0.75rem;
     }
 
     .pill {
@@ -218,6 +218,7 @@
       width: 100%;
       aspect-ratio: 16 / 10;
       background: var(--surface-hover);
+      border-radius: 8px;
       overflow: hidden;
     }
 
@@ -833,64 +834,6 @@
       border-color: var(--accent);
     }
 
-    .featured-project {
-      margin: 0 0 1.25rem;
-    }
-
-    .featured-card {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.2fr);
-      gap: 1rem;
-      padding: 1rem;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent-soft), transparent 55%), var(--surface);
-      cursor: pointer;
-    }
-
-    .featured-card:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .featured-media {
-      aspect-ratio: 16 / 10;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #141210;
-    }
-
-    .featured-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .featured-eyebrow {
-      margin: 0 0 0.35rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .featured-card h3 {
-      font-family: 'Fraunces', serif;
-      margin: 0 0 0.45rem;
-      font-size: 1.4rem;
-    }
-
-    .featured-card .goal {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-    }
-
-    .featured-card .project-open-hint {
-      margin-top: 0.75rem !important;
-    }
-
     .projects-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -934,12 +877,6 @@
       margin: 0.45rem 0 0;
       padding-left: 1.1rem;
       font-size: 0.78rem;
-    }
-
-    @media (max-width: 800px) {
-      .featured-card {
-        grid-template-columns: 1fr;
-      }
     }
 
     .model-viewer-status p {
@@ -1310,13 +1247,15 @@
 
     @media (min-width: 980px) {
       .hero-grid {
-        grid-template-columns: minmax(320px, 1.15fr) minmax(420px, 540px);
-        align-items: start;
-        gap: 2rem;
+        grid-template-columns: minmax(300px, 420px) minmax(360px, 480px);
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
       }
 
       .hero-intro {
         padding-top: 0.35rem;
+        justify-content: center;
       }
     }
   </style>
@@ -1342,8 +1281,8 @@
           </div>
           <aside class="hero-affiliation" aria-label="Formula Student affiliation">
             <p class="hero-affiliation-kicker">Formula Student</p>
-            <p class="hero-affiliation-title">UNC Charlotte · Vehicle Dynamics</p>
-            <p class="hero-affiliation-meta">Subteam member</p>
+            <p class="hero-affiliation-title">49ers Racing · Vehicle Dynamics Design</p>
+            <p class="hero-affiliation-meta">Team member since Jan 2026</p>
             <div class="hero-affiliation-actions">
               <button type="button" data-filter-jump="formula">View Formula projects</button>
               <a href="research.html">Tire research</a>
@@ -1352,14 +1291,14 @@
         </div>
         <aside class="hero-profile" aria-label="Quick profile">
           <h2>Education</h2>
-          <p><strong>University of North Carolina at Charlotte</strong> — B.S. Mechanical Engineering (Expected Dec 2027)</p>
+          <p><strong>University of North Carolina at Charlotte</strong> — B.S. Mechanical Engineering, Motorsports Concentration (Expected May 2028)</p>
           <p><strong>Durham Tech Community College</strong> — Associate in Engineering (May 2025)</p>
 
           <h2>Related Coursework</h2>
-          <p>Statics, Solids, Mechatronics 1 &amp; 2, Manufacturing Systems, Machine Shop, Dynamics, Thermodynamics, Linear Algebra</p>
+          <p>Statics, Solids, Mechatronics 1 &amp; 2, Manufacturing Systems, Machine Shop, Dynamics, Thermodynamics, Fluid Mechanics, Mechanics of Materials, Linear Algebra, Computational Methods</p>
 
           <h2>Skills</h2>
-          <p>SolidWorks, Onshape, Python, Java, React, C, C++, Visual Studio Code, Excel, Microsoft Tools, Computer Hardware, 3D Modeling, 3D Design, Manufacturing, 3D Printing, Electronics, KiCAD</p>
+          <p>SolidWorks, Onshape, ANSYS, Python, MATLAB, Java, React, C, C++, Visual Studio Code, Excel, Mastercam, Vericut, MoTeC, Manual Mill and Lathe, Arduino, ESP32, KiCAD, Computer Hardware, 3D Modeling, 3D Printing, FEA</p>
         </aside>
       </div>
     </header>
@@ -1369,7 +1308,6 @@
         <h2>Projects</h2>
         <p id="projects-filter-count" class="projects-filter-count" hidden></p>
       </div>
-      <div id="featured-project" class="featured-project" hidden></div>
       <div class="projects-toolbar">
         <div class="project-filters" id="project-filters" role="toolbar" aria-label="Filter projects"></div>
         <label class="project-search">
@@ -1398,7 +1336,7 @@
   </script>
 
   <script type="module">
-    import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js?v=feat10";
+    import { renderProjects, buildImageManifest, buildModelManifest } from "./scripts/projects.js?v=feat11";
     import { loadProjects } from "./scripts/projects-store.js?v=feat10";
 
     const AUTO_ADVANCE_MS = 4500;
@@ -1541,7 +1479,6 @@
         const imageManifest = buildImageManifest(projects, folderImageManifest);
         const modelManifest = buildModelManifest(projects, fileModelManifest);
         initCarousels(imageManifest);
-        renderFeaturedProject(projects, imageManifest);
 
         // Bind detail-modal clicks independently of Three.js so CDN failures
         // cannot disable "Click for details".
@@ -1682,33 +1619,6 @@
           filterCountEl.textContent = visible + " shown";
         }
       }
-    }
-
-    function renderFeaturedProject(projects, imageManifest) {
-      const host = document.getElementById("featured-project");
-      if (!host) return;
-      const featured = (projects || []).find(function (project) { return project && project.featured; });
-      if (!featured) {
-        host.hidden = true;
-        host.innerHTML = "";
-        return;
-      }
-      const images = (imageManifest && imageManifest[featured.id]) || featured.images || [];
-      const img = images[0]
-        ? '<img src="' + images[0].replace(/"/g, "&quot;") + '" alt="" loading="lazy" />'
-        : "";
-      const storyLine = (featured.story && featured.story[0]) || featured.goal || "";
-      host.hidden = false;
-      host.innerHTML =
-        '<article class="featured-card" data-project="' + featured.id + '" tabindex="0" role="button" aria-label="Open featured project ' + featured.title.replace(/"/g, "&quot;") + '">' +
-          '<div class="featured-media">' + img + "</div>" +
-          "<div>" +
-            '<p class="featured-eyebrow">Featured project</p>' +
-            "<h3>" + featured.title.replace(/</g, "&lt;") + "</h3>" +
-            '<p class="goal">' + storyLine.replace(/</g, "&lt;") + "</p>" +
-            '<p class="project-open-hint">Open details, CAD viewer &amp; downloads</p>' +
-          "</div>" +
-        "</article>";
     }
 
     function initSiteMeta() {

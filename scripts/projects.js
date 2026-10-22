@@ -123,12 +123,12 @@ function sortProjects(projects) {
 }
 
 function renderProjectCard(project) {
-  const tagsHtml = project.tags
-    .map(function (tag) {
-      const safeType = escapeHtml(tag.type);
-      return '<span class="pill ' + safeType + '">' + escapeHtml(tag.label) + "</span>";
-    })
-    .join("");
+  const metaParts = [];
+  if (project.date) metaParts.push(escapeHtml(project.date));
+  project.tags.forEach(function (tag) {
+    metaParts.push(escapeHtml(tag.label));
+  });
+  const metaLine = metaParts.join(" &middot; ");
 
   const outcomeHtml = project.outcome
     .map(function (item) {
@@ -142,11 +142,8 @@ function renderProjectCard(project) {
       '<div class="project-body">' +
         '<div class="project-header">' +
           '<span class="project-title">' + escapeHtml(project.title) + "</span>" +
-          '<div class="project-meta">' +
-            (project.date ? '<span class="pill date">' + escapeHtml(project.date) + "</span>" : "") +
-            tagsHtml +
-          "</div>" +
         "</div>" +
+        '<p class="project-meta project-meta-line">' + metaLine + "</p>" +
         "<h3>Goal</h3>" +
         '<p class="goal">' + escapeHtml(project.goal) + "</p>" +
         "<h3>Outcome</h3>" +
